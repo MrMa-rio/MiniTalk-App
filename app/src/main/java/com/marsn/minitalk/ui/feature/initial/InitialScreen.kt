@@ -16,6 +16,13 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.marsn.minitalk.ui.components.enums.AppDestinations
 
 
+
+@Composable
+fun InitialScreen() {
+    MiniTalkApp()
+}
+
+
 @PreviewScreenSizes
 @Composable
 fun MiniTalkApp() {

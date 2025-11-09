@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,30 +22,55 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.LinearGradientShader
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.marsn.minitalk.R
-import com.marsn.minitalk.ui.theme.Blue40
+import com.marsn.minitalk.navigation.InitialRoute
+import com.marsn.minitalk.ui.UIEvent
 
 
 @Composable
-fun LoginScreen(
-) {
-    FormLogin()
+fun LoginScreen(navController: NavController) {
+
+    val viewModel = viewModel<LoginViewModel> {
+        LoginViewModel()
+    }
+
+    LaunchedEffect(Unit) {
+
+        viewModel.uiEvent.collect { uiEvent ->
+
+            when (uiEvent) {
+                UIEvent.NavigateBack -> {}
+                is UIEvent.NavigateTo<*> -> {
+                    when (uiEvent.route) {
+                        is InitialRoute -> {
+                            navController.navigate(InitialRoute)
+                        }
+                    }
+                }
+                is UIEvent.ShowSnackbar -> {}
+            }
+
+        }
+
+    }
+
+    FormLogin(viewModel::onEvent)
 }
 
 @Composable
-fun FormLogin() {
+fun FormLogin(onEvent: (LoginEvent) -> Unit) {
     Scaffold { paddingValues ->
         Column(
             modifier = Modifier
@@ -88,7 +112,7 @@ fun FormLogin() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { onEvent(LoginEvent.Logged("Mario")) },
                 modifier = Modifier.fillMaxWidth(0.5f),
                 colors =
                     ButtonDefaults.buttonColors(
@@ -146,10 +170,4 @@ private fun ItemFormInput(
             }
         },
     )
-}
-
-@Preview
-@Composable
-fun FormLoginPreview() {
-    FormLogin()
 }

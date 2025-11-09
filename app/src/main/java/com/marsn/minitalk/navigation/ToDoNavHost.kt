@@ -8,14 +8,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.marsn.minitalk.ui.feature.initial.InitialScreen
 import com.marsn.minitalk.ui.feature.login.LoginScreen
 
 @Composable
 fun ToDoNavHost() {
     val navController = rememberNavController()
 
-    val context = LocalContext.current
-    val activity = context as? Activity
     NavHost(
         navController = navController,
         startDestination = Route
@@ -23,18 +22,15 @@ fun ToDoNavHost() {
 
         composable<Route> {
             LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            LoginScreen()
+            LoginScreen( navController
+            )
         }
 
-//        composable<AddEditRoute> { backStackEntry ->
-//            val todoId = backStackEntry.toRoute<AddEditRoute>()
-//
-//            AddEditToDoScreen(
-//                id = todoId.id,
-//                navigateBack = {
-//                    navController.popBackStack()
-//                })
-//        }
+        composable<InitialRoute> { backStackEntry ->
+
+            InitialScreen()
+
+        }
 
     }
 

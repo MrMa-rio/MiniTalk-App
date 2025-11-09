@@ -6,4 +6,4 @@ import kotlinx.serialization.Serializable
 object Route {}
 
 @Serializable
-data class InitialRoute(val id: Long) //TODO: Analisar porque utiliza esse cara
+object InitialRoute {} //TODO: Analisar porque utiliza esse cara
