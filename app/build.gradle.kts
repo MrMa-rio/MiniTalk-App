@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
+    kotlin("plugin.serialization") version libs.versions.kotlin
 }
 
 android {
@@ -42,6 +46,22 @@ android {
 }
 
 dependencies {
+
+
+    //MATERIAL
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    //NAVIGATION
+    implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Dagger Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

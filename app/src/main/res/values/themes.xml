@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MiniTalk" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Tema principal do app -->
+    <style name="Theme.MiniTalk" parent="Theme.SplashScreen.IconBackground">
+        <!-- Ícone que será mostrado durante a inicialização -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        <!-- Cor de fundo da splash -->
+        <item name="windowSplashScreenBackground">@color/blue40</item>
+
+        <!-- Duração mínima da splash (em milissegundos) -->
+        <item name="windowSplashScreenAnimationDuration">100</item>
+
+        <!-- Tema que o app usa após a splash -->
+        <item name="postSplashScreenTheme">@style/Theme.MiniTalk.Main</item>
+    </style>
+
+    <!-- Tema principal real da aplicação (após o carregamento) -->
+    <style name="Theme.MiniTalk.Main" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/blue40</item>
+        <item name="android:navigationBarColor">@color/blue40</item>
+    </style>
+
 </resources>
