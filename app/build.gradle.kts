@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     kotlin("plugin.serialization") version libs.versions.kotlin
+
 }
 
 android {
@@ -54,12 +55,17 @@ dependencies {
     //NAVIGATION
     implementation(libs.androidx.navigation.compose)
 
+    implementation(libs.androidx.navigation.compose.v283)
+    implementation(libs.accompanist.navigation.animation)
+
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.kotlinx.serialization.json)
 
     // Dagger Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.compose.animation)
     ksp(libs.hilt.android.compiler)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.ktx)

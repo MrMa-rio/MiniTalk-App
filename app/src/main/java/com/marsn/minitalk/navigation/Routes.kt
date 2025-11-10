@@ -3,7 +3,22 @@ package com.marsn.minitalk.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Route {}
+object SplashRoute {}
 
 @Serializable
-object InitialRoute {} //TODO: Analisar porque utiliza esse cara
+object InitialRoute {}
+
+@Serializable
+object LoginRoute {}
+
+@Serializable
+object RegisterRoute {}
+
+@Serializable
+object HomeRoute {}
+
+@Serializable
+object ProfileRoute {}
+
+@Serializable
+object SettingsRoute
