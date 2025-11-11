@@ -42,7 +42,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.R
-import com.marsn.minitalk.navigation.LoginRoute
+import com.marsn.minitalk.navigation.AuthRoutes
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import com.marsn.minitalk.ui.theme.textInputColors
@@ -58,7 +58,7 @@ fun RegisterScreen(
             when (uiEvent) {
                 is UIEvent.NavigateTo<*> -> {
                     when (uiEvent.route) {
-                        is LoginRoute -> navigateTo.invoke()
+                        is AuthRoutes.LoginRoute -> navigateTo.invoke()
                     }
                 }
                 else -> Unit

@@ -44,9 +44,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.R
-import com.marsn.minitalk.navigation.InitialRoute
+import com.marsn.minitalk.navigation.AuthRoutes
+import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LockScreenOrientation
-import com.marsn.minitalk.navigation.RegisterRoute
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import com.marsn.minitalk.ui.theme.textInputColors
@@ -64,8 +64,8 @@ fun LoginScreen( onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit)
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateTo<*> -> when (event.route) {
-                    is InitialRoute -> onNavigateToHome.invoke()
-                    is RegisterRoute -> onNavigateToRegister.invoke()
+                    is ChatRoutes.HomeRoute -> onNavigateToHome.invoke()
+                    is AuthRoutes.RegisterRoute -> onNavigateToRegister.invoke()
                     else -> {}
                 }
 
