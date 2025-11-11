@@ -2,17 +2,12 @@ package com.marsn.minitalk.ui.feature.splashCustomized
 
 import androidx.compose.runtime.Composable
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -22,26 +17,14 @@ import kotlinx.coroutines.delay
 import com.marsn.minitalk.R
 
 @Composable
-fun SplashAnimationScreen(
-    onNavigateNext: () -> Unit // callback para ir pra próxima tela
-) {
-    // Controla visibilidade e animação
-    var visible by remember { mutableStateOf(false) }
+fun SplashAnimationScreen(onNavigateTo: () -> Unit) {
 
-    // Animação de opacidade
-    val alphaAnim = animateFloatAsState(
-        targetValue = if (visible) 1f else 0f,
-        animationSpec = tween(durationMillis = 1500)
-    )
-
-    // Efeito de tempo (simula carregamento)
     LaunchedEffect(Unit) {
-        visible = true
-        delay(2000) // tempo total de exibição
-        onNavigateNext()
+        delay(2000)
+        onNavigateTo()
     }
 
-    // Layout
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -74,5 +57,5 @@ fun SplashAnimationScreen(
 @Preview
 @Composable
 fun SplashAnimationScreenPreview() {
-    SplashAnimationScreen(onNavigateNext = {})
+    SplashAnimationScreen({})
 }

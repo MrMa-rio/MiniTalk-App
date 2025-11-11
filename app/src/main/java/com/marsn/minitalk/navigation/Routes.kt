@@ -1,24 +1,16 @@
 package com.marsn.minitalk.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-object SplashRoute {}
+object SplashRoute : NavKey
 
 @Serializable
-object InitialRoute {}
+object LoginRoute : NavKey
 
 @Serializable
-object LoginRoute {}
+object RegisterRoute : NavKey
 
 @Serializable
-object RegisterRoute {}
-
-@Serializable
-object HomeRoute {}
-
-@Serializable
-object ProfileRoute {}
-
-@Serializable
-object SettingsRoute
+object InitialRoute : NavKey

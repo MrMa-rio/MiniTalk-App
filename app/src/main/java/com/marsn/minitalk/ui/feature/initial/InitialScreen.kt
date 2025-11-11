@@ -17,9 +17,8 @@ import androidx.navigation.NavHostController
 import com.marsn.minitalk.ui.components.enums.AppDestinations
 
 
-
 @Composable
-fun InitialScreen(navController: NavHostController) {
+fun InitialScreen() {
     MiniTalkApp()
 }
 

@@ -43,11 +43,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.marsn.minitalk.R
 import com.marsn.minitalk.navigation.InitialRoute
 import com.marsn.minitalk.navigation.LockScreenOrientation
-import com.marsn.minitalk.navigation.LoginRoute
 import com.marsn.minitalk.navigation.RegisterRoute
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
@@ -55,24 +53,19 @@ import com.marsn.minitalk.ui.theme.textInputColors
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen( onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit) {
 
     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val viewModel = viewModel<LoginViewModel> { LoginViewModel() }
 
-    // Evita recomposição pesada
     val uiEvent = remember { viewModel.uiEvent }
 
-    // Coleta eventos de navegação
     LaunchedEffect(Unit) {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateTo<*> -> when (event.route) {
-                    is InitialRoute -> navController.navigate(InitialRoute) {
-                        launchSingleTop = true
-                        popUpTo(LoginRoute) { inclusive = true }
-                    }
-                    is RegisterRoute -> navController.navigate(RegisterRoute)
+                    is InitialRoute -> onNavigateToHome.invoke()
+                    is RegisterRoute -> onNavigateToRegister.invoke()
                     else -> {}
                 }
 
@@ -110,9 +103,8 @@ private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
                 .consumeWindowInsets(paddingValues)
                 .padding(horizontal = 16.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Center
         ) {
-            item { Spacer(modifier = Modifier.height(140.dp)) }
 
             item {
                 Column(
@@ -153,7 +145,6 @@ private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
 
             item { Spacer(modifier = Modifier.height(32.dp)) }
 
-            // Botões
             item {
                 Button(
                     onClick = { onEvent(LoginEvent.Logged(username)) },
@@ -163,7 +154,7 @@ private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "ACESSAR", fontWeight = FontWeight.Bold, fontFamily = SairaSemiExpanded)
+                    Text(text = "ACESSAR", fontWeight = FontWeight.Medium, fontFamily = SairaSemiExpanded)
                 }
             }
 

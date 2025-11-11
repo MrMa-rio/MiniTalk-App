@@ -1,7 +1,5 @@
 package com.marsn.minitalk.ui.feature.login
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,14 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,50 +34,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.marsn.minitalk.R
-import com.marsn.minitalk.navigation.InitialRoute
 import com.marsn.minitalk.navigation.LoginRoute
-import com.marsn.minitalk.navigation.RegisterRoute
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import com.marsn.minitalk.ui.theme.textInputColors
 
-@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun RegisterScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
+fun RegisterScreen(
+    viewModel: LoginViewModel = viewModel(),
+    navigateTo: () -> Unit
+) {
 
-    // 🔹 Efeito só uma vez, sem reexecutar a cada navegação
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { uiEvent ->
             when (uiEvent) {
                 is UIEvent.NavigateTo<*> -> {
                     when (uiEvent.route) {
-                        is LoginRoute -> navController.navigate(LoginRoute) {
-                            popUpTo(0) { inclusive = true } // limpa TODA a pilha
-                            launchSingleTop = true          // evita duplicar o login
-                        }
-
+                        is LoginRoute -> navigateTo.invoke()
                     }
                 }
-
                 else -> Unit
             }
         }
     }
 
-    // 🔹 Mantém layout estável, sem recriar o Brush nem o gradient
     val gradient = remember {
         Brush.linearGradient(
             listOf(
@@ -103,10 +85,8 @@ fun RegisterScreen(navController: NavController, viewModel: LoginViewModel = vie
                 .consumeWindowInsets(paddingValues)
                 .padding(horizontal = 16.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Center
         ) {
-
-            item { Spacer(modifier = Modifier.height(140.dp)) }
 
             item {
                 Column(

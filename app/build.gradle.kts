@@ -55,8 +55,6 @@ dependencies {
     //NAVIGATION
     implementation(libs.androidx.navigation.compose)
 
-    implementation(libs.androidx.navigation.compose.v283)
-    implementation(libs.accompanist.navigation.animation)
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.kotlinx.serialization.json)
@@ -64,6 +62,8 @@ dependencies {
     // Dagger Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.compose.adaptive.navigation3)
+    implementation(libs.androidx.navigation3.runtime)
     ksp(libs.hilt.android.compiler)
 
 
