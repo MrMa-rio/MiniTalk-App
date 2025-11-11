@@ -3,24 +3,44 @@ package com.marsn.minitalk.ui.feature.login
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -30,6 +50,8 @@ import com.marsn.minitalk.navigation.LockScreenOrientation
 import com.marsn.minitalk.navigation.LoginRoute
 import com.marsn.minitalk.navigation.RegisterRoute
 import com.marsn.minitalk.ui.UIEvent
+import com.marsn.minitalk.ui.theme.SairaSemiExpanded
+import com.marsn.minitalk.ui.theme.textInputColors
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -47,14 +69,11 @@ fun LoginScreen(navController: NavController) {
             when (event) {
                 is UIEvent.NavigateTo<*> -> when (event.route) {
                     is InitialRoute -> navController.navigate(InitialRoute) {
-                        popUpTo(LoginRoute) { inclusive = true }
                         launchSingleTop = true
-                    }
-
-                    is RegisterRoute -> navController.navigate(RegisterRoute) {
                         popUpTo(LoginRoute) { inclusive = true }
-                        launchSingleTop = true
                     }
+                    is RegisterRoute -> navController.navigate(RegisterRoute)
+                    else -> {}
                 }
 
                 else -> {}
@@ -67,78 +86,93 @@ fun LoginScreen(navController: NavController) {
 
 @Composable
 private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
+
+    // Inputs
+    var username by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+
+    val gradient = remember {
+        Brush.linearGradient(
+            listOf(
+                Color(0xFF0FBFAD),
+                Color.White,
+                Color.White,
+                Color(0xFF0D9488)
+            )
+        )
+    }
+
     Scaffold { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0xFF0FBFAD),
-                            Color.White,
-                            Color(0xFF0D9488)
-                        )
-                    )
-                )
+                .background(gradient)
                 .consumeWindowInsets(paddingValues)
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 16.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            Spacer(modifier = Modifier.height(140.dp))
+            item { Spacer(modifier = Modifier.height(140.dp)) }
 
-            Column(
-                modifier = Modifier
-                    .width(800.dp)
-                    .height(200.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.mipmap.ic_launcher_3_foreground),
-                    contentDescription = "Logo MiniTalk",
-                    modifier = Modifier.fillMaxSize()
+            item {
+                Column(
+                    modifier = Modifier
+                        .width(800.dp)
+                        .height(200.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.mipmap.ic_launcher_3_foreground),
+                        contentDescription = "Logo MiniTalk",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+
+            item {
+                InputField(
+                    value = username,
+                    onValueChange = { username = it },
+                    placeholder = "Nome de usuário",
+                    imageVector = Icons.Default.Person
                 )
             }
 
-            // Inputs
-            var username by rememberSaveable { mutableStateOf("") }
-            var password by rememberSaveable { mutableStateOf("") }
+            item { Spacer(modifier = Modifier.height(16.dp)) }
 
-            InputField(
-                value = username,
-                onValueChange = { username = it },
-                placeholder = "Nome de usuário",
-                imageVector = Icons.Default.Person
-            )
+            item {
+                InputField(
+                    value = password,
+                    onValueChange = { password = it },
+                    placeholder = "Senha",
+                    imageVector = Icons.Default.Lock,
+                    keyboardType = KeyboardType.Password
+                )
+            }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            InputField(
-                value = password,
-                onValueChange = { password = it },
-                placeholder = "Senha",
-                imageVector = Icons.Default.Lock,
-                keyboardType = KeyboardType.Password
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
+            item { Spacer(modifier = Modifier.height(32.dp)) }
 
             // Botões
-            Button(
-                onClick = { onEvent(LoginEvent.Logged(username)) },
-                modifier = Modifier.fillMaxWidth(0.6f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "ACESSAR", fontWeight = FontWeight.Bold)
+            item {
+                Button(
+                    onClick = { onEvent(LoginEvent.Logged(username)) },
+                    modifier = Modifier.fillMaxWidth(0.6f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "ACESSAR", fontWeight = FontWeight.Bold, fontFamily = SairaSemiExpanded)
+                }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            item { Spacer(modifier = Modifier.height(16.dp)) }
 
-            TextButton(onClick = { onEvent(LoginEvent.Register) }) {
-                Text("Primeiro Acesso", color = Color.Black)
+            item {
+                TextButton(onClick = { onEvent(LoginEvent.Register) }) {
+                    Text("Primeiro Acesso", color = Color.Black, fontFamily = SairaSemiExpanded)
+                }
             }
         }
     }
@@ -153,21 +187,19 @@ private fun InputField(
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
-        placeholder = { Text(placeholder) },
+        placeholder = { Text(placeholder, fontFamily = SairaSemiExpanded) },
         trailingIcon = {
-            Icon(imageVector, contentDescription = null)
+            Icon(imageVector = imageVector, contentDescription = null, tint = Color.Black)
         },
+        textStyle = TextStyle(fontFamily = SairaSemiExpanded),
         shape = MaterialTheme.shapes.medium,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        colors = textInputColors(),
     )
-}
 
 
-@Preview
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen(navController = NavController(LocalContext.current))
 }

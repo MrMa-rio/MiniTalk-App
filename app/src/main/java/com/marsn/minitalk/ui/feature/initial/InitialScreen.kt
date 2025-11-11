@@ -13,12 +13,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.navigation.NavHostController
 import com.marsn.minitalk.ui.components.enums.AppDestinations
 
 
 
 @Composable
-fun InitialScreen() {
+fun InitialScreen(navController: NavHostController) {
     MiniTalkApp()
 }
 

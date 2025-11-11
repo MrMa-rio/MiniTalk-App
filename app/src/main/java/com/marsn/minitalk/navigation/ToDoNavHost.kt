@@ -4,12 +4,8 @@ import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.EaseIn
-import androidx.compose.animation.core.EaseOut
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -32,56 +28,74 @@ fun ToDoNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = SplashRoute,
-        enterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { it / 2 }, // metade da largura — mais leve
-                animationSpec = tween(300, easing = LinearOutSlowInEasing)
-            )
-        },
-        exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { -it / 3 }, // sai só 1/3 -> menos trabalho
-                animationSpec = tween(450, easing = LinearOutSlowInEasing)
-            )
-        },
-        popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -it / 2 }, animationSpec = tween(300))
-        },
-        popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { it / 3 }, animationSpec = tween(450))
-        }
+        startDestination = SplashRoute
     ) {
 
-        composable<SplashRoute> {
+        // Tela Splash
+        composable<SplashRoute>(
+
+        ) {
             LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
             SplashAnimationScreen {
                 navController.navigate(LoginRoute) {
                     popUpTo(SplashRoute) { inclusive = true }
+                    launchSingleTop = true
                 }
             }
         }
 
-        composable<LoginRoute> {
+        // Tela Login
+        composable<LoginRoute>(
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it }, // começa fora da tela à direita
+                    animationSpec = tween(600),
+                )
+            },
+            sizeTransform = {
+                SizeTransform(
+                    clip = false
+                )
+            }
+        ) {
             LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            LoginScreen(
-                navController
-            )
+            LoginScreen(navController)
         }
 
-        composable<RegisterRoute> {
+        // Tela Registro
+        composable<RegisterRoute>(
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it + 5 }, // começa fora da tela à direita
+                    animationSpec = tween(600)
+                ) // combina deslizamento + fade
+            },
+            sizeTransform = {
+                SizeTransform(
+                    clip = false
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it - 8 }, // sai fora da tela à esquerda
+                    animationSpec = tween(900)
+                )
+            }
+
+        ) {
             LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
             RegisterScreen(
                 navController
             )
         }
 
-        composable<InitialRoute> { backStackEntry ->
-            InitialScreen()
+        // Tela Inicial
+        composable<InitialRoute>(
+
+        ) {
+            InitialScreen(navController)
         }
-
     }
-
 
 }
 
