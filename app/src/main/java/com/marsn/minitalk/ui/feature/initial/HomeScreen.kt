@@ -242,16 +242,18 @@ fun TabNavigationScreen(selectedTabIndex: Int, setSelectedTabIndex: (value: Int)
 
 @Composable
 fun InitialScreen() {
-    LazyColumn() {
-        item {
-            Box(Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
-                Text("🏠 Tela Inicial")
-            }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Box( contentAlignment = Alignment.Center) {
+            Text("💬 Mensagens")
         }
-        item {
-            Box(Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
-                Text("🏠 Tela Inicial")
-            }
+
+        Box( contentAlignment = Alignment.Center) {
+            Text("💬 TEST")
         }
     }
 }
