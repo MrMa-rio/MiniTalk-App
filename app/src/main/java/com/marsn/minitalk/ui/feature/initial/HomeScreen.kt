@@ -119,11 +119,20 @@ fun HomeContentTab(
             .background(Color.White),
     ) {
 
-        when (selectedTabIndex) {
-            0 -> InitialScreen()
-            1 -> ProfileScreen()
-            2 -> InitialScreen()
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            when (selectedTabIndex) {
+                0 -> InitialScreen()
+                1 -> ProfileScreen()
+                2 -> InitialScreen()
+            }
         }
+
+
     }
 }
 
@@ -242,19 +251,12 @@ fun TabNavigationScreen(selectedTabIndex: Int, setSelectedTabIndex: (value: Int)
 
 @Composable
 fun InitialScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Box( contentAlignment = Alignment.Center) {
+        Text("💬 Mensagens")
+    }
 
-        Box( contentAlignment = Alignment.Center) {
-            Text("💬 Mensagens")
-        }
-
-        Box( contentAlignment = Alignment.Center) {
-            Text("💬 TEST")
-        }
+    Box( contentAlignment = Alignment.Center) {
+        Text("💬 TEST")
     }
 }
 
