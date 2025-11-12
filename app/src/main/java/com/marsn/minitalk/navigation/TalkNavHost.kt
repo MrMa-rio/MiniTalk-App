@@ -24,7 +24,7 @@ import com.marsn.minitalk.ui.feature.splashCustomized.SplashAnimationScreen
 
 @Composable
 fun TalkNavHost() {
-    val backStack = rememberNavBackStack(SplashRoute)
+    val backStack = rememberNavBackStack(AuthRoutes.SplashRoute)
 
     var isNavigating by remember { mutableStateOf(false) }
     fun navigate(action: () -> Unit) {
@@ -64,39 +64,39 @@ fun TalkNavHost() {
         },
         entryProvider = entryProvider {
 
-            entry<SplashRoute> {
+            entry<AuthRoutes.SplashRoute> {
                 LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 SplashAnimationScreen(onNavigateTo = {
                     navigate {
                         backStack.clear()
-                        backStack.add(LoginRoute)
+                        backStack.add(AuthRoutes.LoginRoute)
                     }
                 })
             }
 
-            entry<LoginRoute> {
+            entry<AuthRoutes.LoginRoute> {
                 LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 LoginScreen(
-                    onNavigateToRegister = { backStack.add(RegisterRoute) },
+                    onNavigateToRegister = { backStack.add(AuthRoutes.RegisterRoute) },
                     onNavigateToHome = {
                         navigate {
                             backStack.clear()
-                            backStack.add(InitialRoute)
+                            backStack.add(ChatRoutes.HomeRoute)
                         }
                     }
                 )
             }
 
-            entry<RegisterRoute> {
+            entry<AuthRoutes.RegisterRoute> {
                 LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 RegisterScreen(navigateTo = {
                     navigate {
                         backStack.clear()
-                        backStack.add(LoginRoute) }
+                        backStack.add(AuthRoutes.LoginRoute) }
                 })
             }
 
-            entry<InitialRoute> {
+            entry<ChatRoutes.HomeRoute> {
                 LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 InitialScreen()
             }
