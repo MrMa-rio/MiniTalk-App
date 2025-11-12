@@ -18,7 +18,7 @@ val SairaSemiCondensed = FontFamily(
 )
 
 val SairaSemiExpanded = FontFamily(
-    Font(R.font.saira_semi_expanded_regular, FontWeight.Medium),
+    Font(R.font.saira_semi_expanded_medium, FontWeight.Medium),
     Font(R.font.saira_semi_expanded_regular, FontWeight.Normal),
     Font(R.font.saira_semi_expanded_bold, FontWeight.Bold),
     Font(R.font.saira_semi_expanded_extra_bold, FontWeight.ExtraBold)
@@ -48,6 +48,8 @@ val Typography = Typography(
         fontFamily = SairaSemiExpanded,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp,
     ),
     titleSmall = TextStyle(
         fontFamily = SairaSemiExpanded,
