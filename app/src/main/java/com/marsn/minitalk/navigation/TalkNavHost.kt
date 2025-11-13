@@ -46,7 +46,6 @@ fun TalkNavHost() {
                 initialOffsetX = { it },
                 animationSpec = tween(850)
             ) togetherWith
-                    // Sai deslizando para a esquerda
                     slideOutHorizontally(
                         targetOffsetX = { -it },
                         animationSpec = tween(850)

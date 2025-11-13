@@ -80,7 +80,6 @@ fun LoginScreen( onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit)
 @Composable
 private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
 
-    // Inputs
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
 

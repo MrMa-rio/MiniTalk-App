@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -22,12 +21,9 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -36,15 +32,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
+import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 
 
@@ -65,11 +64,7 @@ fun HomeScreen() {
     }
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.Expanded,
-        skipHiddenState = true
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -107,9 +102,11 @@ fun HomeScreen() {
 fun HomeContentTab(
     selectedTabIndex: Int
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
-
+            .onFocusEvent { focusManager.clearFocus(force = true) }
             .border(
                 0.dp,
                 Color.Transparent,
@@ -141,12 +138,13 @@ private fun HomeContentHeader(selectedTabIndex: Int, setSelectedTabIndex: (value
 
     Column(
         modifier = Modifier
-            .height(200.dp),
+            .height(200.dp).padding(8.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TabHeader()
         TabNavigationScreen(selectedTabIndex, setSelectedTabIndex = setSelectedTabIndex)
+        TextInputSearch()
     }
 
 }
@@ -221,7 +219,7 @@ fun TabNavigationScreen(selectedTabIndex: Int, setSelectedTabIndex: (value: Int)
             containerColor = Color.Transparent,
             divider = {},
 
-            contentColor = Color.White,          // Cor do texto e indicador da aba selecionada
+            contentColor = Color.White,
             indicator = {
                 TabRowDefaults.SecondaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(selectedTabIndex),

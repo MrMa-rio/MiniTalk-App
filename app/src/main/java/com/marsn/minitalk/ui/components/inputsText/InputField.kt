@@ -1,0 +1,92 @@
+package com.marsn.minitalk.ui.components.inputsText
+
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import com.marsn.minitalk.ui.theme.SairaSemiExpanded
+import com.marsn.minitalk.ui.theme.textInputColors
+
+@Composable
+fun InputField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    imageVector: ImageVector,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    colors: TextFieldColors = textInputColors(),
+    contextDescription: String?,
+    tintIcon: Color = Color.White,
+    singleLine: Boolean = false
+) {
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused by interactionSource.collectIsFocusedAsState()
+
+
+    val shadowElevation by animateDpAsState(
+        targetValue = if (isFocused) 5.dp else 10.dp,
+        label = "shadow_elevation"
+    )
+    val tonalElevation by animateDpAsState(
+        targetValue = if (isFocused) 3.dp else 6.dp,
+        label = "tonal_elevation"
+    )
+
+
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 4.dp),
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = shadowElevation,
+        tonalElevation = tonalElevation,
+        color = Color(0xFF0FBFAD),
+    ) {
+        OutlinedTextField(
+            modifier = modifier,
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    fontFamily = SairaSemiExpanded,
+                    modifier = modifier
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = imageVector,
+                    contentDescription = contextDescription,
+                    tint = tintIcon
+                )
+            },
+            textStyle = TextStyle(fontFamily = SairaSemiExpanded),
+            shape = MaterialTheme.shapes.medium,
+            singleLine = singleLine,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            colors = colors,
+            interactionSource = interactionSource
+        )
+    }
+}

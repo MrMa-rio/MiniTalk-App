@@ -15,22 +15,19 @@ val Blue40 = Color(0xFFC9EDED)
 
 @Composable
 fun textInputColors() = TextFieldDefaults.colors(
-    focusedContainerColor = Color.White,        // fundo branco quando focado
-    unfocusedContainerColor = Color.White,      // fundo branco quando não focado
-    disabledContainerColor = Color.White,       // fundo branco mesmo se desativado
+    focusedContainerColor = Color.White,
+    unfocusedContainerColor = Color.White,
+    disabledContainerColor = Color.White,
 
-    focusedTextColor = Color.Black,             // texto preto quando focado
-    unfocusedTextColor = Color.Black,           // texto preto quando não focado
-    disabledTextColor = Color.Gray,             // texto cinza se desativado
+    focusedTextColor = Color.Black,
+    unfocusedTextColor = Color.Black,
+    disabledTextColor = Color.Gray,
 
-    focusedPlaceholderColor = Color.Gray,       // placeholder cinza
+    focusedPlaceholderColor = Color.Gray,
     unfocusedPlaceholderColor = Color.Gray,
+    focusedIndicatorColor = Color.Gray,
 
-    focusedIndicatorColor = Color.Gray,        // borda preta quando focado
-//    unfocusedIndicatorColor = Color.Gray,      // borda preta quando não focado
-//    disabledIndicatorColor = Color.Gray,        // borda cinza quando desativado
-
-    cursorColor = Color.Black,                  // cursor preto
-    focusedTrailingIconColor = Color.Black,     // ícone preto quando focado
+    cursorColor = Color.Black,
+    focusedTrailingIconColor = Color.Black,
     unfocusedTrailingIconColor = Color.Black
 )

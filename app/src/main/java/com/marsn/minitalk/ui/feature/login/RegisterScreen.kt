@@ -146,8 +146,6 @@ fun RegisterScreen(
 @Composable
 private fun Form() {
 
-
-    // Inputs
     var email by rememberSaveable { mutableStateOf("") }
     var cpf by rememberSaveable { mutableStateOf("") }
 
