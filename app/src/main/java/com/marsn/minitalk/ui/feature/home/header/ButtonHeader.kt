@@ -1,0 +1,40 @@
+package com.marsn.minitalk.ui.feature.home.header
+
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.dp
+
+
+@Composable
+fun ButtonHeader(
+    onClick: () -> Unit,
+    contentDescription: String,
+    tint: Color = Color.White,
+    painterResource: Painter
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = Color.White,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = Color.White
+        )
+    ) {
+        Icon(
+            painterResource,
+            contentDescription = contentDescription,
+            modifier = Modifier
+                .width(48.dp)
+                .height(48.dp),
+            tint = tint
+        )
+    }
+}

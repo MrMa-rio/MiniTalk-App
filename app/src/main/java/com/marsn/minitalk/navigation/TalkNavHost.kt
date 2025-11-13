@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.marsn.minitalk.ui.feature.initial.HomeScreen
+import com.marsn.minitalk.ui.feature.home.HomeScreen
 import com.marsn.minitalk.ui.feature.login.LoginScreen
 import com.marsn.minitalk.ui.feature.login.RegisterScreen
 import com.marsn.minitalk.ui.feature.splashCustomized.SplashAnimationScreen
