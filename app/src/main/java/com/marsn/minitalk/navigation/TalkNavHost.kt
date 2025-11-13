@@ -62,7 +62,6 @@ fun TalkNavHost() {
                     )
         },
         entryProvider = entryProvider {
-
             entry<AuthRoutes.SplashRoute> {
                 LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 SplashAnimationScreen(onNavigateTo = {
@@ -100,10 +99,7 @@ fun TalkNavHost() {
                 HomeScreen()
             }
         }
-
     )
-
-
 }
 
 @Composable

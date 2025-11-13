@@ -2,6 +2,8 @@ package com.marsn.minitalk.ui.feature.initial
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,6 +26,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
@@ -32,10 +38,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,6 +70,7 @@ fun HomeScreen() {
     }
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
         floatingActionButton = {
@@ -87,6 +94,11 @@ fun HomeScreen() {
                 .padding(it)
                 .background(gradient)
                 .consumeWindowInsets(it)
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        focusManager.clearFocus()
+                    })
+                }
         ) {
 
             HomeContentHeader(selectedTabIndex, setSelectedTabIndex = { index ->
@@ -102,18 +114,17 @@ fun HomeScreen() {
 fun HomeContentTab(
     selectedTabIndex: Int
 ) {
-    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = Modifier
-            .onFocusEvent { focusManager.clearFocus(force = true) }
             .border(
                 0.dp,
                 Color.Transparent,
                 shape = RoundedCornerShape(42.dp, 42.dp, 0.dp, 0.dp)
             )
             .clip(RoundedCornerShape(42.dp, 42.dp, 0.dp, 0.dp))
-            .background(Color.White),
+            .background(Color.White)
+
     ) {
 
         Column(
@@ -129,7 +140,6 @@ fun HomeContentTab(
             }
         }
 
-
     }
 }
 
@@ -138,12 +148,13 @@ private fun HomeContentHeader(selectedTabIndex: Int, setSelectedTabIndex: (value
 
     Column(
         modifier = Modifier
-            .height(200.dp).padding(8.dp),
+            .height(200.dp)
+            .padding(8.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TabHeader()
-        TabNavigationScreen(selectedTabIndex, setSelectedTabIndex = setSelectedTabIndex)
+        TabsNavigation(selectedTabIndex, setSelectedTabIndex = setSelectedTabIndex)
         TextInputSearch()
     }
 
@@ -209,7 +220,7 @@ private fun ButtonHeader(
 }
 
 @Composable
-fun TabNavigationScreen(selectedTabIndex: Int, setSelectedTabIndex: (value: Int) -> Unit) {
+fun TabsNavigation(selectedTabIndex: Int, setSelectedTabIndex: (value: Int) -> Unit) {
     val tabs = listOf("Mensagens", "Grupos", "Chamadas", "Perfil")
 
     Column {
@@ -249,12 +260,62 @@ fun TabNavigationScreen(selectedTabIndex: Int, setSelectedTabIndex: (value: Int)
 
 @Composable
 fun InitialScreen() {
-    Box( contentAlignment = Alignment.Center) {
-        Text("💬 Mensagens")
-    }
 
-    Box( contentAlignment = Alignment.Center) {
-        Text("💬 TEST")
+
+
+    LazyColumn {
+        items(100) {
+            Button(
+                onClick = {
+
+                }, colors = ButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Black,
+                ),
+                shape = ShapeDefaults.ExtraSmall
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .padding(8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceAround,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                modifier = Modifier
+                                    .width(48.dp)
+                                    .height(48.dp),
+                                contentDescription = "Person",
+                            )
+
+                            Column(
+                                modifier = Modifier.padding(8.dp),
+                                verticalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(text = "Nome")
+                                Text(text = "Mensagem")
+                            }
+                        }
+                        Column {
+                            Text(text = "12:00")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

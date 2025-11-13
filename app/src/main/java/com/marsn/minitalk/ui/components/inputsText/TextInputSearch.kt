@@ -1,8 +1,6 @@
 package com.marsn.minitalk.ui.components.inputsText
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
 
 
@@ -49,12 +46,12 @@ fun textInputColors() = TextFieldDefaults.colors(
     unfocusedTextColor = Color.White,
     disabledTextColor = Color.Gray,
 
-    unfocusedPlaceholderColor = Color.Gray,
+    unfocusedPlaceholderColor = Color.White,
 
     focusedIndicatorColor = Color.Transparent,
     unfocusedIndicatorColor = Color.Transparent,
 
     cursorColor = Color.Black,
-    focusedTrailingIconColor = Color.Gray,
-    unfocusedTrailingIconColor = Color.Black
+    focusedTrailingIconColor = Color.Black,
+    unfocusedTrailingIconColor = Color.White
 )
