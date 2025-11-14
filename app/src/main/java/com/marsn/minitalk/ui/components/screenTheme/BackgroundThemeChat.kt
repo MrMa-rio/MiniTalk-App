@@ -23,12 +23,13 @@ import com.marsn.minitalk.R
 fun BackgroundThemeChat() {
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+
         )
+
 
         // Camada semi-transparente
         Box(
@@ -44,7 +45,6 @@ fun BackgroundThemeChat() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Texto visível com overlay", color = Color.White, fontSize = 22.sp)
         }
     }
 }

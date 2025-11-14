@@ -36,6 +36,7 @@ fun ChatInput() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.Black.copy(alpha = 0.2f))
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -81,7 +82,7 @@ fun ChatInput() {
 @Composable
 fun textInputColors() = TextFieldDefaults.colors(
     focusedContainerColor = Color.White,
-    unfocusedContainerColor = Color.Gray.copy(alpha = 0.5f),
+    unfocusedContainerColor = Color.White.copy(alpha = 0.3f),
     focusedTextColor = Color.Black,
     unfocusedTextColor = Color.White,
     disabledTextColor = Color.Gray,

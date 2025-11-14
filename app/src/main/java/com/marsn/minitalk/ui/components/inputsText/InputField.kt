@@ -49,12 +49,14 @@ fun InputField(
         label = "tonal_elevation"
     )
 
+    val isTransparent = tintContent.alpha == 0f
+
     Surface(
         modifier = Modifier
             .padding(horizontal = 4.dp),
         shape = MaterialTheme.shapes.medium,
-        shadowElevation = shadowElevation,
-        tonalElevation = tonalElevation,
+        shadowElevation = if (isTransparent) 0.dp else shadowElevation,
+        tonalElevation = if (isTransparent) 0.dp else tonalElevation,
         color = tintContent,
     ) {
         OutlinedTextField(

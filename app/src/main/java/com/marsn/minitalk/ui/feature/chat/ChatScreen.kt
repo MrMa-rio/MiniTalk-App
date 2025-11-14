@@ -60,7 +60,7 @@ fun ChatScreen(conversationId: Long) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.1f))
+                    .background(Color.White.copy(alpha = 0.3f))
             )
 
             Column(
