@@ -7,6 +7,8 @@ sealed interface ConversationEvent {
 
 
 
+    object Home : ConversationEvent
+
     data class Chat(val conversationId: Long) : ConversationEvent
     data class Profile(val userProfile: UserProfile) : ConversationEvent
 }

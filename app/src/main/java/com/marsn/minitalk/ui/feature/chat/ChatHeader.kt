@@ -2,11 +2,9 @@ package com.marsn.minitalk.ui.feature.chat
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,8 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,10 +31,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
+import com.marsn.minitalk.ui.feature.home.ConversationEvent
+import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 
 
 @Composable
-fun ChatHeader() {
+fun ChatHeader(onEvent: (ConversationEvent) -> Unit) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -69,64 +69,73 @@ fun ChatHeader() {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_left),
-                    contentDescription = "Voltar",
-                    tint = Color.White
-                )
-                Spacer(Modifier.width(6.dp))
-                Icon(
-                    modifier = Modifier
-                        .clip(ShapeDefaults.ExtraLarge)
-                        .background(Color.Transparent)
-                        .width(46.dp)
-                        .height(46.dp),
-                    tint = Color.White,
-                    imageVector = ImageVector.vectorResource(id = R.drawable.person),
-                    contentDescription = "Perfil"
-
-                )
-                Spacer(Modifier.width(12.dp))
-                Button(
-                    onClick = {}, colors = ButtonColors(
-                        Color.Transparent,
-                        Color.Transparent,
-                        Color.Transparent,
-                        Color.Transparent
-                    )
+                IconButton(
+                    onClick = {
+                        onEvent(ConversationEvent.Home)
+                    },
                 ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_left),
+                        contentDescription = "Voltar",
+                        tint = Color.White
+                    )
+
+                }
+
+
+                Button(
+                    onClick = {},
+                    colors = ButtonColorsTransparents,
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .clip(ShapeDefaults.ExtraLarge)
+                            .background(Color.Transparent)
+                            .width(46.dp)
+                            .height(46.dp),
+                        tint = Color.White,
+                        imageVector = ImageVector.vectorResource(id = R.drawable.person),
+                        contentDescription = "Perfil"
+
+                    )
+                    Spacer(Modifier.width(12.dp))
                     Column {
                         Text("Mario Alberto", color = Color.White, fontSize = 18.sp)
                         Text("online agora", color = Color.White.copy(0.7f), fontSize = 14.sp)
                     }
                 }
-
             }
             Row(
                 modifier = Modifier.padding(horizontal = 6.dp),
             ) {
-                Icon(
-                    modifier = Modifier
-                        .width(28.dp)
-                        .height(28.dp),
-                    painter = painterResource(id = R.drawable.video),
-                    contentDescription = "video-chamada",
-                    tint = Color.White
-                )
+                IconButton(
+                    onClick = {/*TODO*/ }
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .width(28.dp)
+                            .height(28.dp),
+                        painter = painterResource(id = R.drawable.video),
+                        contentDescription = "video-chamada",
+                        tint = Color.White
+                    )
+                }
                 Spacer(Modifier.width(18.dp))
-                Icon(
-                    modifier = Modifier
-                        .width(28.dp)
-                        .height(28.dp),
-                    painter = painterResource(id = R.drawable.phone),
-                    contentDescription = "audio-chamada",
-                    tint = Color.White
-                )
+                IconButton(
+                    onClick = {/*TODO*/ }
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .width(28.dp)
+                            .height(28.dp),
+                        painter = painterResource(id = R.drawable.phone),
+                        contentDescription = "audio-chamada",
+                        tint = Color.White
+                    )
+                }
 
             }
 
         }
     }
-
-
 }

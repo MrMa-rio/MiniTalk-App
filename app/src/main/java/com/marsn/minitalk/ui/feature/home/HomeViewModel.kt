@@ -28,6 +28,13 @@ class HomeViewModel : ViewModel() {
 
                 }
             }
+
+            is ConversationEvent.Home -> {
+                viewModelScope.launch {
+                    _uiEvent.send(UIEvent.NavigateBack)
+                }
+            }
+
         }
     }
 

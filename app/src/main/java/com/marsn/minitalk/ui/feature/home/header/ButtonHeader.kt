@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 
 
 @Composable
@@ -21,12 +22,7 @@ fun ButtonHeader(
 ) {
     Button(
         onClick = onClick,
-        colors = ButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = Color.White,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = Color.White
-        )
+        colors = ButtonColorsTransparents
     ) {
         Icon(
             painterResource,
