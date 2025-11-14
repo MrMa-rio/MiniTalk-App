@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
-import com.marsn.minitalk.navigation.TalkNavHost
+import com.marsn.minitalk.navigation.TalkNavDisplay
 import com.marsn.minitalk.ui.theme.MiniTalkTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Box(modifier = Modifier.safeDrawingPadding()) {
                 MiniTalkTheme {
-                    TalkNavHost()
+                    TalkNavDisplay()
                 }
             }
         }

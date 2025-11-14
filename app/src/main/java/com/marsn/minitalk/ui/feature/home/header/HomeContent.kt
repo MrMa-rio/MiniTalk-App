@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -18,9 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.marsn.minitalk.navigation.ChatRoutes
+import com.marsn.minitalk.navigation.LocalNavController3
+import com.marsn.minitalk.navigation.NavController3
+import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
+import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
+import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
@@ -28,6 +36,26 @@ fun HomeContent() {
 
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
+
+    val viewModel = viewModel<HomeViewModel> { HomeViewModel() }
+    val uiEvent = remember { viewModel.uiEvent }
+
+    val navController = LocalNavController3.current
+    LaunchedEffect(Unit) {
+
+        uiEvent.collectLatest { event ->
+            when (event) {
+                is UIEvent.NavigateTo<*> -> when (event.route) {
+                    is ChatRoutes.ChatRoute -> navController.navigate(ChatRoutes.ChatRoute(event.route.conversationId))
+                    is ChatRoutes.ProfileRoute ->navController.navigate(ChatRoutes.ProfileRoute(event.route.userProfile))
+                    else -> {}
+                }
+
+                else -> {}
+            }
+        }
+    }
+
 
     LazyColumn {
 
@@ -39,7 +67,7 @@ fun HomeContent() {
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TabsHeader()
+                TabsHeader(onEvent = viewModel::onEvent)
                 LayoutTab(selectedTabIndex, { selectedTabIndex = it })
                 TextInputSearch()
             }
@@ -65,8 +93,8 @@ fun HomeContent() {
                 ) {
 
                     when (selectedTabIndex) {
-                        0 -> ListChatTab()
-                        2 -> ListChatTab()
+                        0 -> ListChatTab(onEvent = viewModel::onEvent)
+                        2 -> ListChatTab(onEvent = viewModel::onEvent)
                     }
                 }
 

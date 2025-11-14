@@ -21,15 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.marsn.minitalk.ui.feature.home.ConversationEvent
 
 
 @Composable
-fun ListChatTab() {
+fun ListChatTab(onEvent: (ConversationEvent) -> Unit) {
     LazyColumn {
         items(100) {
             Button(
                 onClick = {
-
+                    onEvent(ConversationEvent.Chat(100))
                 }, colors = ButtonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.Black,

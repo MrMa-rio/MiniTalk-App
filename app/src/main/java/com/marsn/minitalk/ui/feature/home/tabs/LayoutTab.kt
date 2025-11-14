@@ -48,7 +48,7 @@ fun LayoutTab( selectedTabIndex: Int, setSelectedTabIndex: (Int) -> Unit ) {
                     modifier = Modifier
                         .background(
                             color = if (selectedTabIndex == index) Color.White else Color.Transparent,
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(16.dp)
                         )
                         .clip(shape = RoundedCornerShape(8.dp))
                 )

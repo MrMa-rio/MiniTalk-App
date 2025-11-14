@@ -15,11 +15,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
+import com.marsn.minitalk.model.UserProfile
+import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 
 
 @Composable
-fun TabsHeader() {
+fun TabsHeader(onEvent: (ConversationEvent) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,7 +40,11 @@ fun TabsHeader() {
         )
 
         ButtonHeader(
-                onClick = {/*TODO*/ },
+                onClick = {onEvent(ConversationEvent.Profile(UserProfile(
+                    "Mario Alberto",
+                    "teste@teste",
+                    "16992283546"
+                ))) },
         contentDescription = "Person",
         tint = Color.White,
         painterResource = painterResource(id = R.drawable.person)

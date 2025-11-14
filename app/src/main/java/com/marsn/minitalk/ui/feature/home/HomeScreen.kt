@@ -17,14 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.ui.feature.home.header.HomeContent
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@PreviewScreenSizes
 @Composable
 fun HomeScreen() {
     val gradient = remember {
@@ -37,6 +35,9 @@ fun HomeScreen() {
             )
         )
     }
+
+
+
 
     Scaffold(
         floatingActionButton = {
