@@ -1,6 +1,7 @@
 package com.marsn.minitalk.ui.components.inputsText
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Icon
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,13 +26,18 @@ fun TextInputSearch() {
         value = value,
         onValueChange = { value = it },
         placeholder = "Pesquisar",
-        imageVector = ImageVector.vectorResource(id = R.drawable.search),
+        trailingIcon = {
+            Icon (
+                imageVector = ImageVector.vectorResource(id = R.drawable.search),
+                contentDescription = "Search",
+            )
+        },
         keyboardType = KeyboardType.Text,
         modifier = Modifier
             .fillMaxWidth(),
         colors = textInputColors(),
-        contextDescription = "Search",
-        singleLine = true
+        singleLine = true,
+        tintContent = Color(0xFF0FBFAD)
     )
 
 }
@@ -39,7 +45,7 @@ fun TextInputSearch() {
 @Composable
 fun textInputColors() = TextFieldDefaults.colors(
     focusedContainerColor = Color.White,
-    unfocusedContainerColor = Color.Transparent,
+    unfocusedContainerColor = Color(0xFF0FBFAD),
     disabledContainerColor = Color.Transparent,
 
     focusedTextColor = Color.Black,

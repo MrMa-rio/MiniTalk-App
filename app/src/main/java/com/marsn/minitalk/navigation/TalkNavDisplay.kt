@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.marsn.minitalk.ui.feature.chat.ChatScreen
 import com.marsn.minitalk.ui.feature.home.HomeScreen
 import com.marsn.minitalk.ui.feature.login.LoginScreen
 import com.marsn.minitalk.ui.feature.login.RegisterScreen
@@ -116,8 +117,7 @@ fun TalkNavDisplay() {
 
                 entry<ChatRoutes.ChatRoute> {
                     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-
-                   /*TODO*/
+                    ChatScreen(it.conversationId)
 
                 }
 

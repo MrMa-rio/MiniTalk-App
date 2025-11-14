@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -29,11 +30,11 @@ fun InputField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
-    imageVector: ImageVector,
     keyboardType: KeyboardType = KeyboardType.Text,
     colors: TextFieldColors = textInputColors(),
-    contextDescription: String?,
-    singleLine: Boolean = false
+    singleLine: Boolean = false,
+    tintContent: Color = Color.White,
+    trailingIcon: @Composable () -> Unit = {}
 ) {
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -54,7 +55,7 @@ fun InputField(
         shape = MaterialTheme.shapes.medium,
         shadowElevation = shadowElevation,
         tonalElevation = tonalElevation,
-        color = Color(0xFF0FBFAD),
+        color = tintContent,
     ) {
         OutlinedTextField(
             modifier = modifier,
@@ -67,12 +68,7 @@ fun InputField(
                     modifier = modifier
                 )
             },
-            trailingIcon = {
-                Icon(
-                    imageVector = imageVector,
-                    contentDescription = contextDescription
-                )
-            },
+            trailingIcon =  trailingIcon ,
             textStyle = TextStyle(fontFamily = SairaSemiExpanded),
             shape = MaterialTheme.shapes.medium,
             singleLine = singleLine,

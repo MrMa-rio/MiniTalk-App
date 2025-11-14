@@ -17,33 +17,40 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
+import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 
 
 @Composable
 fun ListChatTab(onEvent: (ConversationEvent) -> Unit) {
-    LazyColumn {
-        items(100) {
+    val colors = remember {
+        ButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = Color.Black,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = Color.Black,
+        )
+    }
+    LazyColumn(
+    ) {
+        items(50) {
+
             Button(
                 onClick = {
                     onEvent(ConversationEvent.Chat(100))
-                }, colors = ButtonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.Black,
-                    disabledContainerColor = Color.Transparent,
-                    disabledContentColor = Color.Black,
-                ),
+                }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .height(100.dp)
-                        .padding(8.dp),
+                        .height(80.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Row(
@@ -65,15 +72,25 @@ fun ListChatTab(onEvent: (ConversationEvent) -> Unit) {
                             )
 
                             Column(
-                                modifier = Modifier.padding(8.dp),
+                                modifier = Modifier.padding(4.dp),
                                 verticalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(text = "Nome")
-                                Text(text = "Mensagem")
+                                Text(
+                                    text = "Nome",
+                                    fontWeight = FontWeight.Medium,
+                                    fontFamily = SairaSemiExpanded
+                                )
+                                Text(
+                                    text = "Mensagem",
+                                    maxLines = 1,
+                                    color = Color.Gray,
+                                    fontWeight = FontWeight.Light,
+                                    fontFamily = SairaSemiExpanded
+                                )
                             }
                         }
                         Column {
-                            Text(text = "12:00")
+                            Text(text = "12:00", fontFamily = SairaSemiExpanded)
                         }
                     }
                 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.marsn.minitalk.model.UserProfile
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.navigation.NavController3
@@ -28,6 +30,7 @@ import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
+import com.marsn.minitalk.ui.feature.login.RegisterScreen
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -45,10 +48,12 @@ fun HomeContent() {
 
         uiEvent.collectLatest { event ->
             when (event) {
-                is UIEvent.NavigateTo<*> -> when (event.route) {
-                    is ChatRoutes.ChatRoute -> navController.navigate(ChatRoutes.ChatRoute(event.route.conversationId))
-                    is ChatRoutes.ProfileRoute ->navController.navigate(ChatRoutes.ProfileRoute(event.route.userProfile))
-                    else -> {}
+                is UIEvent.NavigateToChat<*> -> {
+                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                }
+
+                is UIEvent.NavigateToProfile<*> -> {
+                    navController.navigate(ChatRoutes.ProfileRoute(event.user))
                 }
 
                 else -> {}
@@ -57,48 +62,41 @@ fun HomeContent() {
     }
 
 
-    LazyColumn {
-
-        item {
-            Column(
-                modifier = Modifier
-                    .height(200.dp)
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                TabsHeader(onEvent = viewModel::onEvent)
-                LayoutTab(selectedTabIndex, { selectedTabIndex = it })
-                TextInputSearch()
-            }
+    Column {
+        Column(
+            modifier = Modifier
+                .height(200.dp)
+                .padding(8.dp),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TabsHeader(onEvent = viewModel::onEvent)
+            LayoutTab(selectedTabIndex, { selectedTabIndex = it })
+            TextInputSearch()
         }
 
-        item {
-            Column(
-                modifier = Modifier
-                    .border(
-                        0.dp,
-                        Color.Transparent,
-                        shape = RoundedCornerShape(42.dp, 42.dp, 0.dp, 0.dp)
-                    )
-                    .clip(RoundedCornerShape(42.dp, 42.dp, 0.dp, 0.dp))
-                    .background(Color.White)
+        Column(
+            modifier = Modifier
+                .border(
+                    0.dp,
+                    Color.Transparent,
+                    shape = RoundedCornerShape(42.dp, 42.dp, 0.dp, 0.dp)
+                )
+                .clip(RoundedCornerShape(42.dp, 42.dp, 0.dp, 0.dp))
+                .background(Color.White)
 
+        ) {
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
             ) {
 
-                Column(
-                    modifier = Modifier.fillParentMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-                    when (selectedTabIndex) {
-                        0 -> ListChatTab(onEvent = viewModel::onEvent)
-                        2 -> ListChatTab(onEvent = viewModel::onEvent)
-                    }
+                when (selectedTabIndex) {
+                    0 -> ListChatTab(onEvent = viewModel::onEvent)
+                    2 -> ListChatTab(onEvent = viewModel::onEvent)
                 }
-
             }
+
         }
     }
 
