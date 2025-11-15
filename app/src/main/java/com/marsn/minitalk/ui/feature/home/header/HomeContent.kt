@@ -32,16 +32,20 @@ import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
 import kotlinx.coroutines.flow.collectLatest
+import java.util.Locale
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeContent(messageContact: List<MessageContact>) {
+fun HomeContent(messageContactList: List<MessageContact>) {
 
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     var searchText by remember { mutableStateOf("") }
+
+    var messageContacts by remember { mutableStateOf(messageContactList) }
+
 
     val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
     val uiEvent = remember { homeViewModel.uiEvent }
@@ -60,7 +64,13 @@ fun HomeContent(messageContact: List<MessageContact>) {
                 }
                 is UIEvent.ChangeTab ->  selectedTabIndex = event.index
 
-                is UIEvent.ChangeSearch -> searchText = event.searchText
+                is UIEvent.ChangeSearch -> {
+                    searchText = event.searchText
+                    messageContacts = messageContactList.filter {
+                        it.contact.name.lowercase().contains(searchText.lowercase())
+                    }
+
+                }
 
                 else -> {}
             }
@@ -99,7 +109,7 @@ fun HomeContent(messageContact: List<MessageContact>) {
 
                 when (selectedTabIndex) {
                     0 -> ListChatTab(
-                        messageContact = messageContact,
+                        messageContact = messageContacts,
                         onEvent = homeViewModel::onEvent)
                     1 -> ListChatTab(
                         messageContact = listOf(),

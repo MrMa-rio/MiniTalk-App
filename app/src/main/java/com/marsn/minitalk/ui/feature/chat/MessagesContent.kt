@@ -24,8 +24,10 @@ fun MessagesList(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
+        reverseLayout = true
+
     ) {
-        items(messages) { index ->
+        items(messages.reversed()) { index ->
             if (userId == index.senderId)
                 MessageBubbleOwn(index)
             else

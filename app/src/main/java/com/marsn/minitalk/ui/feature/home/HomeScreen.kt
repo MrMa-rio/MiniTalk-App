@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.ui.feature.home.header.HomeContent
 import com.marsn.minitalk.ui.mocks.messageContacts.messagesContactsMock
-import com.marsn.minitalk.ui.mocks.messages.messagesMock
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -56,9 +55,6 @@ fun HomeScreen() {
         )
     }
 
-
-
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -82,7 +78,7 @@ fun HomeScreen() {
                 .background(gradient)
                 .consumeWindowInsets(it)
         ) {
-            HomeContent(messageContact = messagesContactsMock)
+            HomeContent(messageContactList = messagesContactsMock)
         }
     }
 }
