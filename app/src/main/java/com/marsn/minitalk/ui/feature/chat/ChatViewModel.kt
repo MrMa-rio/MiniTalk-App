@@ -12,8 +12,6 @@ import kotlinx.coroutines.launch
 class ChatViewModel : ViewModel() {
 
 
-
-
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
@@ -23,12 +21,24 @@ class ChatViewModel : ViewModel() {
 
             is ConversationEvent.Chat -> {
                 viewModelScope.launch {
-                    _uiEvent.send(UIEvent.NavigateToChat(ChatRoutes.ChatRoute, event.conversationId))
+                    _uiEvent.send(
+                        UIEvent.NavigateToChat(
+                            ChatRoutes.ChatRoute,
+                            event.conversationId,
+                            event.contact
+                        )
+                    )
                 }
             }
+
             is ConversationEvent.Profile -> {
                 viewModelScope.launch {
-                    _uiEvent.send(UIEvent.NavigateToProfile(ChatRoutes.ProfileRoute, event.userProfile))
+                    _uiEvent.send(
+                        UIEvent.NavigateToProfile(
+                            ChatRoutes.ProfileRoute,
+                            event.userProfile
+                        )
+                    )
 
                 }
             }
@@ -38,6 +48,7 @@ class ChatViewModel : ViewModel() {
                     _uiEvent.send(UIEvent.NavigateBack)
                 }
             }
+
             else -> {}
 
         }

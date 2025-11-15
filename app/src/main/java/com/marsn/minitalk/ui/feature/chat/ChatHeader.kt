@@ -31,12 +31,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
+import com.marsn.minitalk.model.Contact
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 
 
 @Composable
-fun ChatHeader(onEvent: (ConversationEvent) -> Unit) {
+fun ChatHeader(contact: Contact, onEvent: (ConversationEvent) -> Unit) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -100,7 +101,7 @@ fun ChatHeader(onEvent: (ConversationEvent) -> Unit) {
                     )
                     Spacer(Modifier.width(12.dp))
                     Column {
-                        Text("Mario Alberto", color = Color.White, fontSize = 18.sp)
+                        Text(contact.name, color = Color.White, fontSize = 18.sp)
                         Text("online agora", color = Color.White.copy(0.7f), fontSize = 14.sp)
                     }
                 }

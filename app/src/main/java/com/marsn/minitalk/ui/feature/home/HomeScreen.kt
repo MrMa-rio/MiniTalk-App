@@ -14,6 +14,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -21,9 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.R
+import com.marsn.minitalk.navigation.ChatRoutes
+import com.marsn.minitalk.navigation.LocalNavController3
+import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.feature.home.header.HomeContent
 import com.marsn.minitalk.ui.mocks.messageContacts.messagesContactsMock
+import kotlinx.coroutines.flow.collectLatest
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -31,6 +37,26 @@ import com.marsn.minitalk.ui.mocks.messageContacts.messagesContactsMock
 @Composable
 fun HomeScreen() {
 
+    val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
+    val uiEvent = remember { homeViewModel.uiEvent }
+
+    val navController = LocalNavController3.current
+    LaunchedEffect(Unit) {
+        uiEvent.collectLatest { event ->
+            when (event) {
+
+                UIEvent.NavigateBack -> {}
+                is UIEvent.NavigateTo<*> -> {
+                    when (event.route) {
+                        is ChatRoutes.NewConversationRoute -> {
+                            navController.navigate(ChatRoutes.NewConversationRoute)
+                        }
+                    }
+                }
+                else -> {}
+            }
+        }
+    }
 
     val context = LocalContext.current.applicationContext
 //    val database = TodoDatabaseProvider.provider(context)
@@ -58,7 +84,9 @@ fun HomeScreen() {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {/*TODO*/ },
+                onClick = {
+                    homeViewModel.onEvent(ConversationEvent.NewConversation)
+                },
                 modifier = Modifier.offset(y = (-32).dp, x = (-16).dp),
                 containerColor = Color(0xFF1FBFAD)
             ) {

@@ -2,6 +2,8 @@ package com.marsn.minitalk.navigation
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -19,12 +21,14 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.marsn.minitalk.ui.feature.chat.ChatScreen
+import com.marsn.minitalk.ui.feature.chat.NewConversationScreen
 import com.marsn.minitalk.ui.feature.home.HomeScreen
 import com.marsn.minitalk.ui.feature.login.LoginScreen
 import com.marsn.minitalk.ui.feature.login.RegisterScreen
 import com.marsn.minitalk.ui.feature.profile.ProfileScreen
 import com.marsn.minitalk.ui.feature.splashCustomized.SplashAnimationScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TalkNavDisplay() {
 
@@ -115,7 +119,13 @@ fun TalkNavDisplay() {
 
                 entry<ChatRoutes.ChatRoute> {
                     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    ChatScreen(it.conversationId)
+                    ChatScreen(it.conversationId, it.contact)
+
+                }
+
+                entry<ChatRoutes.NewConversationRoute> {
+                    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                    NewConversationScreen()
 
                 }
 

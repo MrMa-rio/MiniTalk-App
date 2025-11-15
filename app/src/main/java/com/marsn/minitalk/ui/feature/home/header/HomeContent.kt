@@ -56,13 +56,14 @@ fun HomeContent(messageContactList: List<MessageContact>) {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat<*> -> {
-                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId, event.contact))
                 }
 
                 is UIEvent.NavigateToProfile<*> -> {
                     navController.navigate(ChatRoutes.ProfileRoute(event.user))
                 }
-                is UIEvent.ChangeTab ->  selectedTabIndex = event.index
+
+                is UIEvent.ChangeTab -> selectedTabIndex = event.index
 
                 is UIEvent.ChangeSearch -> {
                     searchText = event.searchText
@@ -110,14 +111,15 @@ fun HomeContent(messageContactList: List<MessageContact>) {
                 when (selectedTabIndex) {
                     0 -> ListChatTab(
                         messageContact = messageContacts,
-                        onEvent = homeViewModel::onEvent)
+                        onEvent = homeViewModel::onEvent
+                    )
+
                     1 -> ListChatTab(
                         messageContact = listOf(),
-                        onEvent = homeViewModel::onEvent)
+                        onEvent = homeViewModel::onEvent
+                    )
                 }
             }
-
         }
     }
-
 }
