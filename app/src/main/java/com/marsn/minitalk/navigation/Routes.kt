@@ -22,6 +22,9 @@ sealed class ChatRoutes() {
     @Serializable
     object HomeRoute : NavKey
 
+    @Serializable
+    object NewConversation : NavKey
+
 
     @Serializable
     class ProfileRoute(val userProfile: UserProfile) : NavKey

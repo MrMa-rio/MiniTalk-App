@@ -22,6 +22,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
+import com.marsn.minitalk.navigation.ChatRoutes
+import com.marsn.minitalk.navigation.NavController3
 import com.marsn.minitalk.ui.feature.home.header.HomeContent
 import com.marsn.minitalk.ui.mocks.messageContacts.messagesContactsMock
 
@@ -29,7 +31,7 @@ import com.marsn.minitalk.ui.mocks.messageContacts.messagesContactsMock
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navigate: NavController3) {
 
 
     val context = LocalContext.current.applicationContext
@@ -58,7 +60,7 @@ fun HomeScreen() {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {/*TODO*/ },
+                onClick = {navigate.navigate(ChatRoutes.NewConversation) },
                 modifier = Modifier.offset(y = (-32).dp, x = (-16).dp),
                 containerColor = Color(0xFF1FBFAD)
             ) {
