@@ -1,5 +1,7 @@
 package com.marsn.minitalk.ui.feature.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -16,15 +18,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.ui.feature.home.header.HomeContent
+import com.marsn.minitalk.ui.mocks.messageContacts.messagesContactsMock
+import com.marsn.minitalk.ui.mocks.messages.messagesMock
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
+
+
+    val context = LocalContext.current.applicationContext
+//    val database = TodoDatabaseProvider.provider(context)
+//    val repository = TodoRepositoryImpl(
+//        todoDao = database.todoDao
+//    )
+//    val viewModel = viewModel<ChatViewModel> {
+//        ChatViewModel(
+//            repository = repository
+//        )
+//    }
+
+
     val gradient = remember {
         Brush.linearGradient(
             listOf(
@@ -62,7 +82,7 @@ fun HomeScreen() {
                 .background(gradient)
                 .consumeWindowInsets(it)
         ) {
-            HomeContent()
+            HomeContent(messageContact = messagesContactsMock)
         }
     }
 }

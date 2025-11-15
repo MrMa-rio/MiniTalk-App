@@ -1,14 +1,15 @@
-package com.marsn.minitalk.ui.feature.home
+package com.marsn.minitalk.ui.feature.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
+import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class ProfileViewModel : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -34,20 +35,6 @@ class HomeViewModel : ViewModel() {
                     _uiEvent.send(UIEvent.NavigateBack)
                 }
             }
-
-            is ConversationEvent.Tab -> {
-                viewModelScope.launch {
-                    _uiEvent.send(UIEvent.ChangeTab(event.tab))
-                }
-            }
-
-            is ConversationEvent.SearchText -> {
-                viewModelScope.launch {
-                    _uiEvent.send(UIEvent.ChangeSearch(event.text))
-                }
-            }
-
-
             else -> {}
 
         }

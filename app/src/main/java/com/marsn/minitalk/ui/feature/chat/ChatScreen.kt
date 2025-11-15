@@ -12,13 +12,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.marsn.minitalk.model.MessageText
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.message.ChatInput
 import com.marsn.minitalk.ui.components.screenTheme.BackgroundThemeChat
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
+import com.marsn.minitalk.ui.mocks.messages.messagesMock
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -26,12 +29,22 @@ import kotlinx.coroutines.flow.collectLatest
 fun ChatScreen(conversationId: Long) {
 
 
-    val viewModel = viewModel<HomeViewModel> { HomeViewModel() }
-    val uiEvent = remember { viewModel.uiEvent }
+    val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
+    val uiEvent = remember { homeViewModel.uiEvent }
+
+    val context = LocalContext.current.applicationContext
+//    val database = TodoDatabaseProvider.provider(context)
+//    val repository = TodoRepositoryImpl(
+//        todoDao = database.todoDao
+//    )
+//    val viewModel = viewModel<ChatViewModel> {
+//        ChatViewModel(
+//            repository = repository
+//        )
+//    }
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
-
         uiEvent.collectLatest { event ->
             when (event) {
 
@@ -69,13 +82,14 @@ fun ChatScreen(conversationId: Long) {
                     .systemBarsPadding()
             ) {
 
-                ChatHeader(viewModel::onEvent)
+                ChatHeader(homeViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
-                    MessagesList()
+                    MessagesList(messages = messagesMock, 101) {}
                 }
                 ChatInput()
             }
         }
     }
 }
+
 

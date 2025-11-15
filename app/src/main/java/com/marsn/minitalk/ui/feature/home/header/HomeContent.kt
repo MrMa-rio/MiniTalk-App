@@ -1,5 +1,7 @@
 package com.marsn.minitalk.ui.feature.home.header
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -7,12 +9,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -21,27 +23,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.marsn.minitalk.model.UserProfile
+import com.marsn.minitalk.model.MessageContact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
-import com.marsn.minitalk.navigation.NavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
-import com.marsn.minitalk.ui.feature.login.RegisterScreen
 import kotlinx.coroutines.flow.collectLatest
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeContent() {
+fun HomeContent(messageContact: List<MessageContact>) {
 
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
-    val viewModel = viewModel<HomeViewModel> { HomeViewModel() }
-    val uiEvent = remember { viewModel.uiEvent }
+    var searchText by remember { mutableStateOf("") }
+
+    val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
+    val uiEvent = remember { homeViewModel.uiEvent }
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
@@ -55,6 +58,9 @@ fun HomeContent() {
                 is UIEvent.NavigateToProfile<*> -> {
                     navController.navigate(ChatRoutes.ProfileRoute(event.user))
                 }
+                is UIEvent.ChangeTab ->  selectedTabIndex = event.index
+
+                is UIEvent.ChangeSearch -> searchText = event.searchText
 
                 else -> {}
             }
@@ -70,9 +76,9 @@ fun HomeContent() {
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TabsHeader(onEvent = viewModel::onEvent)
-            LayoutTab(selectedTabIndex, { selectedTabIndex = it })
-            TextInputSearch()
+            TabsHeader(onEvent = homeViewModel::onEvent)
+            LayoutTab(selectedTabIndex, onEvent = homeViewModel::onEvent)
+            TextInputSearch(searchText, onEvent = homeViewModel::onEvent)
         }
 
         Column(
@@ -92,8 +98,12 @@ fun HomeContent() {
             ) {
 
                 when (selectedTabIndex) {
-                    0 -> ListChatTab(onEvent = viewModel::onEvent)
-                    2 -> ListChatTab(onEvent = viewModel::onEvent)
+                    0 -> ListChatTab(
+                        messageContact = messageContact,
+                        onEvent = homeViewModel::onEvent)
+                    1 -> ListChatTab(
+                        messageContact = listOf(),
+                        onEvent = homeViewModel::onEvent)
                 }
             }
 

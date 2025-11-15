@@ -1,5 +1,7 @@
 package com.marsn.minitalk.ui.feature.home.tabs
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
@@ -23,12 +26,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.marsn.minitalk.model.MessageContact
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ListChatTab(onEvent: (ConversationEvent) -> Unit) {
+fun ListChatTab(messageContact: List<MessageContact>, onEvent: (ConversationEvent) -> Unit) {
     val colors = remember {
         ButtonColors(
             containerColor = Color.Transparent,
@@ -37,13 +45,12 @@ fun ListChatTab(onEvent: (ConversationEvent) -> Unit) {
             disabledContentColor = Color.Black,
         )
     }
-    LazyColumn(
-    ) {
-        items(50) {
+    LazyColumn {
+        items(messageContact) { index ->
 
             Button(
                 onClick = {
-                    onEvent(ConversationEvent.Chat(100))
+                    onEvent(ConversationEvent.Chat(index.message.conversationId))
                 }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {
@@ -76,12 +83,12 @@ fun ListChatTab(onEvent: (ConversationEvent) -> Unit) {
                                 verticalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "Nome",
+                                    text = index.contact.name,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = SairaSemiExpanded
                                 )
                                 Text(
-                                    text = "Mensagem",
+                                    text = index.message.text,
                                     maxLines = 1,
                                     color = Color.Gray,
                                     fontWeight = FontWeight.Light,
@@ -90,7 +97,10 @@ fun ListChatTab(onEvent: (ConversationEvent) -> Unit) {
                             }
                         }
                         Column {
-                            Text(text = "12:00", fontFamily = SairaSemiExpanded)
+                            Text(
+                                text = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
+                                    .toString(), fontFamily = SairaSemiExpanded
+                            )
                         }
                     }
                 }

@@ -11,15 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.marsn.minitalk.model.Message
+import com.marsn.minitalk.model.MessageText
 
 @Composable
-fun MessageBubbleFriend(text: String) {
+fun MessageBubbleFriend(message: MessageText) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
-            text = text,
+            text = message.text,
             color = Color.White,
             modifier = Modifier
                 .background(

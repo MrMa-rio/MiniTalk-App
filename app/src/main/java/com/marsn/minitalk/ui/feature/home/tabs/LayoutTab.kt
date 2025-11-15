@@ -14,13 +14,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 
 
 @Composable
-fun LayoutTab( selectedTabIndex: Int, setSelectedTabIndex: (Int) -> Unit ) {
-
-
+fun LayoutTab( selectedTabIndex: Int, onEvent: (ConversationEvent) -> Unit) {
 
     Column {
         SecondaryTabRow(
@@ -41,7 +40,7 @@ fun LayoutTab( selectedTabIndex: Int, setSelectedTabIndex: (Int) -> Unit ) {
             IndexTab.tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTabIndex == index,
-                    onClick = { setSelectedTabIndex(index) },
+                    onClick = { onEvent(ConversationEvent.Tab(index)) },
                     selectedContentColor = Color(0xFF1FBFAD),
                     unselectedContentColor = Color.White,
                     text = { Text(title, fontFamily = SairaSemiExpanded, fontSize = 11.sp) },
