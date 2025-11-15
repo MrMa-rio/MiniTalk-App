@@ -1,8 +1,8 @@
 package com.marsn.minitalk.ui.mocks.messageContacts
 
-import com.marsn.minitalk.model.Contact
-import com.marsn.minitalk.model.Message
-import com.marsn.minitalk.model.MessageContact
+import com.marsn.minitalk.domain.Contact
+import com.marsn.minitalk.domain.Message
+import com.marsn.minitalk.domain.MessageContact
 
 val messagesContactsMock: List<MessageContact> = listOf(
 

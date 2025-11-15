@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.marsn.minitalk.model.MessageContact
+import com.marsn.minitalk.domain.MessageContact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
@@ -32,7 +32,6 @@ import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
 import kotlinx.coroutines.flow.collectLatest
-import java.util.Locale
 
 
 @RequiresApi(Build.VERSION_CODES.O)

@@ -48,6 +48,11 @@ android {
 
 dependencies {
 
+    //ROOM
+    // Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     //MATERIAL
     implementation(libs.androidx.compose.material.icons.extended)

@@ -1,8 +1,8 @@
 package com.marsn.minitalk.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.marsn.minitalk.model.Contact
-import com.marsn.minitalk.model.UserProfile
+import com.marsn.minitalk.domain.Contact
+import com.marsn.minitalk.domain.UserProfile
 import kotlinx.serialization.Serializable
 
 sealed class AuthRoutes() {

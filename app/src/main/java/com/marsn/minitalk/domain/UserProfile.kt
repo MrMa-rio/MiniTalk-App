@@ -1,4 +1,4 @@
-package com.marsn.minitalk.model
+package com.marsn.minitalk.domain
 
 import kotlinx.serialization.Serializable
 

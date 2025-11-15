@@ -1,9 +1,12 @@
 package com.marsn.minitalk.ui.mocks.messages
 
-import com.marsn.minitalk.model.MessageText
+import com.marsn.minitalk.domain.MessageText
 
 val messagesMock: List<MessageText> = listOf(
 
+
+
+/*
     MessageText("Bom dia!", 1, 1737000000000, 101),
     MessageText("Bom diaaa", 2, 1737000060000, 202),
     MessageText("Acordou cedo hoje 😂", 3, 1737000110000, 202),
@@ -167,5 +170,5 @@ val messagesMock: List<MessageText> = listOf(
     MessageText("Tranquilo", 118, 1737007130000, 101),
 
     MessageText("Valeuu", 119, 1737007179000, 202),
-    MessageText("Tmj!", 120, 1737007230000, 101)
+    MessageText("Tmj!", 120, 1737007230000, 101) */
 )

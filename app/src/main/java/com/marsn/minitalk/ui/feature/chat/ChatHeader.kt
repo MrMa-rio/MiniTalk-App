@@ -31,7 +31,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
-import com.marsn.minitalk.model.Contact
+import com.marsn.minitalk.domain.Contact
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 

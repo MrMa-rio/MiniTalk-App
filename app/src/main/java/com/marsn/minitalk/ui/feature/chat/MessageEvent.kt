@@ -1,6 +1,6 @@
 package com.marsn.minitalk.ui.feature.chat
 
-import com.marsn.minitalk.model.UserProfile
+import com.marsn.minitalk.domain.UserProfile
 
 
 sealed interface MessageEvent {

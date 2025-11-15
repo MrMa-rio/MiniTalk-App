@@ -1,4 +1,4 @@
-package com.marsn.minitalk.model
+package com.marsn.minitalk.domain
 
 data class MessageContact(
     val contact: Contact,

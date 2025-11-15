@@ -1,7 +1,7 @@
 package com.marsn.minitalk.ui.feature.home
 
-import com.marsn.minitalk.model.Contact
-import com.marsn.minitalk.model.UserProfile
+import com.marsn.minitalk.domain.Contact
+import com.marsn.minitalk.domain.UserProfile
 
 
 sealed interface ConversationEvent {
