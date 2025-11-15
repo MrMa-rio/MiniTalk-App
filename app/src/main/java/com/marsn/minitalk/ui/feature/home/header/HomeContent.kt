@@ -56,7 +56,7 @@ fun HomeContent(messageContactList: List<MessageContact>) {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat<*> -> {
-                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId, event.contact))
                 }
 
                 is UIEvent.NavigateToProfile<*> -> {

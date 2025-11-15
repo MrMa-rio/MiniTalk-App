@@ -50,7 +50,7 @@ fun ListChatTab(messageContact: List<MessageContact>, onEvent: (ConversationEven
 
             Button(
                 onClick = {
-                    onEvent(ConversationEvent.Chat(index.message.conversationId))
+                    onEvent(ConversationEvent.Chat(index.message.conversationId, index.contact))
                 }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {
