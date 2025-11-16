@@ -23,7 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.marsn.minitalk.domain.MessageContact
+import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.MessageContact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
@@ -31,12 +32,13 @@ import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeContent(messageContactList: List<MessageContact>) {
+fun HomeContent(messageContactList: List<Conversation>) {
 
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
@@ -55,7 +57,7 @@ fun HomeContent(messageContactList: List<MessageContact>) {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat<*> -> {
-                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId, event.contact))
+                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
                 }
 
                 is UIEvent.NavigateToProfile<*> -> {
@@ -66,7 +68,7 @@ fun HomeContent(messageContactList: List<MessageContact>) {
                 is UIEvent.ChangeSearch -> {
                     searchText = event.searchText
                     messageContacts = messageContactList.filter {
-                        it.contact.name.lowercase().contains(searchText.lowercase())
+                        "MOCK".lowercase().contains(searchText.lowercase())
                     }
 
                 }

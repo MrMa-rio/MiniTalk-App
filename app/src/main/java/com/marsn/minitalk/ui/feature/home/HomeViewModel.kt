@@ -8,10 +8,12 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel() : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+
 
 
     fun onEvent(event: ConversationEvent) {
@@ -19,7 +21,7 @@ class HomeViewModel : ViewModel() {
 
             is ConversationEvent.Chat -> {
                 viewModelScope.launch {
-                    _uiEvent.send(UIEvent.NavigateToChat(ChatRoutes.ChatRoute, event.conversationId, event.contact))
+                    _uiEvent.send(UIEvent.NavigateToChat(ChatRoutes.ChatRoute, event.conversationId))
                 }
             }
             is ConversationEvent.Profile -> {

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.marsn.minitalk.domain.Contact
+import com.marsn.minitalk.core.domain.Contact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
-fun ChatScreen(conversationId: Long, contact: Contact) {
+fun ChatScreen(conversationId: Long) {
 
 
     val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
@@ -82,7 +82,7 @@ fun ChatScreen(conversationId: Long, contact: Contact) {
                     .systemBarsPadding()
             ) {
 
-                ChatHeader(contact = contact, homeViewModel::onEvent)
+                ChatHeader( homeViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(messages = messagesMock, 101) {}
                 }

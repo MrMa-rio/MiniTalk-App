@@ -26,7 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.marsn.minitalk.domain.MessageContact
+import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.MessageContact
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import java.time.LocalTime
@@ -35,7 +36,7 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ListChatTab(messageContact: List<MessageContact>, onEvent: (ConversationEvent) -> Unit) {
+fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent) -> Unit) {
     val colors = remember {
         ButtonColors(
             containerColor = Color.Transparent,
@@ -49,7 +50,7 @@ fun ListChatTab(messageContact: List<MessageContact>, onEvent: (ConversationEven
 
             Button(
                 onClick = {
-                    onEvent(ConversationEvent.Chat(index.message.conversationId, index.contact))
+                    onEvent(ConversationEvent.Chat(index.conversationId))
                 }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {
@@ -82,12 +83,12 @@ fun ListChatTab(messageContact: List<MessageContact>, onEvent: (ConversationEven
                                 verticalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = index.contact.name,
+                                    text = "MOCK",
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = SairaSemiExpanded
                                 )
                                 Text(
-                                    text = index.message.text,
+                                    text = "MOCK",
                                     maxLines = 1,
                                     color = Color.Gray,
                                     fontWeight = FontWeight.Light,

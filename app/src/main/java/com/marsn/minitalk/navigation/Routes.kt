@@ -1,8 +1,8 @@
 package com.marsn.minitalk.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.marsn.minitalk.domain.Contact
-import com.marsn.minitalk.domain.UserProfile
+import com.marsn.minitalk.core.domain.Contact
+import com.marsn.minitalk.core.domain.UserProfile
 import kotlinx.serialization.Serializable
 
 sealed class AuthRoutes() {
@@ -30,7 +30,7 @@ sealed class ChatRoutes() {
     class ProfileRoute(val userProfile: UserProfile) : NavKey
 
     @Serializable
-    class ChatRoute(val conversationId: Long, val contact: Contact) : NavKey
+    class ChatRoute(val conversationId: Long) : NavKey
 
 }
 

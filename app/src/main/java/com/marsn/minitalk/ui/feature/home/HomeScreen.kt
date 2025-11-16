@@ -14,6 +14,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -21,11 +23,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.R
+import com.marsn.minitalk.core.dataprovider.repository.ChatDatabaseProvider
+import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
+import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
+import com.marsn.minitalk.core.usecase.conversation.ConversationUsecaseImpl
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.NavController3
 import com.marsn.minitalk.ui.feature.home.header.HomeContent
-import com.marsn.minitalk.ui.mocks.messageContacts.messagesContactsMock
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -35,15 +41,20 @@ fun HomeScreen(navigate: NavController3) {
 
 
     val context = LocalContext.current.applicationContext
-//    val database = TodoDatabaseProvider.provider(context)
-//    val repository = TodoRepositoryImpl(
-//        todoDao = database.todoDao
-//    )
-//    val viewModel = viewModel<ChatViewModel> {
-//        ChatViewModel(
-//            repository = repository
-//        )
-//    }
+    val database = ChatDatabaseProvider.provider(context)
+    val repository = ConversationRepositoryImpl(
+        conversationDao = database.conversationDao()
+    )
+
+    val usecase: ConversationUsecase = ConversationUsecaseImpl(repository)
+
+    val viewModel = viewModel<ConversationViewModel> {
+        ConversationViewModel(
+            conversationUsecase = usecase
+        )
+    }
+
+    val conversations by viewModel.conversations.collectAsState()
 
 
     val gradient = remember {
@@ -60,7 +71,9 @@ fun HomeScreen(navigate: NavController3) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {navigate.navigate(ChatRoutes.NewConversation) },
+                onClick = {
+                    viewModel.createConversation()
+                    navigate.navigate(ChatRoutes.NewConversation) },
                 modifier = Modifier.offset(y = (-32).dp, x = (-16).dp),
                 containerColor = Color(0xFF1FBFAD)
             ) {
@@ -80,7 +93,7 @@ fun HomeScreen(navigate: NavController3) {
                 .background(gradient)
                 .consumeWindowInsets(it)
         ) {
-            HomeContent(messageContactList = messagesContactsMock)
+            HomeContent(messageContactList = conversations)
         }
     }
 }

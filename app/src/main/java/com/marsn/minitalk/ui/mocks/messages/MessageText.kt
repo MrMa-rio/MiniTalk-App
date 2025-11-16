@@ -1,6 +1,6 @@
 package com.marsn.minitalk.ui.mocks.messages
 
-import com.marsn.minitalk.domain.MessageText
+import com.marsn.minitalk.core.domain.MessageText
 
 val messagesMock: List<MessageText> = listOf(
 
