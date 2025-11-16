@@ -1,6 +1,5 @@
 package com.marsn.minitalk.ui
 
-import com.marsn.minitalk.core.domain.Contact
 import com.marsn.minitalk.core.domain.UserProfile
 
 sealed interface UIEvent {

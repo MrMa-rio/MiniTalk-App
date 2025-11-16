@@ -14,6 +14,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.R
+import com.marsn.minitalk.core.dataprovider.repository.ChatDatabase
 import com.marsn.minitalk.core.dataprovider.repository.ChatDatabaseProvider
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
@@ -56,6 +58,9 @@ fun HomeScreen(navigate: NavController3) {
 
     val conversations by viewModel.conversations.collectAsState()
 
+
+    LaunchedEffect (conversations) {
+    }
 
     val gradient = remember {
         Brush.linearGradient(

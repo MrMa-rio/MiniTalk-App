@@ -9,10 +9,15 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.marsn.minitalk.core.dataprovider.repository.ChatDatabaseProvider
 import com.marsn.minitalk.navigation.TalkNavDisplay
 import com.marsn.minitalk.ui.theme.MiniTalkTheme
 
 class MainActivity : ComponentActivity() {
+
+
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

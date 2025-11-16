@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.core.domain.Conversation
-import com.marsn.minitalk.core.domain.MessageContact
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import java.time.LocalTime

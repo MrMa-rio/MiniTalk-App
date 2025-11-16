@@ -1,15 +1,20 @@
 package com.marsn.minitalk.core.dataprovider.repository
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationDao
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationEntity
 import com.marsn.minitalk.core.dataprovider.repository.converters.Converters
-import com.marsn.minitalk.core.dataprovider.repository.message.messageChunk.MessageChunkEntity
 import com.marsn.minitalk.core.dataprovider.repository.message.messageChunk.MessageChunkDao
+import com.marsn.minitalk.core.dataprovider.repository.message.messageChunk.MessageChunkEntity
+import dagger.Provides
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
 @Database(

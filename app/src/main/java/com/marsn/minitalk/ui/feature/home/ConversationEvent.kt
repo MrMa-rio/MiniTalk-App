@@ -1,6 +1,5 @@
 package com.marsn.minitalk.ui.feature.home
 
-import com.marsn.minitalk.core.domain.Contact
 import com.marsn.minitalk.core.domain.UserProfile
 
 

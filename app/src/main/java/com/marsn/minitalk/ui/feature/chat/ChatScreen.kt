@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.marsn.minitalk.core.domain.Contact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent

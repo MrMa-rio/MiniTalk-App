@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.core.domain.Conversation
-import com.marsn.minitalk.core.domain.MessageContact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
@@ -32,7 +31,6 @@ import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
 

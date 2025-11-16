@@ -1,6 +1,5 @@
 package com.marsn.minitalk.core.usecase.conversation
 
-import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationEntity
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
 import com.marsn.minitalk.core.domain.Conversation
 import kotlinx.coroutines.flow.Flow

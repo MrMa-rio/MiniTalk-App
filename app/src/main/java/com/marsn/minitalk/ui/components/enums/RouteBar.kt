@@ -3,9 +3,6 @@ package com.marsn.minitalk.ui.components.enums
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.ChatBubble
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.twotone.ChatBubble
 import androidx.compose.ui.graphics.vector.ImageVector
 
 

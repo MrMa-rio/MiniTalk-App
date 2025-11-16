@@ -1,7 +1,6 @@
 package com.marsn.minitalk.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.marsn.minitalk.core.domain.Contact
 import com.marsn.minitalk.core.domain.UserProfile
 import kotlinx.serialization.Serializable
 
