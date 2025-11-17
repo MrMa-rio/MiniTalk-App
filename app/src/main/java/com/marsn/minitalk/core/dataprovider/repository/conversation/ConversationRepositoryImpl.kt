@@ -14,7 +14,7 @@ class ConversationRepositoryImpl(
 
     }
 
-    override suspend fun getConversationById(conversationId: Long): Result<ConversationEntity> {
+    override suspend fun getConversationById(conversationId: String): Result<ConversationEntity> {
         TODO("Not yet implemented")
     }
 

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface ConversationUsecase {
     suspend fun createConversation(conversation: Conversation)
 
-    suspend fun consultConversation(conversationId: Long): Conversation?
+    suspend fun consultConversation(conversationId: String): Conversation?
 
     fun consultAllConversations(): Flow<List<Conversation>>
 

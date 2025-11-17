@@ -8,23 +8,23 @@ interface MessageChunkRepository {
 
 
     suspend fun saveOrUpdateChunk(chunk: MessageChunkEntity)
-    suspend fun getChunks(conversationId: Long, limit: Int): List<MessageChunkEntity>
+    suspend fun getChunks(conversationId: String, limit: Int): List<MessageChunkEntity>
 
     suspend fun getInitialChunks(
-        conversationId: Long,
+        conversationId: String,
         limit: Int = 5
     ): Result<List<MessageChunkEntity>>
 
     suspend fun getNextChunks(
-        conversationId: Long,
+        conversationId: String,
         cursor: Long,
         limit: Int = 5
     ): Result<List<MessageChunkEntity>>
 
-    suspend fun deleteChunksFromConversation(conversationId: Long): Result<Unit>
+    suspend fun deleteChunksFromConversation(conversationId: String): Result<Unit>
 
     suspend fun createChunkFromMessages(
-        conversationId: Long,
+        conversationId: String,
         messages: List<MessageEntity>
     ): Result<MessageChunkEntity>
 }

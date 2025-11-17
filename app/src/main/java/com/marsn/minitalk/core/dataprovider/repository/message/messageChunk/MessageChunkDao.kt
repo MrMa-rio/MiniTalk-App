@@ -11,7 +11,7 @@ interface MessageChunkDao {
     suspend fun insertChunk(message: MessageChunkEntity)
 
     @Query("SELECT * FROM message_chunks WHERE conversationId = :conversationId ORDER BY endTimestamp DESC LIMIT :limit")
-    suspend fun getChunks(conversationId: Long, limit: Int): List<MessageChunkEntity>
+    suspend fun getChunks(conversationId: String, limit: Int): List<MessageChunkEntity>
 
     @Query("""
         SELECT * FROM message_chunks 
@@ -21,11 +21,11 @@ interface MessageChunkDao {
         LIMIT :limit
     """)
     suspend fun getChunksFromCursor(
-        conversationId: Long,
+        conversationId: String,
         cursor: Long,
         limit: Int
     ): List<MessageChunkEntity>
 
     @Query("DELETE FROM message_chunks WHERE conversationId = :conversationId")
-    suspend fun deleteConversationChunks(conversationId: Long)
+    suspend fun deleteConversationChunks(conversationId: String)
 }

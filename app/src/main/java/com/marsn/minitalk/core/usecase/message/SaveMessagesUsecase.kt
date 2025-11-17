@@ -4,7 +4,7 @@ import com.marsn.minitalk.core.domain.Message
 
 interface SaveMessagesUseCase {
     suspend operator fun invoke(
-        conversationId: Long,
+        conversationId: String,
         messages: List<Message>
     )
 }

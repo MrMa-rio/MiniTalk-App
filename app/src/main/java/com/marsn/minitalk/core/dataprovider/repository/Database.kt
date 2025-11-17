@@ -22,7 +22,7 @@ import javax.inject.Singleton
         ConversationEntity::class,
         MessageChunkEntity::class
     ],
-    version = 1
+    version = 3
 )
 @TypeConverters(Converters::class)
 abstract class ChatDatabase : RoomDatabase() {

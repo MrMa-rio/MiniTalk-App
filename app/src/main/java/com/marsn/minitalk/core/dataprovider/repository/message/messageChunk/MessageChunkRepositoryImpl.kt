@@ -14,26 +14,26 @@ class MessageChunkRepositoryImpl(
     }
 
     override suspend fun getInitialChunks(
-        conversationId: Long,
+        conversationId: String,
         limit: Int
     ): Result<List<MessageChunkEntity>> = runCatching {
         dao.getChunks(conversationId, limit)
     }
 
     override suspend fun getNextChunks(
-        conversationId: Long,
+        conversationId: String,
         cursor: Long,
         limit: Int
     ): Result<List<MessageChunkEntity>> = runCatching {
         dao.getChunksFromCursor(conversationId, cursor, limit)
     }
 
-    override suspend fun deleteChunksFromConversation(conversationId: Long): Result<Unit> = runCatching {
+    override suspend fun deleteChunksFromConversation(conversationId: String): Result<Unit> = runCatching {
         dao.deleteConversationChunks(conversationId)
     }
 
     override suspend fun createChunkFromMessages(
-        conversationId: Long,
+        conversationId: String,
         messages: List<MessageEntity>
     ): Result<MessageChunkEntity> = runCatching {
 
@@ -56,7 +56,7 @@ class MessageChunkRepositoryImpl(
         dao.insertChunk(chunk)
     }
 
-    override suspend fun getChunks(conversationId: Long, limit: Int): List<MessageChunkEntity> {
+    override suspend fun getChunks(conversationId: String, limit: Int): List<MessageChunkEntity> {
         return dao.getChunks(conversationId, limit)
     }
 }

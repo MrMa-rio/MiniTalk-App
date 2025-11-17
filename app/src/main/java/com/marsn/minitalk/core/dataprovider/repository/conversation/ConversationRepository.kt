@@ -7,7 +7,7 @@ interface ConversationRepository {
 
     suspend fun createConversation(conversation: ConversationEntity)
 
-    suspend fun getConversationById(conversationId: Long): Result<ConversationEntity>
+    suspend fun getConversationById(conversationId: String): Result<ConversationEntity>
 
     fun getAllConversations(): Flow<List<Conversation>>
 

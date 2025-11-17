@@ -8,7 +8,7 @@ import java.util.UUID
 @Entity(tableName = "message_chunks")
 data class MessageChunkEntity(
     @PrimaryKey val chunkId: String,
-    val conversationId: Long,
+    val conversationId: String,
     val messageIds: List<String>,
     val startTimestamp: Long,
     val endTimestamp: Long,

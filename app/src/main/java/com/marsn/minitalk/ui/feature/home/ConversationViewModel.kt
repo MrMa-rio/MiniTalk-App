@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class ConversationViewModel(
     val conversationUsecase: ConversationUsecase
@@ -32,8 +33,8 @@ class ConversationViewModel(
         viewModelScope.launch {
             conversationUsecase.createConversation(
                 Conversation(
-                    id = 100,
-                    conversationId = 1000,
+                    id = null,
+                    conversationId = UUID.randomUUID().toString(),
                     lastMessage = "Hello World!",
                     lastTimestamp = 1526474894,
                     typeConversation = TypeConversation.PRIVATE

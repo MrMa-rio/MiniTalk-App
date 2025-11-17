@@ -44,7 +44,7 @@ class ChatViewModel(
         }
     }
 
-    fun receiveNewMessages(conversationId: Long, incoming: List<Message>) {
+    fun receiveNewMessages(conversationId: String, incoming: List<Message>) {
         viewModelScope.launch {
             // salva + gera chunk
             saveMessagesUseCase(conversationId, incoming)

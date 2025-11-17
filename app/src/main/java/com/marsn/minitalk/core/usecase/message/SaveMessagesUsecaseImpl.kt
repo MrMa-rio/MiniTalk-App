@@ -10,7 +10,7 @@ class SaveMessagesUseCaseImpl(
     private val chunkRepository: MessageChunkRepository
 ) : SaveMessagesUseCase {
     override suspend operator fun invoke(
-        conversationId: Long,
+        conversationId: String,
         messages: List<Message>
     ) {
         val entities = messages.map { it.toEntity() }

@@ -9,6 +9,6 @@ sealed interface MessageEvent {
 
     object Home : MessageEvent
 
-    data class Chat(val conversationId: Long) : MessageEvent
+    data class Chat(val conversationId: String) : MessageEvent
     data class Profile(val userProfile: UserProfile) : MessageEvent
 }

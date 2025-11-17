@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
-fun ChatScreen(conversationId: Long) {
+fun ChatScreen(conversationId: String) {
 
 
     val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }

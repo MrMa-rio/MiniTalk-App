@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MessageEntity(
     @PrimaryKey val messageId: String,
-    val conversationId: Long,
+    val conversationId: String,
     val senderId: String,
     val content: String,
     val createdAt: Long,
