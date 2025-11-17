@@ -8,10 +8,9 @@ import kotlinx.coroutines.flow.map
 class ConversationRepositoryImpl(
     private val conversationDao: ConversationDao
 ) : ConversationRepository {
+
     override suspend fun createConversation(conversation: ConversationEntity) {
-
-         conversationDao.insertConversation(conversation)
-
+        conversationDao.insertConversation(conversation)
     }
 
     override suspend fun getConversationById(conversationId: String): Result<ConversationEntity> {
@@ -30,7 +29,6 @@ class ConversationRepositoryImpl(
                 emit(emptyList())
             }
     }
-
 
 
     override suspend fun getUserConversations(userId: Long): Result<ConversationEntity> {

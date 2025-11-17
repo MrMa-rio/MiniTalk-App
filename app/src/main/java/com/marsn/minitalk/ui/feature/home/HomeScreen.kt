@@ -1,7 +1,5 @@
 package com.marsn.minitalk.ui.feature.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -21,46 +19,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.R
-import com.marsn.minitalk.core.dataprovider.repository.ChatDatabase
-import com.marsn.minitalk.core.dataprovider.repository.ChatDatabaseProvider
-import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
-import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
-import com.marsn.minitalk.core.usecase.conversation.ConversationUsecaseImpl
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.NavController3
 import com.marsn.minitalk.ui.feature.home.header.HomeContent
+import org.koin.androidx.compose.koinViewModel
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navigate: NavController3) {
 
 
-    val context = LocalContext.current.applicationContext
-    val database = ChatDatabaseProvider.provider(context)
-    val repository = ConversationRepositoryImpl(
-        conversationDao = database.conversationDao()
-    )
-
-    val usecase: ConversationUsecase = ConversationUsecaseImpl(repository)
-
-    val viewModel = viewModel<ConversationViewModel> {
-        ConversationViewModel(
-            conversationUsecase = usecase
-        )
-    }
-
+    val viewModel = koinViewModel<ConversationViewModel>()
     val conversations by viewModel.conversations.collectAsState()
-
-
-    LaunchedEffect (conversations) {
-    }
 
     val gradient = remember {
         Brush.linearGradient(
@@ -98,7 +72,7 @@ fun HomeScreen(navigate: NavController3) {
                 .background(gradient)
                 .consumeWindowInsets(it)
         ) {
-            HomeContent(messageContactList = conversations)
+            HomeContent(viewModel)
         }
     }
 }

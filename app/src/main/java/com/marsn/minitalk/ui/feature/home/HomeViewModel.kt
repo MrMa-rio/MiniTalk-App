@@ -48,6 +48,7 @@ class HomeViewModel() : ViewModel() {
                     _uiEvent.send(UIEvent.ChangeSearch(event.text))
                 }
             }
+            else -> {}
         }
     }
 

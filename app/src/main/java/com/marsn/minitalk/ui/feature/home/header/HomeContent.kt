@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -23,11 +23,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.marsn.minitalk.core.domain.Conversation
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
+import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
@@ -36,14 +36,14 @@ import kotlinx.coroutines.flow.collectLatest
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeContent(messageContactList: List<Conversation>) {
+fun HomeContent(viewModel: ConversationViewModel) {
 
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
-    var searchText by remember { mutableStateOf("") }
+    val searchText by viewModel.searchText.collectAsState()
 
-    var messageContacts by remember { mutableStateOf(messageContactList) }
+    val conversations by viewModel.conversations.collectAsState()
 
 
     val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
@@ -64,11 +64,9 @@ fun HomeContent(messageContactList: List<Conversation>) {
                 is UIEvent.ChangeTab ->  selectedTabIndex = event.index
 
                 is UIEvent.ChangeSearch -> {
-                    searchText = event.searchText
-                    messageContacts = messageContactList.filter {
+                    conversations.filter {
                         "MOCK".lowercase().contains(searchText.lowercase())
                     }
-
                 }
 
                 else -> {}
@@ -108,7 +106,7 @@ fun HomeContent(messageContactList: List<Conversation>) {
 
                 when (selectedTabIndex) {
                     0 -> ListChatTab(
-                        messageContact = messageContacts,
+                        messageContact = conversations,
                         onEvent = homeViewModel::onEvent)
                     1 -> ListChatTab(
                         messageContact = listOf(),

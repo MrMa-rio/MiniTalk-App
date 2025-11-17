@@ -7,7 +7,7 @@ import com.marsn.minitalk.core.shared.enums.TypeConversation
 data class Conversation(
     val id: Long?,
     val conversationId: String,
-    val lastMessage: String?,
+    val lastMessage: String,
     val lastTimestamp: Long,
     val typeConversation: TypeConversation
 ) {

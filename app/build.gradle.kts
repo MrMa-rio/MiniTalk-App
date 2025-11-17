@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt.android)
     kotlin("plugin.serialization") version libs.versions.kotlin
 
 }
@@ -48,10 +47,14 @@ android {
 dependencies {
 
     //ROOM
-    // Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    //KOIN
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     //MATERIAL
     implementation(libs.androidx.compose.material.icons.extended)
@@ -64,11 +67,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // Dagger Hilt
-    implementation(libs.hilt.android)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.adaptive.navigation3)
     implementation(libs.androidx.navigation3.runtime)
-    ksp(libs.hilt.android.compiler)
 
 
     implementation(libs.androidx.core.ktx)

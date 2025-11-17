@@ -15,6 +15,6 @@ sealed interface ConversationEvent {
     data class Tab(val tab: Int) : ConversationEvent
 
     data class SearchText(val text: String) : ConversationEvent
-
+    object GetConversations: ConversationEvent
 
 }

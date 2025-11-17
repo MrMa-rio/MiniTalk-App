@@ -9,7 +9,7 @@ import com.marsn.minitalk.core.shared.enums.TypeConversation
 data class ConversationEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val conversationId: String,
-    val lastMessage: String?,
+    val lastMessage: String,
     val lastTimestamp: Long,
     val typeConversation: TypeConversation
 
