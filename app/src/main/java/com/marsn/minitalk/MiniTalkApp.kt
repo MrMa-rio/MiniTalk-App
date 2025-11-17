@@ -2,6 +2,7 @@ package com.marsn.minitalk
 
 import android.app.Application
 import com.marsn.minitalk.core.di.databaseModule
+import com.marsn.minitalk.core.di.networkModule
 import com.marsn.minitalk.core.di.repositoryModule
 import com.marsn.minitalk.core.di.usecaseModule
 import com.marsn.minitalk.core.di.viewModelModule
@@ -19,7 +20,8 @@ class MiniTalkApp : Application() {
                 databaseModule,
                 viewModelModule,
                 repositoryModule,
-                usecaseModule
+                usecaseModule,
+                networkModule
             )
         }
     }

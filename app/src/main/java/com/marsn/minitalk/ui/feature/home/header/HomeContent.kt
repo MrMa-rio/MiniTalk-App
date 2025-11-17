@@ -45,7 +45,6 @@ fun HomeContent(viewModel: ConversationViewModel) {
 
     val conversations by viewModel.conversations.collectAsState()
 
-
     val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
     val uiEvent = remember { homeViewModel.uiEvent }
 
@@ -85,7 +84,7 @@ fun HomeContent(viewModel: ConversationViewModel) {
         ) {
             TabsHeader(onEvent = homeViewModel::onEvent)
             LayoutTab(selectedTabIndex, onEvent = homeViewModel::onEvent)
-            TextInputSearch(searchText, onEvent = homeViewModel::onEvent)
+            TextInputSearch(searchText, onEvent = viewModel::onEvent)
         }
 
         Column(

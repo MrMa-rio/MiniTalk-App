@@ -1,8 +1,12 @@
 package com.marsn.minitalk.core.dataprovider.repository.converters
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import com.marsn.minitalk.core.domain.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class Converters {
@@ -28,7 +32,7 @@ class Converters {
     fun toTypeConversation(value: String) = enumValueOf<TypeConversation>(value)
 
     @TypeConverter
-    fun fromTyConversation(value: TypeConversation) = value.name
+    fun fromTypeConversation(value: TypeConversation) = value.name
 
 
     @TypeConverter
@@ -36,6 +40,20 @@ class Converters {
         return list?.joinToString(",") ?: ""
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    @TypeConverter
+    fun fromLocalDateTime(dateTime: LocalDateTime?): String? {
+        return dateTime?.format(DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss")) // Ex: "2025-11-17T17:42:52.123"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @TypeConverter
+    fun toLocalDateTime(dateTimeString: String?): LocalDateTime? {
+        // 2. Fazer o parse da string de volta para LocalDateTime.
+        return dateTimeString?.let {
+            LocalDateTime.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss"))
+        }
+    }
 
 
 }

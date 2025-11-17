@@ -4,22 +4,24 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.marsn.minitalk.core.domain.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Entity(tableName = "conversations")
 data class ConversationEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val conversationId: String,
-    val lastMessage: String,
-    val lastTimestamp: Long,
+    val userId: Long,
+    val createdAt: LocalDateTime,
     val typeConversation: TypeConversation
 
 ) {
     fun toModel(): Conversation {
         return Conversation(
             id = id,
+            userId = userId,
+            createdAt = createdAt,
             conversationId = conversationId,
-            lastMessage = lastMessage.orEmpty(),
-            lastTimestamp = lastTimestamp,
             typeConversation = typeConversation,
         )
     }

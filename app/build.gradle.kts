@@ -1,10 +1,11 @@
+import org.gradle.internal.serialize.codecs.stdlib.arrayListCodec
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    kotlin("plugin.serialization") version libs.versions.kotlin
-
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
@@ -62,6 +63,17 @@ dependencies {
     //NAVIGATION
     implementation(libs.androidx.navigation.compose)
 
+    //KTOR
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.content.negotiation)
+
+    implementation(libs.ktor.client.android)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.koin.core)
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.kotlinx.serialization.json)

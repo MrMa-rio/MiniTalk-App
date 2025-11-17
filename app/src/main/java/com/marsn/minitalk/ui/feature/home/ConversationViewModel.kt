@@ -1,5 +1,7 @@
 package com.marsn.minitalk.ui.feature.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marsn.minitalk.core.domain.Conversation
@@ -16,10 +18,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class ConversationViewModel(
-   private val conversationUsecase: ConversationUsecase,
+    private val conversationUsecase: ConversationUsecase,
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
@@ -31,12 +36,12 @@ class ConversationViewModel(
 
     val conversations = _searchText
         .combine(_conversations) { text, conversations ->
-            if(text.isBlank()) {
+            if (text.isBlank()) {
                 conversations
             } else {
                 conversations.filter {
-                    // sua lógica de filtro aqui
-                    it.lastMessage.contains(text, ignoreCase = true)
+                    it.conversationId.contains(text)
+
                 }
             }
         }
@@ -50,14 +55,27 @@ class ConversationViewModel(
         getAllConversations()
     }
 
+    fun onEvent(event: ConversationEvent) {
+        when (event) {
+            is ConversationEvent.SearchText -> {
+                _searchText.value = event.text
+            }
+            else -> {}
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun createConversation() {
         viewModelScope.launch {
             conversationUsecase.createConversation(
                 Conversation(
                     id = null,
+                    100,
                     conversationId = UUID.randomUUID().toString(),
-                    lastMessage = "Hello World!",
-                    lastTimestamp = 1526474894,
+                    createdAt = LocalDateTime.parse(
+                        "10-10-2020T10:05:59",
+                        DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss")
+                    ),
                     typeConversation = TypeConversation.PRIVATE
                 )
             )

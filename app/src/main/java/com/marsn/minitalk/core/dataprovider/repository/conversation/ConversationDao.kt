@@ -12,6 +12,6 @@ interface ConversationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConversation(conv: ConversationEntity)
 
-    @Query("SELECT * FROM conversations ORDER BY lastTimestamp DESC")
+    @Query("SELECT * FROM conversations ORDER BY createdAt DESC")
     fun getAllConversations(): Flow<List<ConversationEntity>>
 }
