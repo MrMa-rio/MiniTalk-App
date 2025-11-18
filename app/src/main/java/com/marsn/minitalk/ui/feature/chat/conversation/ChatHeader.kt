@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,22 +23,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.core.domain.contact.Contact
 import com.marsn.minitalk.ui.components.imageProfile.ImageProfile
-import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 
 
 @Composable
-fun ChatHeader(contact: Contact?, onEvent: (ConversationEvent) -> Unit) {
+fun ChatHeader(contact: Contact?, onEvent: (MessageEvent) -> Unit) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -74,7 +69,7 @@ fun ChatHeader(contact: Contact?, onEvent: (ConversationEvent) -> Unit) {
             ) {
                 IconButton(
                     onClick = {
-                        onEvent(ConversationEvent.Home)
+                        onEvent(MessageEvent.Home)
                     },
                 ) {
                     Icon(

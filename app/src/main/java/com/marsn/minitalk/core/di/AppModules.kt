@@ -28,6 +28,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 
@@ -88,6 +89,8 @@ val networkModule = module {
             defaultRequest {
                 url(PathsAPI.MINI_TALK_API.name)
             }
+
+            install(WebSockets)
 
             install(ContentNegotiation) {
                 json()

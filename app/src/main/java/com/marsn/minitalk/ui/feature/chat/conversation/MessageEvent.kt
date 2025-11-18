@@ -8,7 +8,6 @@ sealed interface MessageEvent {
 
 
     object Home : MessageEvent
-
-    data class Chat(val conversationId: String) : MessageEvent
     data class Profile(val userProfile: UserProfile) : MessageEvent
+    data class InputText(val message: String) : MessageEvent
 }

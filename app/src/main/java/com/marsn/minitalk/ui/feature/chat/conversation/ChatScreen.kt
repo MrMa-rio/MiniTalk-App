@@ -13,13 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.marsn.minitalk.core.domain.contact.Contact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.message.ChatInput
 import com.marsn.minitalk.ui.components.screenTheme.BackgroundThemeChat
-import com.marsn.minitalk.ui.feature.home.ChatViewModel
 import com.marsn.minitalk.ui.mocks.messages.messagesMock
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
@@ -28,17 +26,16 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ChatScreen(userId: Long) {
 
-    val homeViewModel = koinViewModel<ChatViewModel>()
-    val uiEvent = remember { homeViewModel.uiEvent }
+    val messagingViewModel = koinViewModel<MessagingViewModel>()
+    val uiEvent = remember { messagingViewModel.uiEvent }
 
-    val state = homeViewModel.uiState.collectAsState()
-
+    val state = messagingViewModel.uiState.collectAsState()
 
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
 
-        homeViewModel.loadContact(userId)
+        messagingViewModel.loadContact(userId)
 
         uiEvent.collectLatest { event ->
             when (event) {
@@ -49,8 +46,6 @@ fun ChatScreen(userId: Long) {
             }
         }
     }
-
-
 
     Column(
         modifier = Modifier,
@@ -75,7 +70,7 @@ fun ChatScreen(userId: Long) {
                     .systemBarsPadding()
             ) {
 
-                ChatHeader(state.value.contact,homeViewModel::onEvent)
+                ChatHeader(state.value.contact,messagingViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(messages = messagesMock, 101) {}
                 }

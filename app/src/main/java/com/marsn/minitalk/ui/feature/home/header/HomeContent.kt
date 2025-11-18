@@ -22,13 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
-import com.marsn.minitalk.ui.feature.home.TextInputSearch
-import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.home.ChatViewModel
+import com.marsn.minitalk.ui.feature.home.ConversationViewModel
+import com.marsn.minitalk.ui.feature.home.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
 import kotlinx.coroutines.flow.collectLatest
