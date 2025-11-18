@@ -1,4 +1,4 @@
-package com.marsn.minitalk.ui.components.inputsText
+package com.marsn.minitalk.ui.feature.home
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
@@ -10,18 +10,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.marsn.minitalk.R
+import com.marsn.minitalk.ui.feature.chat.contact.ContactEvent
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 
 
 @Composable
 fun TextInputSearch(searchText: String, onEvent: (ConversationEvent) -> Unit) {
 
-    InputField(
+    _root_ide_package_.com.marsn.minitalk.ui.components.inputsText.InputField(
         value = searchText,
-        onValueChange = {onEvent(ConversationEvent.SearchText(it)) },
+        onValueChange = { onEvent(ConversationEvent.SearchText(it)) },
         placeholder = "Pesquisar",
         trailingIcon = {
-            Icon (
+            Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.search),
                 contentDescription = "Search",
             )

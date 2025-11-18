@@ -14,7 +14,10 @@ import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecaseImpl
 import com.marsn.minitalk.core.usecase.message.SaveMessagesUseCase
 import com.marsn.minitalk.core.usecase.message.SaveMessagesUseCaseImpl
-import com.marsn.minitalk.ui.feature.chat.ChatViewModel
+import com.marsn.minitalk.core.usecase.users.ContactUsecase
+import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
+import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
+import com.marsn.minitalk.ui.feature.chat.conversation.ChatViewModel
 import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import io.ktor.client.*
@@ -63,6 +66,8 @@ val viewModelModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::ConversationViewModel)
     viewModelOf(::ChatViewModel)
+    viewModelOf(::ContactsViewModel)
+
 }
 
 val usecaseModule = module {
@@ -72,6 +77,10 @@ val usecaseModule = module {
     }
     singleOf(::SaveMessagesUseCaseImpl) {
         bind<SaveMessagesUseCase>()
+    }
+
+    singleOf(::ContactUsecaseImpl) {
+        bind<ContactUsecase>()
     }
 }
 

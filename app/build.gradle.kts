@@ -52,6 +52,10 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    //COIL
+    implementation(libs.coil.compose)
+
+
     //KOIN
     implementation(libs.koin.core)
     implementation(libs.koin.android)

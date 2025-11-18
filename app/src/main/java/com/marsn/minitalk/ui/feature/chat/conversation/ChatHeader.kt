@@ -1,4 +1,4 @@
-package com.marsn.minitalk.ui.feature.chat
+package com.marsn.minitalk.ui.feature.chat.conversation
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -133,9 +133,7 @@ fun ChatHeader( onEvent: (ConversationEvent) -> Unit) {
                         tint = Color.White
                     )
                 }
-
             }
-
         }
     }
 }

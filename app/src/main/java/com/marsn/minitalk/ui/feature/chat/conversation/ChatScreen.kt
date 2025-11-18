@@ -1,4 +1,4 @@
-package com.marsn.minitalk.ui.feature.chat
+package com.marsn.minitalk.ui.feature.chat.conversation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
@@ -31,16 +30,7 @@ fun ChatScreen(conversationId: String) {
     val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
     val uiEvent = remember { homeViewModel.uiEvent }
 
-    val context = LocalContext.current.applicationContext
-//    val database = TodoDatabaseProvider.provider(context)
-//    val repository = TodoRepositoryImpl(
-//        todoDao = database.todoDao
-//    )
-//    val viewModel = viewModel<ChatViewModel> {
-//        ChatViewModel(
-//            repository = repository
-//        )
-//    }
+
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {

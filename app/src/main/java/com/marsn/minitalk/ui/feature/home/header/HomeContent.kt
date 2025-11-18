@@ -26,7 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
-import com.marsn.minitalk.ui.components.inputsText.TextInputSearch
+import com.marsn.minitalk.ui.feature.home.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab

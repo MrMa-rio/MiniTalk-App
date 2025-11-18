@@ -1,4 +1,4 @@
-package com.marsn.minitalk.ui.feature.chat
+package com.marsn.minitalk.ui.feature.chat.conversation
 
 import com.marsn.minitalk.core.domain.UserProfile
 

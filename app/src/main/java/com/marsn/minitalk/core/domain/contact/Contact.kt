@@ -1,4 +1,4 @@
-package com.marsn.minitalk.core.domain
+package com.marsn.minitalk.core.domain.contact
 
 import kotlinx.serialization.Serializable
 
@@ -11,4 +11,7 @@ data class Contact(
     val address: String,
     val profilePicture: String
 ) {
+
+
+
 }
