@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.emptyFlow
 data class ContactUiState(
     val contacts: Flow<List<Contact>> = emptyFlow(),
     val searchText: String = "",
+    val onChangedSearchText: (String) -> Unit = {},
     val isLoading: Boolean = true,
 
 ) {

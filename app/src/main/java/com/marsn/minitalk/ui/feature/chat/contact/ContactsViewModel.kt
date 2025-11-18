@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -34,9 +36,8 @@ class ContactsViewModel(
     private val _uiState = MutableStateFlow(ContactUiState())
     val uiState = _uiState
 
-
     init {
-        uiState.value = uiState.value.copy(contacts = contactUsecase.consultAllContacts())
+        _uiState.value = _uiState.value.copy(contacts = contactUsecase.consultAllContacts())
     }
 
     fun onEvent(event: ContactEvent) {
@@ -44,6 +45,7 @@ class ContactsViewModel(
 
             is ContactEvent.SearchText -> {
                 uiState.value = uiState.value.copy(searchText = event.searchText)
+                uiState.value.onChangedSearchText(event.searchText)
             }
 
             is ContactEvent.SelectContact -> {

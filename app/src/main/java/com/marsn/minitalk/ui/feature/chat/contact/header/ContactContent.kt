@@ -41,7 +41,6 @@ fun ContactContent(viewModel: ContactsViewModel) {
     val navController = LocalNavController3.current
 
     LaunchedEffect(Unit) {
-
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat -> {
@@ -51,7 +50,6 @@ fun ContactContent(viewModel: ContactsViewModel) {
                 is UIEvent.NavigateBack -> {
                     navController.pop()
                 }
-
                 else -> {}
             }
         }
