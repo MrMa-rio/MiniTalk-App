@@ -21,9 +21,6 @@ import org.koin.androidx.compose.koinViewModel
 fun ContactsScreen(
     viewModel: ContactsViewModel = koinViewModel<ContactsViewModel>(),
 ) {
-
-
-
     val gradient = remember {
         Brush.linearGradient(
             listOf(

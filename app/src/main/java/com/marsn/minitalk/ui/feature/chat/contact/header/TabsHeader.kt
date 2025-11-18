@@ -28,8 +28,7 @@ fun TabsHeader(onEvent: (ContactEvent) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .padding(horizontal = 12.dp),
+            .height(36.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -43,18 +42,14 @@ fun TabsHeader(onEvent: (ContactEvent) -> Unit) {
                 contentDescription = "Voltar",
                 tint = Color.White
             )
-
         }
 
         Text(
             "Contatos",
             fontFamily = SairaSemiExpanded,
             fontWeight = FontWeight.Medium,
-            fontSize = 32.sp,
+            fontSize = 28.sp,
             color = Color.White
         )
-
-
-
     }
 }

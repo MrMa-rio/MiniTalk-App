@@ -17,7 +17,6 @@ import com.marsn.minitalk.core.usecase.message.SaveMessagesUseCaseImpl
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
-import com.marsn.minitalk.ui.feature.chat.conversation.ChatViewModel
 import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import io.ktor.client.*
@@ -65,7 +64,6 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::ConversationViewModel)
-    viewModelOf(::ChatViewModel)
     viewModelOf(::ContactsViewModel)
 
 }
@@ -84,14 +82,11 @@ val usecaseModule = module {
     }
 }
 
-//val networkModule = module {
-
-val networkModule = module {// Cliente para a API de Usuários
+val networkModule = module {
     single(KtorQualifiers.USERS_API) {
         HttpClient(Android) {
-            // Plugin para adicionar configurações a TODAS as chamadas deste cliente
             defaultRequest {
-                url(PathsAPI.MINI_TALK_API.name) // URL base
+                url(PathsAPI.MINI_TALK_API.name)
             }
 
             install(ContentNegotiation) {
@@ -104,26 +99,22 @@ val networkModule = module {// Cliente para a API de Usuários
         }
     }
 
-    // Cliente para a API de Pagamentos
     single(KtorQualifiers.PAYMENTS_API) {
         HttpClient(Android) {
             defaultRequest {
-                url(PathsAPI.MINI_TALK_API_TEST.name) // URL base diferente
-                header("Authorization", "Bearer SEU_TOKEN_DE_PAGAMENTOS") // Ex: Header de autenticação
+                url(PathsAPI.MINI_TALK_API_TEST.name)
+                header("Authorization", "Bearer SEU_TOKEN_DE_PAGAMENTOS")
             }
 
             install(ContentNegotiation) {
                 json()
             }
-            // Pode ter configurações de engine diferentes se necessário
             engine {
-                connectTimeout = 90_000 // Ex: Timeout maior para pagamentos
+                connectTimeout = 90_000
                 socketTimeout = 90_000
             }
         }
     }
-
-    // Você ainda pode ter um cliente genérico se precisar
     single {
         HttpClient(Android) {
             install(ContentNegotiation) {

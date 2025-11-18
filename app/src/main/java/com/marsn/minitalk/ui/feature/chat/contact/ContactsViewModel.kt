@@ -1,5 +1,6 @@
 package com.marsn.minitalk.ui.feature.chat.contact
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marsn.minitalk.core.domain.Conversation
@@ -12,6 +13,7 @@ import com.marsn.minitalk.ui.UIEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -26,40 +28,22 @@ class ContactsViewModel(
     private val conversationUsecase: ConversationUsecase
 ) : ViewModel() {
 
-
     private val _uiEvent = Channel<UIEvent>()
-
     val uiEvent = _uiEvent.receiveAsFlow()
-    private val _contacts = MutableStateFlow<List<Contact>>(emptyList())
-    private val _searchText = MutableStateFlow("")
-    val searchText = _searchText.asStateFlow()
 
-    val contacts = _searchText
-        .combine(_contacts) { text, contactList ->
-            if (text.isBlank()) {
-                contactList
-            } else {
-                contactList.filter {
-                    it.name.lowercase().contains(text.lowercase())
-                }
-            }
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            _contacts.value
-        )
+    private val _uiState = MutableStateFlow(ContactUiState())
+    val uiState = _uiState
+
 
     init {
-        getAllContacts()
+        uiState.value = uiState.value.copy(contacts = contactUsecase.consultAllContacts())
     }
-
 
     fun onEvent(event: ContactEvent) {
         when (event) {
 
             is ContactEvent.SearchText -> {
-                _searchText.value = event.searchText
+                uiState.value = uiState.value.copy(searchText = event.searchText)
             }
 
             is ContactEvent.SelectContact -> {
@@ -85,14 +69,5 @@ class ContactsViewModel(
             }
         }
     }
-
-    private fun getAllContacts() {
-        contactUsecase.consultAllContacts()
-            .onEach { contactList ->
-                _contacts.value = contactList
-            }
-            .launchIn(viewModelScope)
-    }
-
 }
 

@@ -34,8 +34,10 @@ import kotlinx.coroutines.flow.collectLatest
 fun ContactContent(viewModel: ContactsViewModel) {
 
 
-    val searchText by viewModel.searchText.collectAsState()
-    val contacts = viewModel.contacts
+    val state = viewModel.uiState.collectAsState()
+
+    val searchText = state.value.searchText
+    val contacts = state.value.contacts
     val uiEvent = remember { viewModel.uiEvent }
     val navController = LocalNavController3.current
 
@@ -59,7 +61,7 @@ fun ContactContent(viewModel: ContactsViewModel) {
     Column {
         Column(
             modifier = Modifier
-                .height(200.dp)
+                .height(140.dp)
                 .padding(8.dp),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
