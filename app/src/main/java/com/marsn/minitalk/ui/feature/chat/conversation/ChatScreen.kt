@@ -8,39 +8,43 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.marsn.minitalk.core.domain.contact.Contact
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.message.ChatInput
 import com.marsn.minitalk.ui.components.screenTheme.BackgroundThemeChat
-import com.marsn.minitalk.ui.feature.home.HomeViewModel
+import com.marsn.minitalk.ui.feature.home.ChatViewModel
 import com.marsn.minitalk.ui.mocks.messages.messagesMock
 import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun ChatScreen(conversationId: String) {
+fun ChatScreen(userId: Long) {
 
-
-    val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
+    val homeViewModel = koinViewModel<ChatViewModel>()
     val uiEvent = remember { homeViewModel.uiEvent }
+
+    val state = homeViewModel.uiState.collectAsState()
 
 
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
+
+        homeViewModel.loadContact(userId)
+
         uiEvent.collectLatest { event ->
             when (event) {
-
                 is UIEvent.NavigateBack -> {
                     navController.clearAndNavigate(ChatRoutes.HomeRoute)
                 }
-
                 else -> {}
             }
         }
@@ -71,7 +75,7 @@ fun ChatScreen(conversationId: String) {
                     .systemBarsPadding()
             ) {
 
-                ChatHeader( homeViewModel::onEvent)
+                ChatHeader(state.value.contact,homeViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(messages = messagesMock, 101) {}
                 }

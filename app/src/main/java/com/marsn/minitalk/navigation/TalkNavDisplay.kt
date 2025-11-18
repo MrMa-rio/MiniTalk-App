@@ -116,7 +116,7 @@ fun TalkNavDisplay() {
 
                 entry<ChatRoutes.ChatRoute> {
                     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    ChatScreen(it.conversationId)
+                    ChatScreen(it.userId)
 
                 }
 

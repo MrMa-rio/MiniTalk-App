@@ -8,7 +8,6 @@ import java.time.LocalDateTime
 data class Conversation(
     val id: Long?,
     val userId: Long,
-    val conversationId: String,
     val createdAt: LocalDateTime,
     val typeConversation: TypeConversation
 ) {
@@ -17,14 +16,12 @@ data class Conversation(
             return ConversationEntity(
                 id = id,
                 userId = userId,
-                conversationId = conversationId,
                 createdAt = createdAt,
                 typeConversation = typeConversation
             )
         }
         return ConversationEntity(
             userId = userId,
-            conversationId = conversationId,
             createdAt = createdAt,
             typeConversation = typeConversation
         )

@@ -29,7 +29,7 @@ sealed class ChatRoutes() {
     class ProfileRoute(val userProfile: UserProfile) : NavKey
 
     @Serializable
-    class ChatRoute(val conversationId: String) : NavKey
+    class ChatRoute(val userId: Long) : NavKey
 
 }
 

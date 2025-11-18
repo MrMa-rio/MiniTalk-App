@@ -39,7 +39,7 @@ fun ContactsScreen(
                 .background(gradient)
                 .consumeWindowInsets(it)
         ) {
-            ContactContent( viewModel)
+            ContactContent(viewModel)
         }
     }
 }

@@ -50,7 +50,7 @@ fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent)
         itemsIndexed(messageContact.sortedBy { it.createdAt }) { index, item ->
             Button(
                 onClick = {
-                    onEvent(ConversationEvent.Chat(item.conversationId))
+                    onEvent(ConversationEvent.Chat(item.userId))
                 }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {

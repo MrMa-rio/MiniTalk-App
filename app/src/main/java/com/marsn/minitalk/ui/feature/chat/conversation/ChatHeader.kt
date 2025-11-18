@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,12 +32,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
+import com.marsn.minitalk.core.domain.contact.Contact
+import com.marsn.minitalk.ui.components.imageProfile.ImageProfile
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 
 
 @Composable
-fun ChatHeader( onEvent: (ConversationEvent) -> Unit) {
+fun ChatHeader(contact: Contact?, onEvent: (ConversationEvent) -> Unit) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -87,20 +90,10 @@ fun ChatHeader( onEvent: (ConversationEvent) -> Unit) {
                     onClick = {},
                     colors = ButtonColorsTransparents,
                 ) {
-                    Icon(
-                        modifier = Modifier
-                            .clip(ShapeDefaults.ExtraLarge)
-                            .background(Color.Transparent)
-                            .width(46.dp)
-                            .height(46.dp),
-                        tint = Color.White,
-                        imageVector = ImageVector.vectorResource(id = R.drawable.person),
-                        contentDescription = "Perfil"
-
-                    )
+                    ImageProfile(contact?.profilePicture ?: "", RoundedCornerShape(99.dp))
                     Spacer(Modifier.width(12.dp))
                     Column {
-                        Text("MOCK", color = Color.White, fontSize = 18.sp)
+                        Text(contact?.name ?: "USUARIO", color = Color.White, fontSize = 18.sp)
                         Text("online agora", color = Color.White.copy(0.7f), fontSize = 14.sp)
                     }
                 }

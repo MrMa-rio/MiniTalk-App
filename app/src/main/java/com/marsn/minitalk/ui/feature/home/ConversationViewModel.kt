@@ -29,7 +29,6 @@ class ConversationViewModel(
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-
     private val _conversations = MutableStateFlow<List<Conversation>>(emptyList())
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
@@ -40,8 +39,7 @@ class ConversationViewModel(
                 conversations
             } else {
                 conversations.filter {
-                    it.conversationId.contains(text)
-
+                    it.typeConversation == TypeConversation.PRIVATE //AQUI DEVE SER APRESENTADO COM BASE NO NOME NA PESQUISA
                 }
             }
         }
@@ -61,24 +59,6 @@ class ConversationViewModel(
                 _searchText.value = event.text
             }
             else -> {}
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun createConversation() {
-        viewModelScope.launch {
-            conversationUsecase.createConversation(
-                Conversation(
-                    id = null,
-                    100,
-                    conversationId = UUID.randomUUID().toString(),
-                    createdAt = LocalDateTime.parse(
-                        "10-10-2020T10:05:59",
-                        DateTimeFormatter.ofPattern("dd-MM-yyyy'T'HH:mm:ss")
-                    ),
-                    typeConversation = TypeConversation.PRIVATE
-                )
-            )
         }
     }
 

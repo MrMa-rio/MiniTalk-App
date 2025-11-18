@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class ContactsViewModel(
-    val contactUsecase: ContactUsecase,
+    contactUsecase: ContactUsecase,
     private val conversationUsecase: ConversationUsecase
 ) : ViewModel() {
 
@@ -50,15 +50,11 @@ class ContactsViewModel(
                 viewModelScope.launch {
                     val conversation = Conversation(
                         id = null,
-                        conversationId = "",
                         userId = event.contact.userId,
                         createdAt = LocalDateTime.now(),
                         typeConversation = TypeConversation.PRIVATE
                     )
-                    conversationUsecase.createConversation(
-                        conversation
-                    )
-                    _uiEvent.send(UIEvent.NavigateToChat((conversation.conversationId)))
+                    _uiEvent.send(UIEvent.NavigateToChat((conversation.userId)))
                 }
             }
 

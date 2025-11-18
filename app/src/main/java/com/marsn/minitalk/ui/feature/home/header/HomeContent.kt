@@ -28,10 +28,11 @@ import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.feature.home.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.ConversationViewModel
-import com.marsn.minitalk.ui.feature.home.HomeViewModel
+import com.marsn.minitalk.ui.feature.home.ChatViewModel
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
 import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
 import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.compose.koinViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -45,7 +46,7 @@ fun HomeContent(viewModel: ConversationViewModel) {
 
     val conversations by viewModel.conversations.collectAsState()
 
-    val homeViewModel = viewModel<HomeViewModel> { HomeViewModel() }
+    val homeViewModel = koinViewModel<ChatViewModel>()
     val uiEvent = remember { homeViewModel.uiEvent }
 
     val navController = LocalNavController3.current
@@ -54,7 +55,7 @@ fun HomeContent(viewModel: ConversationViewModel) {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat-> {
-                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                    navController.navigate(ChatRoutes.ChatRoute(event.userId))
                 }
 
                 is UIEvent.NavigateToProfile<*> -> {

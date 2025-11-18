@@ -18,7 +18,7 @@ import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
 import com.marsn.minitalk.ui.feature.home.ConversationViewModel
-import com.marsn.minitalk.ui.feature.home.HomeViewModel
+import com.marsn.minitalk.ui.feature.home.ChatViewModel
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import org.koin.android.ext.koin.androidContext
@@ -62,7 +62,7 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    viewModelOf(::HomeViewModel)
+    viewModelOf(::ChatViewModel)
     viewModelOf(::ConversationViewModel)
     viewModelOf(::ContactsViewModel)
 

@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ContactContent(viewModel: ContactsViewModel) {
 
-
     val state = viewModel.uiState.collectAsState()
 
     val searchText = state.value.searchText
@@ -46,7 +45,7 @@ fun ContactContent(viewModel: ContactsViewModel) {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat -> {
-                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                    navController.navigate(ChatRoutes.ChatRoute(event.userId))
                 }
 
                 is UIEvent.NavigateBack -> {

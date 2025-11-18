@@ -1,5 +1,6 @@
 package com.marsn.minitalk.ui.feature.chat.contact
 
+import android.graphics.drawable.shapes.Shape
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -13,12 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.marsn.minitalk.R
 import com.marsn.minitalk.core.domain.contact.Contact
+import com.marsn.minitalk.ui.components.imageProfile.ImageProfile
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalTime
@@ -77,18 +83,8 @@ fun ListContact(contacts: Flow<List<Contact>>?, onEvent: (ContactEvent) -> Unit)
                             horizontalArrangement = Arrangement.SpaceAround,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            AsyncImage(
-                                model = item.profilePicture,
-                                modifier = Modifier
-                                    .width(48.dp)
-                                    .height(48.dp)
-                                    .clip(shape = ShapeDefaults.Medium),
-                                contentDescription = "Person",
-                                fallback = painterResource(R.drawable.person),
-                                error = painterResource(R.drawable.person)
-                            )
+                            ImageProfile(item.profilePicture, RoundedCornerShape(48.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-
                             Column(
                                 modifier = Modifier.padding(4.dp),
                                 verticalArrangement = Arrangement.SpaceBetween
