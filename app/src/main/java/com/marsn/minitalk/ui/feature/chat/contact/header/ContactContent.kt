@@ -11,26 +11,50 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.marsn.minitalk.core.domain.contact.Contact
-import com.marsn.minitalk.ui.feature.home.TextInputSearch
+import com.marsn.minitalk.navigation.ChatRoutes
+import com.marsn.minitalk.navigation.LocalNavController3
+import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
 import com.marsn.minitalk.ui.feature.chat.contact.ListContact
-import kotlinx.coroutines.flow.Flow
+import com.marsn.minitalk.ui.feature.chat.contact.TextInputSearch
+import kotlinx.coroutines.flow.collectLatest
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ContactContent(contacts: Flow<List<Contact>>, viewModel: ContactsViewModel) {
+fun ContactContent(viewModel: ContactsViewModel) {
 
 
     val searchText by viewModel.searchText.collectAsState()
+    val contacts = viewModel.contacts
+    val uiEvent = remember { viewModel.uiEvent }
+    val navController = LocalNavController3.current
+
+    LaunchedEffect(Unit) {
+
+        uiEvent.collectLatest { event ->
+            when (event) {
+                is UIEvent.NavigateToChat -> {
+                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                }
+
+                is UIEvent.NavigateBack -> {
+                    navController.pop()
+                }
+
+                else -> {}
+            }
+        }
+    }
 
     Column {
         Column(
@@ -40,8 +64,8 @@ fun ContactContent(contacts: Flow<List<Contact>>, viewModel: ContactsViewModel) 
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TabsHeader()
-            TextInputSearch(searchText = searchText) { viewModel::onEvent }
+            TabsHeader(viewModel::onEvent)
+            TextInputSearch (searchText = searchText, viewModel::onEvent)
         }
 
         Column(
@@ -60,7 +84,7 @@ fun ContactContent(contacts: Flow<List<Contact>>, viewModel: ContactsViewModel) 
                 modifier = Modifier.fillMaxSize(),
             ) {
 
-                ListContact(contacts, viewModel::onEvent)
+                ListContact(contacts = contacts, viewModel::onEvent)
             }
 
         }

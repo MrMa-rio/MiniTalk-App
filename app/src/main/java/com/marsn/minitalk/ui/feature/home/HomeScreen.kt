@@ -33,7 +33,6 @@ fun HomeScreen(navigate: NavController3) {
 
 
     val viewModel = koinViewModel<ConversationViewModel>()
-    val conversations by viewModel.conversations.collectAsState()
 
     val gradient = remember {
         Brush.linearGradient(

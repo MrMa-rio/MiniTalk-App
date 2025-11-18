@@ -53,7 +53,7 @@ fun HomeContent(viewModel: ConversationViewModel) {
 
         uiEvent.collectLatest { event ->
             when (event) {
-                is UIEvent.NavigateToChat<*> -> {
+                is UIEvent.NavigateToChat-> {
                     navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
                 }
 

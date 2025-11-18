@@ -57,9 +57,8 @@ fun ListContact(contacts: Flow<List<Contact>>?, onEvent: (ContactEvent) -> Unit)
         itemsIndexed(listContact?.value?.sortedBy { it.name } ?: listOf()) { index, item ->
 
             Button(
-                onClick = {
-                    onEvent
-                }, colors = colors,
+                onClick = { onEvent(ContactEvent.SelectContact(item)) }
+                , colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {
                 Box(

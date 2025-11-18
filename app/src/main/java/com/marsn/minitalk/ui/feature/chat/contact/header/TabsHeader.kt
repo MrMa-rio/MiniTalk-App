@@ -18,12 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.core.domain.UserProfile
+import com.marsn.minitalk.ui.feature.chat.contact.ContactEvent
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 
 
 @Composable
-fun TabsHeader() {
+fun TabsHeader(onEvent: (ContactEvent) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,7 +35,7 @@ fun TabsHeader() {
     ) {
         IconButton(
             onClick = {
-                /*TODO*/
+                onEvent(ContactEvent.NavigateBack)
             },
         ) {
             Icon(

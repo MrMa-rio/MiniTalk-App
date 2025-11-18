@@ -21,7 +21,6 @@ class HomeViewModel() : ViewModel() {
                 viewModelScope.launch {
                     _uiEvent.send(
                         UIEvent.NavigateToChat(
-                            ChatRoutes.ChatRoute,
                             event.conversationId
                         )
                     )
