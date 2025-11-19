@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.marsn.minitalk.core.domain.proto.toMessageText
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
@@ -30,7 +31,7 @@ fun ChatScreen(userId: Long) {
     val uiEvent = remember { messagingViewModel.uiEvent }
 
     val state = messagingViewModel.uiState.collectAsState()
-
+    val messages = messagingViewModel.messages.collectAsState()
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
@@ -72,9 +73,9 @@ fun ChatScreen(userId: Long) {
 
                 ChatHeader(state.value.contact,messagingViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
-                    MessagesList(messages = messagesMock, 101) {}
+                    MessagesList(messages = listOf(messages.value?.toMessageText() ?: messagesMock.first()), 101) {}
                 }
-                ChatInput()
+                ChatInput(state.value.inputText, messagingViewModel::onEvent)
             }
         }
     }

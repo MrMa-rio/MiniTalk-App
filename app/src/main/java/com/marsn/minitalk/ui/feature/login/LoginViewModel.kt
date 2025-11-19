@@ -2,6 +2,7 @@ package com.marsn.minitalk.ui.feature.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.marsn.minitalk.core.dataprovider.clients.WebSocketManager
 import com.marsn.minitalk.navigation.AuthRoutes
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
@@ -9,7 +10,9 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val socketManager: WebSocketManager
+) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -20,6 +23,7 @@ class LoginViewModel : ViewModel() {
 
             is LoginEvent.Logged -> {
                 viewModelScope.launch {
+                    socketManager.connect(100)
                     _uiEvent.send(UIEvent.NavigateTo(ChatRoutes.HomeRoute))
                 }
             }

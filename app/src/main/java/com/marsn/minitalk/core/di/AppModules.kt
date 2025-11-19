@@ -3,6 +3,8 @@ package com.marsn.minitalk.core.di
 import androidx.room.Room
 import com.marsn.minitalk.core.dataprovider.client.KtorQualifiers
 import com.marsn.minitalk.core.dataprovider.client.PathsAPI
+import com.marsn.minitalk.core.dataprovider.clients.WebSocketChatClient
+import com.marsn.minitalk.core.dataprovider.clients.WebSocketManager
 import com.marsn.minitalk.core.dataprovider.repository.ChatDatabase
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
@@ -17,8 +19,10 @@ import com.marsn.minitalk.core.usecase.message.SaveMessagesUseCaseImpl
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
+import com.marsn.minitalk.ui.feature.chat.conversation.MessagingViewModel
 import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.home.ChatViewModel
+import com.marsn.minitalk.ui.feature.login.LoginViewModel
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import org.koin.android.ext.koin.androidContext
@@ -27,9 +31,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import io.ktor.client.engine.android.*
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.header
+import io.ktor.http.cio.CIOHeaders
 import io.ktor.serialization.kotlinx.json.json
 
 val databaseModule = module {
@@ -66,6 +72,8 @@ val viewModelModule = module {
     viewModelOf(::ChatViewModel)
     viewModelOf(::ConversationViewModel)
     viewModelOf(::ContactsViewModel)
+    viewModelOf(::LoginViewModel)
+    viewModelOf(::MessagingViewModel)
 
 }
 
@@ -89,9 +97,6 @@ val networkModule = module {
             defaultRequest {
                 url(PathsAPI.MINI_TALK_API.name)
             }
-
-            install(WebSockets)
-
             install(ContentNegotiation) {
                 json()
             }
@@ -101,6 +106,18 @@ val networkModule = module {
             }
         }
     }
+
+    single(KtorQualifiers.WEBSOCKETS) {
+        HttpClient(engineFactory = CIO ) {
+            install(WebSockets)
+        }
+    }
+
+    single() {
+        WebSocketChatClient(get(KtorQualifiers.WEBSOCKETS))
+    }
+
+    single() { WebSocketManager(get()) }
 
     single(KtorQualifiers.PAYMENTS_API) {
         HttpClient(Android) {

@@ -9,5 +9,7 @@ sealed interface MessageEvent {
 
     object Home : MessageEvent
     data class Profile(val userProfile: UserProfile) : MessageEvent
-    data class InputText(val message: String) : MessageEvent
+    data class InputText(val text: String) : MessageEvent
+
+    object Send : MessageEvent
 }

@@ -7,4 +7,8 @@ import org.koin.core.qualifier.named
 object KtorQualifiers {
     val USERS_API = named("UsersApi")
     val PAYMENTS_API = named("PaymentsApi")
+
+    val WEBSOCKETS = named("WebSockets")
+    val WEBSOCKETS_MANAGER = named("WebSocketsManager")
+    val WEBSOCKETS_CLIENT = named("WebSocketsClient")
 }

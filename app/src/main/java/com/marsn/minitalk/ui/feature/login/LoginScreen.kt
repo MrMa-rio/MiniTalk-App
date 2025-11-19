@@ -51,12 +51,13 @@ import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import com.marsn.minitalk.ui.theme.textInputColors
 import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen( onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit) {
 
     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-    val viewModel = viewModel<LoginViewModel> { LoginViewModel() }
+    val viewModel = koinViewModel<LoginViewModel>()
 
     val uiEvent = remember { viewModel.uiEvent }
 

@@ -55,11 +55,16 @@ dependencies {
     //COIL
     implementation(libs.coil.compose)
 
+    //PROTOBUF
+    implementation(libs.kotlinx.serialization.protobuf)
+
 
     //KOIN
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+    implementation(libs.ktor.client.cio)
+
 
     //MATERIAL
     implementation(libs.androidx.compose.material.icons.extended)

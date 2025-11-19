@@ -28,10 +28,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.ui.components.inputsText.InputField
+import com.marsn.minitalk.ui.feature.chat.conversation.MessageEvent
 
 @Composable
-fun ChatInput() {
-    var message by remember { mutableStateOf("") }
+fun ChatInput(inputText: String, onEvent: (MessageEvent) -> Unit) {
 
     Row(
         modifier = Modifier
@@ -43,8 +43,8 @@ fun ChatInput() {
     ) {
 
         InputField(
-            value = message,
-            onValueChange = { message = it },
+            value = inputText,
+            onValueChange = { onEvent(MessageEvent.InputText(it)) },
             placeholder = "Mensagem...",
             keyboardType = KeyboardType.Text,
             modifier = Modifier
@@ -60,7 +60,7 @@ fun ChatInput() {
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        /*TODO*/
+                        onEvent(MessageEvent.Send)
                     },
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = Color(0xFF0FBFAD),

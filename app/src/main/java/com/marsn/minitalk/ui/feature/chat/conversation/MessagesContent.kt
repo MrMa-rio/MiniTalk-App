@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.core.domain.MessageText
+import com.marsn.minitalk.core.domain.proto.ChatMessage
 import com.marsn.minitalk.ui.components.message.MessageBubbleFriend
 import com.marsn.minitalk.ui.components.message.MessageBubbleOwn
 

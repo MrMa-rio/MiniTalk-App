@@ -4,6 +4,17 @@ import com.marsn.minitalk.core.domain.MessageText
 
 val messagesMock: List<MessageText> = listOf(
 
+    MessageText(
+        45,
+        100,
+        "TESTE",
+        "PRIVATE",
+        null,
+        14545755,
+        "ENVIADA",
+        isDeleted = false,
+        isEdited = false
+    )
 
 
 /*
