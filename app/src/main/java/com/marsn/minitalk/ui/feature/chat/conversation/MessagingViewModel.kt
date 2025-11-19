@@ -28,7 +28,6 @@ class MessagingViewModel(
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-
     private val _uiState = MutableStateFlow(MessageUiState())
     val uiState = _uiState.asStateFlow()
 

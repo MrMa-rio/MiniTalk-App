@@ -27,11 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -42,14 +40,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marsn.minitalk.R
+import com.marsn.minitalk.core.domain.UserProfile
 import com.marsn.minitalk.navigation.AuthRoutes
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LockScreenOrientation
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import com.marsn.minitalk.ui.theme.textInputColors
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
@@ -58,6 +57,8 @@ fun LoginScreen( onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit)
 
     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     val viewModel = koinViewModel<LoginViewModel>()
+
+
 
     val uiEvent = remember { viewModel.uiEvent }
 
@@ -75,14 +76,14 @@ fun LoginScreen( onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit)
         }
     }
 
-    LoginContent(onEvent = viewModel::onEvent)
+    LoginContent(state = viewModel.uiState, onEvent = viewModel::onEvent)
 }
 
 @Composable
-private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
+private fun LoginContent(state: StateFlow<LoginUiState>, onEvent: (LoginEvent) -> Unit) {
 
-    var username by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+
+    val uiState by state.collectAsState()
 
     val gradient = remember {
         Brush.linearGradient(
@@ -124,8 +125,8 @@ private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
 
             item {
                 InputField(
-                    value = username,
-                    onValueChange = { username = it },
+                    value = uiState.username,
+                    onValueChange = { uiState.onUsernameChanged(it) },
                     placeholder = "Nome de usuário",
                     imageVector = Icons.Default.Person
                 )
@@ -135,8 +136,8 @@ private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
 
             item {
                 InputField(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = uiState.password,
+                    onValueChange = { uiState.onPasswordChanged(it) },
                     placeholder = "Senha",
                     imageVector = Icons.Default.Lock,
                     keyboardType = KeyboardType.Password
@@ -147,7 +148,14 @@ private fun LoginContent(onEvent: (LoginEvent) -> Unit) {
 
             item {
                 Button(
-                    onClick = { onEvent(LoginEvent.Logged(username)) },
+                    onClick = { onEvent(LoginEvent.Logged(
+                        UserProfile(
+                            "Mario Alberto",
+                            email = "marioteste@gmail.com",
+                            phoneNumber = "16557758546",
+                            photoUrl = "https://picsum.photos/200?4"
+                        )
+                    )) },
                     modifier = Modifier.fillMaxWidth(0.6f),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black,

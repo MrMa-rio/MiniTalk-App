@@ -42,8 +42,9 @@ fun TabsHeader(onEvent: (ConversationEvent) -> Unit) {
         ButtonHeader(
                 onClick = {onEvent(ConversationEvent.Profile(UserProfile(
                     "Mario Alberto",
-                    "teste@teste",
-                    "16992283546"
+                    "marioteste@gmail.com",
+                    "16992283546",
+                    "https://picsum.photos/200?4"
                 ))) },
         contentDescription = "Person",
         tint = Color.White,
