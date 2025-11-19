@@ -2,7 +2,6 @@ package com.marsn.minitalk.core.usecase.conversation
 
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
 import com.marsn.minitalk.core.domain.Conversation
-import com.marsn.minitalk.core.domain.contact.Contact
 import kotlinx.coroutines.flow.Flow
 
 class ConversationUsecaseImpl(

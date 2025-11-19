@@ -1,6 +1,7 @@
 package com.marsn.minitalk.core.dataprovider.repository.conversation
 
 import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.shared.enums.TypeConversation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -13,7 +14,8 @@ class ConversationRepositoryImpl(
         conversationDao.insertConversation(conversation)
     }
 
-    override suspend fun getConversationById(conversationId: String): Result<ConversationEntity> {
+
+    override suspend fun getConversationById(conversationId: Long): ConversationEntity {
         TODO("Not yet implemented")
     }
 
@@ -30,9 +32,8 @@ class ConversationRepositoryImpl(
             }
     }
 
-
-    override suspend fun getUserConversations(userId: Long): Result<ConversationEntity> {
-        TODO("Not yet implemented")
+    override suspend fun getConversationByListDestinyId(destinyId: List<Long>): ConversationEntity? {
+        return conversationDao.getConversationByDestinyId(destinyId)
     }
 
     override suspend fun updateConversation(conversation: ConversationEntity): Result<Unit> {

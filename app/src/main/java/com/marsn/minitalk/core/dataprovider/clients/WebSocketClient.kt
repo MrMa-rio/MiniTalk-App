@@ -1,5 +1,6 @@
 package com.marsn.minitalk.core.dataprovider.clients
 import com.marsn.minitalk.core.domain.proto.ChatMessage
+import com.marsn.minitalk.ui.feature.chat.conversation.MessageEventBus
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.url
@@ -20,7 +21,7 @@ class WebSocketChatClient(
 
     suspend fun connect(userId: Long) {
         session = client.webSocketSession {
-            url("ws://192.168.3.92:8084/ws-chat?userId=$userId")
+            url("ws://172.16.232.241:8084/ws-chat?userId=$userId")
 
         }
 
@@ -29,13 +30,14 @@ class WebSocketChatClient(
 
     @OptIn(ExperimentalSerializationApi::class)
     private fun listenIncoming() {
+
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 for (frame in session!!.incoming) {
                     if (frame is Frame.Binary) {
                         val bytes = frame.data
                         val msg = ProtoBuf.decodeFromByteArray(ChatMessage.serializer(), bytes)
-                        _incomingMessages.emit(msg)
+                        MessageEventBus.emit(msg)
                     }
                 }
             } catch (e: Exception) {

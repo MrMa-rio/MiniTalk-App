@@ -59,12 +59,13 @@ dependencies {
     implementation(libs.kotlinx.serialization.protobuf)
 
 
+    implementation(libs.kotlinx.datetime)
+
     //KOIN
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.ktor.client.cio)
-
 
     //MATERIAL
     implementation(libs.androidx.compose.material.icons.extended)

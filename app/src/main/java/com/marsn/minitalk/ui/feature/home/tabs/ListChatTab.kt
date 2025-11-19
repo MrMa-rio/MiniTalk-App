@@ -1,7 +1,5 @@
 package com.marsn.minitalk.ui.feature.home.tabs
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -28,13 +25,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.usecase.formattedDateForChatLastMessage
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.LocalDateTime
+import kotlin.time.ExperimentalTime
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalTime::class)
 @Composable
 fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent) -> Unit) {
     val colors = remember {
@@ -50,7 +48,7 @@ fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent)
         itemsIndexed(messageContact.sortedBy { it.createdAt }) { index, item ->
             Button(
                 onClick = {
-                    onEvent(ConversationEvent.Chat(item.userId))
+                    onEvent(ConversationEvent.Chat(item.userId.first()))
                 }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {
@@ -98,8 +96,9 @@ fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent)
                         }
                         Column {
                             Text(
-                                text = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
-                                    .toString(), fontFamily = SairaSemiExpanded
+                                text = LocalDateTime.parse(item.createdAt.toString())
+                                    .formattedDateForChatLastMessage(),
+                                fontFamily = SairaSemiExpanded
                             )
                         }
                     }

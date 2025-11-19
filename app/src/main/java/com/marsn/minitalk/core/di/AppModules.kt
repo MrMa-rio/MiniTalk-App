@@ -10,33 +10,28 @@ import com.marsn.minitalk.core.dataprovider.repository.conversation.Conversation
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepository
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepositoryImpl
-import com.marsn.minitalk.core.dataprovider.repository.message.messageChunk.MessageChunkRepository
-import com.marsn.minitalk.core.dataprovider.repository.message.messageChunk.MessageChunkRepositoryImpl
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecaseImpl
-import com.marsn.minitalk.core.usecase.message.SaveMessagesUseCase
-import com.marsn.minitalk.core.usecase.message.SaveMessagesUseCaseImpl
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
 import com.marsn.minitalk.ui.feature.chat.conversation.MessagingViewModel
-import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.home.ChatViewModel
+import com.marsn.minitalk.ui.feature.home.ConversationViewModel
 import com.marsn.minitalk.ui.feature.login.LoginViewModel
-import io.ktor.client.*
-import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.request.header
+import io.ktor.serialization.kotlinx.json.json
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import io.ktor.client.engine.android.*
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.request.header
-import io.ktor.http.cio.CIOHeaders
-import io.ktor.serialization.kotlinx.json.json
 
 val databaseModule = module {
 
@@ -51,7 +46,6 @@ val databaseModule = module {
 
 
     single { get<ChatDatabase>().conversationDao() }
-    single { get<ChatDatabase>().messageChunkDao() }
     single { get<ChatDatabase>().messageDao() }
 }
 
@@ -62,9 +56,6 @@ val repositoryModule = module {
     }
     singleOf(::MessageRepositoryImpl) {
         bind<MessageRepository>()
-    }
-    singleOf(::MessageChunkRepositoryImpl) {
-        bind<MessageChunkRepository>()
     }
 }
 
@@ -81,9 +72,6 @@ val usecaseModule = module {
 
     singleOf(::ConversationUsecaseImpl) {
         bind<ConversationUsecase>()
-    }
-    singleOf(::SaveMessagesUseCaseImpl) {
-        bind<SaveMessagesUseCase>()
     }
 
     singleOf(::ContactUsecaseImpl) {

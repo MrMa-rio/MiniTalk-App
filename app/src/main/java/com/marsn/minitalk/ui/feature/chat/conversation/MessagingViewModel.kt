@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.UUID
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class MessagingViewModel(
     val contactUsecase: ContactUsecase,
@@ -91,16 +93,17 @@ class MessagingViewModel(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     suspend fun sendMock(senderId: Long, destinyId: Long, client: WebSocketManager) {
 
-        val now = LocalDateTime.now()
+        val now = Clock.System.now()
 
         val message = ChatMessage(
             messageId = UUID.randomUUID().toString(),
-            conversationId = "conv-001",
+            conversationId = 115,
             senderId = senderId,
             content = uiState.value.inputText,
-            timestamp = now.toString(),
+            timestamp = 15252145,
             destinyId = destinyId
         )
 

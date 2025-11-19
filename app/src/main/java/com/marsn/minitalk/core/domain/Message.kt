@@ -4,8 +4,9 @@ import com.marsn.minitalk.core.dataprovider.repository.message.MessageEntity
 
 data class Message(
     val id: String,
-    val conversationId: String,
-    val senderId: String,
+    val conversationId: Long,
+    val senderId: Long,
+    val destinyId: Long,
     val content: String,
     val createdAt: Long,
     val isDelivered: Boolean = false,
@@ -20,6 +21,7 @@ data class Message(
             conversationId = conversationId,
             createdAt = createdAt,
             senderId = senderId,
+            destinyId = destinyId,
             content = content,
             isRead = isRead,
             isDelivered = isDelivered,

@@ -8,9 +8,11 @@ import kotlinx.serialization.Serializable
 @Entity(tableName = "messages")
 @Serializable
 data class MessageEntity(
-    @PrimaryKey val messageId: String,
-    val conversationId: String,
-    val senderId: String,
+    @PrimaryKey
+    val messageId: String,
+    val conversationId: Long,
+    val senderId: Long,
+    val destinyId: Long,
     val content: String,
     val createdAt: Long,
     val timestamp: Long,
@@ -26,6 +28,7 @@ data class MessageEntity(
             id = messageId,
             conversationId = conversationId,
             senderId = senderId,
+            destinyId = destinyId,
             content = content,
             createdAt = createdAt,
             isSent = isSent,

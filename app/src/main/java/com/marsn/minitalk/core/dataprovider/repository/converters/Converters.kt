@@ -55,5 +55,13 @@ class Converters {
         }
     }
 
+    @TypeConverter
+    fun fromListLong(destinyId: List<Long>): String {
+        return destinyId.joinToString(",")
+    }
 
+    @TypeConverter
+    fun toListLong(destinyId: String): List<Long> {
+        return destinyId.split(",").map { it.toLong() }
+    }
 }
