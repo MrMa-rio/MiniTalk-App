@@ -2,35 +2,23 @@ package com.marsn.minitalk.core.usecase.auth
 
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
 import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.Token
+import com.marsn.minitalk.core.domain.UserProfile
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import kotlinx.coroutines.flow.Flow
 
 class AuthUsecaseImpl(
     private val repository: ConversationRepository
-) : ConversationUsecase {
-    override suspend fun createConversation(conversation: Conversation) {
+) : AuthUsecase {
+    override suspend fun authLogin(username: String, password: String): Token {
 
-        repository.createConversation(conversation.toEntity())
+       TODO("Not yet implemented")
 
     }
 
-    override suspend fun consultConversation(conversationId: String): Conversation? {
+    override suspend fun getUserProfile(): UserProfile? {
         TODO("Not yet implemented")
     }
 
-    override  fun consultAllConversations(): Flow<List<Conversation>> {
 
-        return repository.getAllConversations()
-
-    }
-
-    override suspend fun consultUserConversation(userId: Long): Conversation {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateConversation(conversation: Conversation) {
-
-        repository.updateConversation(conversation.toEntity())
-
-    }
 }

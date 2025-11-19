@@ -10,6 +10,8 @@ import com.marsn.minitalk.core.dataprovider.repository.conversation.Conversation
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepository
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepositoryImpl
+import com.marsn.minitalk.core.usecase.auth.AuthUsecase
+import com.marsn.minitalk.core.usecase.auth.AuthUsecaseImpl
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecaseImpl
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
@@ -77,6 +79,11 @@ val usecaseModule = module {
     singleOf(::ContactUsecaseImpl) {
         bind<ContactUsecase>()
     }
+
+    singleOf(::AuthUsecaseImpl) {
+        bind<AuthUsecase>()
+    }
+
 }
 
 val networkModule = module {
