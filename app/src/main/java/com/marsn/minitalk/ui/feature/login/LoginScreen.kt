@@ -70,7 +70,6 @@ fun LoginScreen( onNavigateToRegister: () -> Unit, onNavigateToHome: () -> Unit)
                     is AuthRoutes.RegisterRoute -> onNavigateToRegister.invoke()
                     else -> {}
                 }
-
                 else -> {}
             }
         }

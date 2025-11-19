@@ -25,19 +25,13 @@ class MessagingViewModel(
     private val socketManager: WebSocketManager
 ) : ViewModel() {
 
-
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
     private val _uiState = MutableStateFlow(MessageUiState())
     val uiState = _uiState.asStateFlow()
 
 
-    val messages = socketManager.messages.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-
-    override fun onCleared() {
-        viewModelScope.launch { socketManager.disconnect() }
-    }
 
 
     fun loadContact(userId: Long) {
@@ -91,11 +85,7 @@ class MessagingViewModel(
             }
         }
     }
-
-    @OptIn(ExperimentalTime::class)
-    suspend fun sendMock(senderId: Long, destinyId: Long, client: WebSocketManager) {
-
-        val now = Clock.System.now()
+    fun sendMock(senderId: Long, destinyId: Long, client: WebSocketManager) {
 
         val message = ChatMessage(
             messageId = UUID.randomUUID().toString(),
@@ -105,7 +95,6 @@ class MessagingViewModel(
             timestamp = 15252145,
             destinyId = destinyId
         )
-
         client.send(message)
     }
 }

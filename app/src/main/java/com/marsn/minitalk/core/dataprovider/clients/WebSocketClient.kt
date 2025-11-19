@@ -24,7 +24,6 @@ class WebSocketChatClient(
             url("ws://172.16.232.241:8084/ws-chat?userId=$userId")
 
         }
-
         listenIncoming()
     }
 
@@ -37,11 +36,11 @@ class WebSocketChatClient(
                     if (frame is Frame.Binary) {
                         val bytes = frame.data
                         val msg = ProtoBuf.decodeFromByteArray(ChatMessage.serializer(), bytes)
-                        MessageEventBus.emit(msg)
+                        _incomingMessages.emit(msg) //TODO: PRECISA CRIAR UM LISTENER PRA RECEBER ESSA MENSAGEM E ATUALIZAR O BANCO ROOM
                     }
                 }
             } catch (e: Exception) {
-                println("Error receiving message: $e")
+                println("Erro ao receber mensagem: $e")
             }
         }
     }

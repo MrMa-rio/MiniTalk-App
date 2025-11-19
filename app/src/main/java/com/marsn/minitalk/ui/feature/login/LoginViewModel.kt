@@ -14,8 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val socketManager: WebSocketManager,
-    auth: AuthUsecase
+    private val socketManager: WebSocketManager
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()

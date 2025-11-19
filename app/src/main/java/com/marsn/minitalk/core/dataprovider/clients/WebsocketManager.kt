@@ -1,5 +1,6 @@
 package com.marsn.minitalk.core.dataprovider.clients
 
+import androidx.compose.runtime.collectAsState
 import com.marsn.minitalk.core.domain.proto.ChatMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,17 +11,16 @@ import kotlinx.coroutines.launch
 class WebSocketManager(
     private val chatClient: WebSocketChatClient
 ) {
-
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private var isConnected = false
 
     val messages: SharedFlow<ChatMessage> = chatClient.incomingMessages
 
+
     fun connect(userId: Long) {
         if (isConnected) return
         isConnected = true
-
         scope.launch {
             try {
                 chatClient.connect(userId)

@@ -13,16 +13,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.marsn.minitalk.core.domain.proto.toMessageText
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.message.ChatInput
 import com.marsn.minitalk.ui.components.screenTheme.BackgroundThemeChat
-import com.marsn.minitalk.ui.mocks.messages.messagesMock
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
-
 
 @Composable
 fun ChatScreen(userId: Long) {
@@ -31,7 +28,7 @@ fun ChatScreen(userId: Long) {
     val uiEvent = remember { messagingViewModel.uiEvent }
 
     val state = messagingViewModel.uiState.collectAsState()
-    val messages = messagingViewModel.messages.collectAsState()
+    val messages = state.value.messages
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
@@ -54,7 +51,6 @@ fun ChatScreen(userId: Long) {
         verticalArrangement = Arrangement.Center
     ) {
 
-
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -73,7 +69,11 @@ fun ChatScreen(userId: Long) {
 
                 ChatHeader(state.value.contact,messagingViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
-                    MessagesList(messages = listOf(messages.value?.toMessageText() ?: messagesMock.first()), 101) {}
+                    MessagesList(
+                        messages = messages,
+                        userId = 100,
+                        {}
+                    )
                 }
                 ChatInput(state.value.inputText, messagingViewModel::onEvent)
             }

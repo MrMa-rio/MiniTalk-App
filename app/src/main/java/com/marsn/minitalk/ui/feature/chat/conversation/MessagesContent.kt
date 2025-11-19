@@ -16,7 +16,7 @@ import com.marsn.minitalk.ui.components.message.MessageBubbleOwn
 
 @Composable
 fun MessagesList(
-    messages: List<MessageText>,
+    messages: List<MessageText> = listOf(),
     userId: Long,
     onEvent: (MessageEvent) -> Unit
 ) {
