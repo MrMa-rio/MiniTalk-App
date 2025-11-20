@@ -11,6 +11,8 @@ import com.marsn.minitalk.core.dataprovider.repository.conversation.Conversation
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepository
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepositoryImpl
+import com.marsn.minitalk.core.dataprovider.repository.users.UserRepository
+import com.marsn.minitalk.core.dataprovider.repository.users.UserRepositoryImpl
 import com.marsn.minitalk.core.usecase.auth.AuthUsecase
 import com.marsn.minitalk.core.usecase.auth.AuthUsecaseImpl
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
@@ -61,6 +63,10 @@ val repositoryModule = module {
     }
     singleOf(::MessageRepositoryImpl) {
         bind<MessageRepository>()
+    }
+
+    singleOf(::UserRepositoryImpl) {
+        bind<UserRepository>()
     }
 }
 

@@ -5,14 +5,19 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationDao
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationEntity
+import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationParticipantsEntity
 import com.marsn.minitalk.core.dataprovider.repository.converters.Converters
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageDao
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageEntity
+import com.marsn.minitalk.core.dataprovider.repository.users.UserEntity
 
 @Database(
     entities = [
         ConversationEntity::class,
-        MessageEntity::class
+        ConversationParticipantsEntity::class,
+        UserEntity::class,
+        MessageEntity::class,
+
     ],
     version = 10
 )
