@@ -7,30 +7,58 @@ import kotlinx.coroutines.launch
 
 
 class MessageRepositoryImpl(
-    private val dao: MessageDao
+    private val messageDao: MessageDao
 ) : MessageRepository {
 
 
-    override suspend fun saveMessage(message: MessageEntity) {
-        dao.insertMessage(message)
+    override fun getMessages(conversationId: Long): Flow<List<MessageEntity>> {
+        return messageDao.getMessages(conversationId)
     }
 
-    override suspend fun saveMessages(messages: List<MessageEntity>) {
-        dao.insertMessages(messages)
-    }
-
-    override suspend fun getLatestMessages(
+    override suspend fun loadOlderMessages(
         conversationId: Long,
+        beforeTimestamp: Long,
         limit: Int
     ): Flow<List<MessageEntity>> {
-        return dao.getLatestMessages(conversationId, limit)
+        return messageDao.getOlderMessages(conversationId, beforeTimestamp, limit)
     }
 
-    override suspend fun getOlderMessages(
-        conversationId: Long,
-        limit: Int,
-        timestamp: Long
-    ): Flow<List<MessageEntity>> {
-        return dao.getOlderMessages(conversationId, timestamp, limit)
+    override suspend fun getLastMessage(conversationId: Long): MessageEntity? {
+        return messageDao.getLastMessage(conversationId)
     }
+
+
+    override suspend fun sendMessage(message: MessageEntity) {
+        messageDao.upsert(message.copy(isSent = false))
+    }
+
+    override suspend fun saveIncomingMessage(message: MessageEntity) {
+        messageDao.upsert(message)
+    }
+
+
+    override suspend fun updateIsSent(messageId: Long, value: Boolean) {
+        messageDao.updateIsSent(messageId, value)
+    }
+
+    override suspend fun updateIsDelivered(messageId: Long, value: Boolean) {
+        messageDao.updateIsDelivered(messageId, value)
+    }
+
+    override suspend fun updateIsRead(messageId: Long, value: Boolean) {
+        messageDao.updateIsRead(messageId, value)
+    }
+
+    override suspend fun updateIsDeleted(messageId: Long, value: Boolean) {
+        messageDao.updateIsDeleted(messageId, value)
+    }
+
+    override suspend fun updateIsEdited(messageId: Long, value: Boolean) {
+        messageDao.updateIsEdited(messageId, value)
+    }
+
+    override suspend fun deleteConversationMessages(conversationId: Long) {
+        messageDao.deleteByConversation(conversationId)
+    }
+
 }
