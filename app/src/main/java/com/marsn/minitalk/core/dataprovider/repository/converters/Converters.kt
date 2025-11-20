@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import com.marsn.minitalk.core.domain.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
+import com.marsn.minitalk.core.shared.enums.TypeParticipant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -64,4 +65,13 @@ class Converters {
     fun toListLong(destinyId: String): List<Long> {
         return destinyId.split(",").map { it.toLong() }
     }
+
+    fun fromTypeParticipant(value: TypeParticipant) = value.name
+
+    fun toTypeParticipant(value: String) = enumValueOf<TypeParticipant>(value)
+
+
+
+
+
 }

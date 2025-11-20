@@ -38,26 +38,19 @@ fun MessagesList(
 
     var isLoading by remember { mutableStateOf(false) }
 
-    LaunchedEffect(listState, messageList) {
+    LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
             .collect { index ->
 
-                val total = listState.layoutInfo.totalItemsCount
-                if (total == 0) return@collect
+                // Se o usuário chegou no topo
+                if (index == 0 && !isLoading) {
 
-                // Cálculo estável e sem loop infinito
-                val percent = index / total.toFloat()
-
-                if (!isLoading && percent >= 0.80f) {
-                    isLoading = true
-
-                    val oldest = messageList.lastOrNull()
-                    if (oldest != null) {
-                        loadMoreMessages(oldest.timestamp)
+                    val oldestMessage = messageList.lastOrNull()
+                    if (oldestMessage != null) {
+                        isLoading = true
+                        loadMoreMessages(oldestMessage.timestamp)
+                        isLoading = false
                     }
-
-                    // libera o carregamento após finalizar
-                    isLoading = false
                 }
             }
     }

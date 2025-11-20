@@ -8,16 +8,14 @@ import java.time.LocalDateTime
 
 @Entity(tableName = "conversations")
 data class ConversationEntity(
-    @PrimaryKey(autoGenerate = true) val conversationId: Long = 0,
-    val destinyId: List<Long>,
-    val createdAt: LocalDateTime,
+    @PrimaryKey() val conversationId: Long,
+    val createdAt: Long,
     val typeConversation: TypeConversation
 
 ) {
     fun toModel(): Conversation {
         return Conversation(
             conversationId = conversationId,
-            userId = destinyId,
             createdAt = createdAt,
             typeConversation = typeConversation,
         )

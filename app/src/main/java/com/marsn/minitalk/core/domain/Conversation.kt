@@ -6,22 +6,13 @@ import java.time.LocalDateTime
 
 
 data class Conversation(
-    val conversationId: Long?,
-    val userId: List<Long>,
-    val createdAt: LocalDateTime,
+    val conversationId: Long,
+    val createdAt: Long,
     val typeConversation: TypeConversation
 ) {
     fun toEntity(): ConversationEntity {
-        conversationId?.let {
-            return ConversationEntity(
-                conversationId = conversationId,
-                destinyId = userId,
-                createdAt = createdAt,
-                typeConversation = typeConversation
-            )
-        }
         return ConversationEntity(
-            destinyId = userId,
+            conversationId = conversationId,
             createdAt = createdAt,
             typeConversation = typeConversation
         )

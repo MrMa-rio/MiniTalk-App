@@ -1,15 +1,18 @@
-package com.marsn.minitalk.core.dataprovider.repository.message
+package com.marsn.minitalk.core.dataprovider.repository.conversation
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationEntity
 import com.marsn.minitalk.core.dataprovider.repository.users.UserEntity
-import com.marsn.minitalk.core.shared.enums.TypeContent
+import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.shared.enums.TypeConversation
+import com.marsn.minitalk.core.shared.enums.TypeParticipant
+import java.time.LocalDateTime
+
 
 @Entity(
-    tableName = "messages",
+    tableName = "conversation_participants",
     foreignKeys = [
         ForeignKey(
             entity = ConversationEntity::class,
@@ -20,28 +23,22 @@ import com.marsn.minitalk.core.shared.enums.TypeContent
         ForeignKey(
             entity = UserEntity::class,
             parentColumns = ["id"],
-            childColumns = ["senderId"],
+            childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index("conversationId"),
-        Index("senderId")
+        Index("userId")
     ]
 )
-data class MessageEntity(
+data class ConversationParticipantsEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val messageId: Long,
     val conversationId: Long,
-    val senderId: Long,
-    val content: String,
-    val type: TypeContent,
-    val timestamp: Long,
-    val isSent: Boolean,
-    val isDelivered: Boolean,
-    val isRead: Boolean,
-    val isDeleted: Boolean,
-    val isEdited: Boolean
-) {
-}
+    val participantId: Long,
+    val role: TypeParticipant = TypeParticipant.MEMBER,
+    val joinedAt: Long,
+    val typeConversation: TypeConversation
+
+) {}
