@@ -1,4 +1,5 @@
 package com.marsn.minitalk.core.dataprovider.clients
+import com.marsn.minitalk.core.dataprovider.middleware.MessageMiddleware
 import com.marsn.minitalk.core.domain.proto.ChatMessage
 import com.marsn.minitalk.ui.feature.chat.conversation.MessageEventBus
 import io.ktor.client.*
@@ -11,17 +12,16 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 
 class WebSocketChatClient(
-    private val client: HttpClient
+    private val client: HttpClient,
+    private val middleware: MessageMiddleware
 ) {
 
     private var session: WebSocketSession? = null
 
-    private val _incomingMessages = MutableSharedFlow<ChatMessage>()
-    val incomingMessages = _incomingMessages.asSharedFlow()
 
     suspend fun connect(userId: Long) {
         session = client.webSocketSession {
-            url("ws://172.16.232.241:8084/ws-chat?userId=$userId")
+            url("ws://192.168.3.92:8084/ws-chat?userId=$userId")
 
         }
         listenIncoming()
@@ -36,7 +36,7 @@ class WebSocketChatClient(
                     if (frame is Frame.Binary) {
                         val bytes = frame.data
                         val msg = ProtoBuf.decodeFromByteArray(ChatMessage.serializer(), bytes)
-                        _incomingMessages.emit(msg) //TODO: PRECISA CRIAR UM LISTENER PRA RECEBER ESSA MENSAGEM E ATUALIZAR O BANCO ROOM
+                        middleware.onMessage(msg)
                     }
                 }
             } catch (e: Exception) {

@@ -14,8 +14,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class ContactsViewModel(
-    contactUsecase: ContactUsecase,
-    private val conversationUsecase: ConversationUsecase
+    contactUsecase: ContactUsecase
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()

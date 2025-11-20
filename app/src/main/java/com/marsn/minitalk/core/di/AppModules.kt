@@ -5,6 +5,7 @@ import com.marsn.minitalk.core.dataprovider.client.KtorQualifiers
 import com.marsn.minitalk.core.dataprovider.client.PathsAPI
 import com.marsn.minitalk.core.dataprovider.clients.WebSocketChatClient
 import com.marsn.minitalk.core.dataprovider.clients.WebSocketManager
+import com.marsn.minitalk.core.dataprovider.middleware.MessageMiddleware
 import com.marsn.minitalk.core.dataprovider.repository.ChatDatabase
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
@@ -14,6 +15,8 @@ import com.marsn.minitalk.core.usecase.auth.AuthUsecase
 import com.marsn.minitalk.core.usecase.auth.AuthUsecaseImpl
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecaseImpl
+import com.marsn.minitalk.core.usecase.message.MessagesUseCase
+import com.marsn.minitalk.core.usecase.message.MessagesUseCaseImpl
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
@@ -84,6 +87,10 @@ val usecaseModule = module {
         bind<AuthUsecase>()
     }
 
+    singleOf(::MessagesUseCaseImpl) {
+        bind<MessagesUseCase>()
+    }
+
 }
 
 val networkModule = module {
@@ -108,8 +115,12 @@ val networkModule = module {
         }
     }
 
+    single {
+        MessageMiddleware(get())
+    }
+
     single() {
-        WebSocketChatClient(get(KtorQualifiers.WEBSOCKETS))
+        WebSocketChatClient(get(KtorQualifiers.WEBSOCKETS), get())
     }
 
     single() { WebSocketManager(get()) }

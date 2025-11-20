@@ -25,8 +25,6 @@ class LoginViewModel(
     val uiState = _uiState.asStateFlow()
 
 
-
-
     fun onEvent(event: LoginEvent) {
         when (event) {
             is LoginEvent.Logged -> {
@@ -53,7 +51,6 @@ class LoginViewModel(
                     _uiEvent.send(UIEvent.NavigateTo(ChatRoutes.HomeRoute))
                 }
             }
-
         }
     }
 

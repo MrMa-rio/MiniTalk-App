@@ -5,9 +5,10 @@ data class MessageText(
     val senderId: Long,
     val text: String?,
     val type: String,
-    val mediaUrl: String?,
     val timestamp: Long,
-    val status: String,
+    val isSent: Boolean,
+    val isDelivered: Boolean,
+    val isRead: Boolean,
     val isDeleted: Boolean,
     val isEdited: Boolean
 )

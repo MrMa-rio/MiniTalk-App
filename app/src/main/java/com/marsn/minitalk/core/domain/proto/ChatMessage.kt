@@ -4,11 +4,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChatMessage(
-    val messageId: String,
+    val messageId: Long,
     val conversationId: Long,
     val senderId: Long,
     val content: String,
     val timestamp: Long,
-    val destinyId: Long
+    val destinyId: Long,
+    val isSent: Boolean = false,
+    val isDelivered: Boolean = false,
+    val isRead: Boolean = false,
+    val isDeleted: Boolean = false,
+    val isEdited: Boolean = false
 )
 

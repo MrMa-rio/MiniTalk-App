@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +30,8 @@ fun ChatScreen(userId: Long) {
 
     val state = messagingViewModel.uiState.collectAsState()
     val messages = state.value.messages
+    val conversationId = state.value.conversationId
+
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
@@ -40,6 +43,7 @@ fun ChatScreen(userId: Long) {
                 is UIEvent.NavigateBack -> {
                     navController.clearAndNavigate(ChatRoutes.HomeRoute)
                 }
+
                 else -> {}
             }
         }
@@ -67,11 +71,14 @@ fun ChatScreen(userId: Long) {
                     .systemBarsPadding()
             ) {
 
-                ChatHeader(state.value.contact,messagingViewModel::onEvent)
+                ChatHeader(state.value.contact, messagingViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(
-                        messages = messages,
+                        messageList = messages,
                         userId = 100,
+                        {
+                            messagingViewModel.loadOlderMessages(conversationId, it)
+                        },
                         {}
                     )
                 }

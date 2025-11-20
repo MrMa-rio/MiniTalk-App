@@ -2,8 +2,8 @@ package com.marsn.minitalk.ui.feature.chat.conversation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.marsn.minitalk.core.dataprovider.clients.WebSocketManager
 import com.marsn.minitalk.core.domain.proto.ChatMessage
+import com.marsn.minitalk.core.usecase.message.MessagesUseCase
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
@@ -11,18 +11,18 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.util.UUID
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import java.sql.Timestamp
 
 class MessagingViewModel(
     val contactUsecase: ContactUsecase,
-    private val socketManager: WebSocketManager
+    val messagesUseCase: MessagesUseCase
+
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
@@ -31,8 +31,18 @@ class MessagingViewModel(
     val uiState = _uiState.asStateFlow()
 
 
+    init {
+        observeMessages()
+    }
 
-
+    private fun observeMessages() {
+        viewModelScope.launch {
+            messagesUseCase.consultMessages(100)
+                .collect { msgs ->
+                    _uiState.update { it.copy(messages = msgs) }
+                }
+        }
+    }
 
     fun loadContact(userId: Long) {
         viewModelScope.launch {
@@ -42,11 +52,13 @@ class MessagingViewModel(
             _uiState.update { currentState ->
                 currentState.copy(
                     contact = contactFlow,
-                    isLoading = false
+                    isLoading = false,
+                    conversationId = contactFlow?.userId ?: 0
                 )
             }
         }
     }
+
 
     fun onEvent(event: MessageEvent) {
         when (event) {
@@ -75,9 +87,10 @@ class MessagingViewModel(
                     )
                 }
             }
+
             is MessageEvent.Send -> {
                 viewModelScope.launch {
-                    sendMock(100, 200, socketManager)
+                    sendMock(100, 200)
                     _uiState.value = _uiState.value.copy(
                         inputText = ""
                     )
@@ -85,16 +98,39 @@ class MessagingViewModel(
             }
         }
     }
-    fun sendMock(senderId: Long, destinyId: Long, client: WebSocketManager) {
+
+    suspend fun sendMock(senderId: Long, destinyId: Long) {
 
         val message = ChatMessage(
-            messageId = UUID.randomUUID().toString(),
-            conversationId = 115,
+            messageId = 101,
+            conversationId = 100,
             senderId = senderId,
             content = uiState.value.inputText,
-            timestamp = 15252145,
-            destinyId = destinyId
+            timestamp = System.currentTimeMillis(),
+            destinyId = destinyId,
+            isSent = false,
+            isDelivered = false,
+            isRead = false,
+            isDeleted = false,
+            isEdited = false
         )
-        client.send(message)
+        messagesUseCase.sendMessage(message)
     }
+
+    fun loadOlderMessages(conversationId: Long, timestamp: Long) {
+        viewModelScope.launch {
+            val older = messagesUseCase.consultOlderMessages(conversationId, timestamp).stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                _uiState.value.messages
+            ).value
+
+            _uiState.update { state ->
+                state.copy(
+                    messages = state.messages + older
+                )
+            }
+        }
+    }
+
 }

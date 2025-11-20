@@ -6,34 +6,78 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.core.domain.MessageText
 import com.marsn.minitalk.core.domain.proto.ChatMessage
 import com.marsn.minitalk.ui.components.message.MessageBubbleFriend
 import com.marsn.minitalk.ui.components.message.MessageBubbleOwn
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun MessagesList(
-    messages: List<MessageText> = listOf(),
+    messageList: List<MessageText>,
     userId: Long,
-    onEvent: (MessageEvent) -> Unit
+    loadMoreMessages: (Long) -> Unit,
+    onEvent: () -> Unit
 ) {
+
+    val listState = rememberLazyListState()
+
+    var isLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(listState, messageList) {
+        snapshotFlow { listState.firstVisibleItemIndex }
+            .collect { index ->
+
+                val total = listState.layoutInfo.totalItemsCount
+                if (total == 0) return@collect
+
+                // Cálculo estável e sem loop infinito
+                val percent = index / total.toFloat()
+
+                if (!isLoading && percent >= 0.80f) {
+                    isLoading = true
+
+                    val oldest = messageList.lastOrNull()
+                    if (oldest != null) {
+                        loadMoreMessages(oldest.timestamp)
+                    }
+
+                    // libera o carregamento após finalizar
+                    isLoading = false
+                }
+            }
+    }
+
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
+        state = listState,
         reverseLayout = true
-
     ) {
-        items(messages.reversed()) { index ->
-            if (userId == index.senderId)
-                MessageBubbleOwn(index)
+        itemsIndexed(messageList) { _, message ->
+            if (message.senderId == userId)
+                MessageBubbleOwn(message)
             else
-                MessageBubbleFriend(index)
+                MessageBubbleFriend(message)
 
             Spacer(Modifier.height(12.dp))
         }
     }
 }
+

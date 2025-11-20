@@ -14,7 +14,7 @@ import com.marsn.minitalk.core.dataprovider.repository.message.MessageEntity
         ConversationEntity::class,
         MessageEntity::class
     ],
-    version = 9
+    version = 10
 )
 @TypeConverters(Converters::class)
 abstract class ChatDatabase : RoomDatabase() {
