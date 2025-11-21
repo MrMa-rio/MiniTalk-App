@@ -23,7 +23,7 @@ interface ConversationDao {
     suspend fun updateConversation(conversation: ConversationEntity)
 
     @Query("SELECT * FROM conversations WHERE conversationId = :conversationId LIMIT 1")
-    suspend fun getConversationByConversationId(conversationId: Long): ConversationEntity?
+    suspend fun getConversationByConversationId(conversationId: String): ConversationEntity?
 
     @Query("SELECT * FROM conversations ORDER BY createdAt DESC")
     fun getAllConversations(): Flow<List<ConversationEntity>>

@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ChatScreen(conversationId: Long) {
+fun ChatScreen(conversationId: String) {
 
     val messagingViewModel = koinViewModel<MessagingViewModel>()
     val uiEvent = remember { messagingViewModel.uiEvent }
@@ -76,7 +76,7 @@ fun ChatScreen(conversationId: Long) {
                         messageList = messages,
                         userId = 10,
                         {
-                            messagingViewModel.loadOlderMessages(conversation?.conversationId ?: 0, it)
+                            messagingViewModel.loadOlderMessages(conversation?.conversationId ?: "", it)
                         },
                         {}
                     )

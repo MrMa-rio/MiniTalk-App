@@ -35,7 +35,7 @@ import java.time.LocalDateTime
 data class ConversationParticipantsEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val conversationId: Long,
+    val conversationId: String,
     val participantId: Long,
     val role: TypeParticipant = TypeParticipant.MEMBER,
     val joinedAt: Long,

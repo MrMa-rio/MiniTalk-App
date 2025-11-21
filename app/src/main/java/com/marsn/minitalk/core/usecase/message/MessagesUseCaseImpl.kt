@@ -34,7 +34,7 @@ class MessagesUseCaseImpl(
         socketManager.send(message)
     }
 
-    override suspend fun consultMessages(conversationId: Long): Flow<List<MessageText>> {
+    override suspend fun consultMessages(conversationId: String): Flow<List<MessageText>> {
         return messageRepository.getMessages(conversationId).map {
             it.map { messageEntity ->
                 MessageText(
@@ -54,7 +54,7 @@ class MessagesUseCaseImpl(
     }
 
     override suspend fun consultOlderMessages(
-        conversationId: Long,
+        conversationId: String,
         timestamp: Long,
         limit: Int
     ): Flow<List<MessageText>> {

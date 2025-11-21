@@ -1,6 +1,7 @@
 package com.marsn.minitalk
 
 import android.app.Application
+import com.marsn.minitalk.core.di.dataStoreModule
 import com.marsn.minitalk.core.di.databaseModule
 import com.marsn.minitalk.core.di.networkModule
 import com.marsn.minitalk.core.di.repositoryModule
@@ -18,6 +19,7 @@ class MiniTalkApp : Application() {
             androidContext(this@MiniTalkApp)
             modules(
                 databaseModule,
+                dataStoreModule,
                 viewModelModule,
                 repositoryModule,
                 usecaseModule,

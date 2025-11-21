@@ -4,15 +4,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface MessageRepository {
 
-    fun getMessages(conversationId: Long): Flow<List<MessageEntity>>
+    fun getMessages(conversationId: String): Flow<List<MessageEntity>>
 
     suspend fun loadOlderMessages(
-        conversationId: Long,
+        conversationId: String,
         beforeTimestamp: Long,
         limit: Int
     ): Flow<List<MessageEntity>>
 
-    suspend fun getLastMessage(conversationId: Long): MessageEntity?
+    suspend fun getLastMessage(conversationId: String): MessageEntity?
 
     suspend fun sendMessage(message: MessageEntity)
 
@@ -24,5 +24,5 @@ interface MessageRepository {
     suspend fun updateIsDeleted(messageId: Long, value: Boolean)
     suspend fun updateIsEdited(messageId: Long, value: Boolean)
 
-    suspend fun deleteConversationMessages(conversationId: Long)
+    suspend fun deleteConversationMessages(conversationId: String)
 }

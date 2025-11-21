@@ -9,24 +9,38 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
-import kotlinx.coroutines.delay
+import com.marsn.minitalk.navigation.AuthRoutes
+import com.marsn.minitalk.navigation.ChatRoutes
+import com.marsn.minitalk.navigation.NavController3
+import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SplashAnimationScreen(onNavigateTo: () -> Unit) {
+fun SplashAnimationScreen(navController: NavController3) {
+
+    val viewModel = koinViewModel<SplashViewModel>()
+    val uiEvent = remember { viewModel.uiEvent }
 
     LaunchedEffect(Unit) {
-        delay(2000)
-        onNavigateTo()
+        uiEvent.collectLatest { event ->
+            when (event) {
+                is SplashEvent.Home-> {
+                    navController.clearAndNavigate(ChatRoutes.HomeRoute)
+                }
+                is SplashEvent.Login -> {
+                    navController.clearAndNavigate(AuthRoutes.LoginRoute)
+                }
+            }
+        }
     }
-
 
     Box(
         modifier = Modifier
@@ -55,10 +69,4 @@ fun SplashAnimationScreen(onNavigateTo: () -> Unit) {
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun SplashAnimationScreenPreview() {
-    SplashAnimationScreen({})
 }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 @Entity(tableName = "conversations")
 data class ConversationEntity(
-    @PrimaryKey() val conversationId: Long,
+    @PrimaryKey() val conversationId: String,
     val createdAt: Long,
     val typeConversation: TypeConversation
 

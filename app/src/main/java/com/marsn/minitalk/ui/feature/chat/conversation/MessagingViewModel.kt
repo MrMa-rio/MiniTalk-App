@@ -33,7 +33,7 @@ class MessagingViewModel(
         viewModelScope.launch {
             val messages = messagesUseCase.consultMessages(
                 uiState.value.conversation?.conversationId
-                    ?: 0
+                    ?: ""
             )
             _uiState.value = _uiState.value.copy(
                 messages = messages.stateIn(
@@ -45,7 +45,7 @@ class MessagingViewModel(
         }
     }
 
-    private fun observeMessages(conversationId: Long) {
+    private fun observeMessages(conversationId: String) {
         viewModelScope.launch {
             messagesUseCase.consultMessages(conversationId)
                 .collect { msgs ->
@@ -54,7 +54,7 @@ class MessagingViewModel(
         }
     }
 
-    fun loadConversation(conversationId: Long) {
+    fun loadConversation(conversationId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
@@ -115,7 +115,7 @@ class MessagingViewModel(
 
         val message = ChatMessage(
             messageId = 52,
-            conversationId = uiState.value.conversation?.conversationId ?: 0,
+            conversationId = uiState.value.conversation?.conversationId ?: "",
             senderId = senderId,
             content = uiState.value.inputText,
             timestamp = System.currentTimeMillis(),
@@ -129,7 +129,7 @@ class MessagingViewModel(
         messagesUseCase.sendMessage(message)
     }
 
-    fun loadOlderMessages(conversationId: Long, timestamp: Long) {
+    fun loadOlderMessages(conversationId: String, timestamp: Long) {
         viewModelScope.launch {
             val older = messagesUseCase.consultOlderMessages(conversationId, timestamp).stateIn(
                 viewModelScope,

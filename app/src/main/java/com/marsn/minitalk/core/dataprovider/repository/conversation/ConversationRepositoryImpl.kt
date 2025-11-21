@@ -8,7 +8,6 @@ import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 import com.marsn.minitalk.core.shared.enums.TypeParticipant
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.UUID
@@ -30,7 +29,7 @@ class ConversationRepositoryImpl(
 
     companion object {
         private const val TAG = "ConversationRepo"
-        fun deterministicConversationId(senderId: Long, destinyId: Long): Long {
+        fun deterministicConversationId(senderId: Long, destinyId: Long): String {
             val a = min(senderId, destinyId)
             val b = max(senderId, destinyId)
             val seed = "$a:$b"
@@ -38,15 +37,15 @@ class ConversationRepositoryImpl(
             val md = MessageDigest.getInstance(algorithm)
             val digest = md.digest(seed.toByteArray(Charsets.UTF_8))
             val buffer = ByteBuffer.wrap(digest, 0, 8)
-            return buffer.long
+            return buffer.long.toString()
         }
 
-        fun randomConversationId(): Long {
-            return UUID.randomUUID().mostSignificantBits
+        fun randomConversationId(): String {
+            return UUID.randomUUID().mostSignificantBits.toString()
         }
     }
 
-    override suspend fun getConversationByConversationId(conversationId: Long): ConversationEntity? {
+    override suspend fun getConversationByConversationId(conversationId: String): ConversationEntity? {
         return conversationDao.getConversationByConversationId(conversationId)
     }
 
@@ -58,7 +57,7 @@ class ConversationRepositoryImpl(
         return conversationDao.getConversationsByParticipantId(participantId, TypeConversation.GROUP)
     }
 
-    override suspend fun getParticipantsByConversationId(conversationId: Long): Flow<List<ConversationParticipantsEntity>> {
+    override suspend fun getParticipantsByConversationId(conversationId: String): Flow<List<ConversationParticipantsEntity>> {
         return conversationParticipantsDao.getParticipants(conversationId)
     }
 
@@ -86,7 +85,6 @@ class ConversationRepositoryImpl(
                 if (existing != null) return@withTransaction
             }
 
-            // insere participantes idempotente (onConflict IGNORE)
             val p1 = ConversationParticipantsEntity(
                 conversationId = conversationId,
                 participantId = senderId,
@@ -159,7 +157,7 @@ class ConversationRepositoryImpl(
     }
 
     override suspend fun addParticipant(
-        conversationId: Long,
+        conversationId: String,
         participantId: Long,
         role: TypeParticipant
     ) {
@@ -174,7 +172,7 @@ class ConversationRepositoryImpl(
         conversationParticipantsDao.insertParticipant(participant)
     }
 
-    override suspend fun removeParticipant(conversationId: Long, participantId: Long) {
+    override suspend fun removeParticipant(conversationId: String, participantId: Long) {
         conversationParticipantsDao.removeUserFromConversation(conversationId, participantId)
     }
 

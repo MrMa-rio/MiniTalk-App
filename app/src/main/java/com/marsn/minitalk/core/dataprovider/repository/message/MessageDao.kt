@@ -46,7 +46,7 @@ interface MessageDao {
         ORDER BY timestamp DESC
     """
     )
-    fun getMessages(conversationId: Long): Flow<List<MessageEntity>>
+    fun getMessages(conversationId: String): Flow<List<MessageEntity>>
 
     // Paginação manual (carregar mensagens antigas)
     @Query(
@@ -59,7 +59,7 @@ interface MessageDao {
     """
     )
     fun getOlderMessages(
-        conversationId: Long,
+        conversationId: String,
         beforeTimestamp: Long,
         limit: Int
     ): Flow<List<MessageEntity>>
@@ -72,7 +72,7 @@ interface MessageDao {
         LIMIT 1
     """
     )
-    suspend fun getLastMessage(conversationId: Long): MessageEntity?
+    suspend fun getLastMessage(conversationId: String): MessageEntity?
 
 
     @Query("UPDATE messages SET isSent = :value WHERE messageId = :messageId")
@@ -91,6 +91,6 @@ interface MessageDao {
     suspend fun updateIsEdited(messageId: Long, value: Boolean)
 
     @Query("DELETE FROM messages WHERE conversationId = :conversationId")
-    suspend fun deleteByConversation(conversationId: Long)
+    suspend fun deleteByConversation(conversationId: String)
 
 }

@@ -12,7 +12,7 @@ class ConversationUsecaseImpl(
         repository.createPrivateConversation(senderId, destinyId)
     }
 
-    override suspend fun consultConversation(conversationId: Long): Conversation? {
+    override suspend fun consultConversation(conversationId: String): Conversation? {
         val entity = repository.getConversationByConversationId(conversationId)
         return entity?.toModel()
     }

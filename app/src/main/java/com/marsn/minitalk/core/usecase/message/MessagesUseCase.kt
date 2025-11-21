@@ -8,10 +8,10 @@ interface MessagesUseCase {
 
     suspend fun sendMessage(message: ChatMessage)
 
-    suspend fun consultMessages(conversationId: Long): Flow<List<MessageText>>
+    suspend fun consultMessages(conversationId: String): Flow<List<MessageText>>
 
     suspend fun consultOlderMessages(
-        conversationId: Long,
+        conversationId: String,
         timestamp: Long,
         limit: Int = 50
     ): Flow<List<MessageText>>

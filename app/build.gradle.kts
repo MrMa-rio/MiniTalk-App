@@ -47,6 +47,10 @@ android {
 
 dependencies {
 
+    //DATASTORE
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
+
     //ROOM
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)

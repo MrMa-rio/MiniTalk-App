@@ -33,7 +33,7 @@ data class MessageEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val messageId: Long,
-    val conversationId: Long,
+    val conversationId: String,
     val senderId: Long,
     val content: String,
     val typeContent: TypeContent,

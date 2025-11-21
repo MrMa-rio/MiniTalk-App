@@ -2,8 +2,6 @@ package com.marsn.minitalk.ui.feature.chat.contact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.marsn.minitalk.core.domain.conversation.Conversation
-import com.marsn.minitalk.core.shared.enums.TypeConversation
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.ui.UIEvent
@@ -11,7 +9,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 class ContactsViewModel(
     private val contactUsecase: ContactUsecase,

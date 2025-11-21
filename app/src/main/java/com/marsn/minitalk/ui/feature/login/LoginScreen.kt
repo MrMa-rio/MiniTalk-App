@@ -42,6 +42,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.core.domain.UserProfile
+import com.marsn.minitalk.core.domain.UserSession
 import com.marsn.minitalk.navigation.AuthRoutes
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LockScreenOrientation
@@ -148,11 +149,13 @@ private fun LoginContent(state: StateFlow<LoginUiState>, onEvent: (LoginEvent) -
             item {
                 Button(
                     onClick = { onEvent(LoginEvent.Logged(
-                        UserProfile(
+                        UserSession(
+                            userId = 999,
                             "Mario Alberto",
                             email = "marioteste@gmail.com",
-                            phoneNumber = "16557758546",
-                            photoUrl = "https://picsum.photos/200?4"
+                            photoUrl = "https://picsum.photos/200?4",
+                            token = "",
+                            refreshToken = ""
                         )
                     )) },
                     modifier = Modifier.fillMaxWidth(0.6f),

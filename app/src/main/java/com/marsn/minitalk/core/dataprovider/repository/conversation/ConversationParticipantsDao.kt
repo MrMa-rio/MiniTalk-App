@@ -22,16 +22,16 @@ interface ConversationParticipantsDao {
     suspend fun deleteParticipant(participant: ConversationParticipantsEntity)
 
     @Query("DELETE FROM conversation_participants WHERE conversationId = :conversationId AND participantId = :participantId")
-    suspend fun removeUserFromConversation(conversationId: Long, participantId: Long)
+    suspend fun removeUserFromConversation(conversationId: String, participantId: Long)
 
     @Query("DELETE FROM conversation_participants WHERE conversationId = :conversationId")
-    suspend fun removeAllParticipants(conversationId: Long)
+    suspend fun removeAllParticipants(conversationId: String)
 
     @Update
     suspend fun updateParticipant(participant: ConversationParticipantsEntity)
 
     @Query("SELECT * FROM conversation_participants WHERE conversationId = :conversationId")
-    fun getParticipants(conversationId: Long): Flow<List<ConversationParticipantsEntity>>
+    fun getParticipants(conversationId: String): Flow<List<ConversationParticipantsEntity>>
 
     @Query("SELECT * FROM conversation_participants WHERE participantId = :participantId")
     fun getConversationsWhereUserIs(participantId: Long): Flow<List<ConversationParticipantsEntity>>
@@ -42,7 +42,7 @@ interface ConversationParticipantsDao {
         WHERE conversationId = :conversationId AND participantId = :participantId
     """
     )
-    suspend fun isUserInConversation(conversationId: Long, participantId: Long): Boolean
+    suspend fun isUserInConversation(conversationId: String, participantId: Long): Boolean
 
     @Query(
         """
@@ -51,6 +51,6 @@ interface ConversationParticipantsDao {
         LIMIT 1
     """
     )
-    suspend fun getUserRole(conversationId: Long, participantId: Long): String?
+    suspend fun getUserRole(conversationId: String, participantId: Long): String?
 
 }

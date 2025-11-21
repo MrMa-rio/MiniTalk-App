@@ -41,6 +41,7 @@ fun TabsHeader(onEvent: (ConversationEvent) -> Unit) {
 
         ButtonHeader(
                 onClick = {onEvent(ConversationEvent.Profile(UserProfile(
+                    999,
                     "Mario Alberto",
                     "marioteste@gmail.com",
                     "16992283546",

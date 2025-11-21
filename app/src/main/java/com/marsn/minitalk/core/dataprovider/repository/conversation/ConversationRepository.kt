@@ -9,11 +9,11 @@ interface ConversationRepository {
 
     suspend fun getConversationsPreview(currentUserId: Long): Flow<List<ConversationItem>>
 
-    suspend fun getConversationByConversationId(conversationId: Long): ConversationEntity?
+    suspend fun getConversationByConversationId(conversationId: String): ConversationEntity?
 
     suspend fun getConversationsForParticipantId(participantId: Long): Flow<List<ConversationEntity>>
 
-    suspend fun getParticipantsByConversationId(conversationId: Long): Flow<List<ConversationParticipantsEntity>>
+    suspend fun getParticipantsByConversationId(conversationId: String): Flow<List<ConversationParticipantsEntity>>
 
     suspend fun createPrivateConversation(senderId: Long, destinyId: Long): ConversationEntity
 
@@ -22,9 +22,9 @@ interface ConversationRepository {
 
     suspend fun deleteConversation(conversation: ConversationEntity)
 
-    suspend fun addParticipant(conversationId: Long, participantId: Long, role: TypeParticipant = TypeParticipant.MEMBER)
+    suspend fun addParticipant(conversationId: String, participantId: Long, role: TypeParticipant = TypeParticipant.MEMBER)
 
-    suspend fun removeParticipant(conversationId: Long, participantId: Long)
+    suspend fun removeParticipant(conversationId: String, participantId: Long)
     suspend fun getConversationByParticipantId(participantId: Long): Conversation?
     suspend fun getConversationsGroupForParticipantId(participantId: Long): Flow<List<ConversationEntity>>
 }

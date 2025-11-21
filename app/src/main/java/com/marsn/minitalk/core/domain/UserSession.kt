@@ -3,10 +3,11 @@ package com.marsn.minitalk.core.domain
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserProfile(
+data class UserSession(
     val userId: Long,
     val name: String,
     val email: String,
-    val phoneNumber: String,
-    val photoUrl: String,
+    val token: String,
+    val refreshToken: String,
+    val photoUrl: String? = null
 )

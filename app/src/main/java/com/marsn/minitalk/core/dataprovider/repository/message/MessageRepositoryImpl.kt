@@ -11,19 +11,19 @@ class MessageRepositoryImpl(
 ) : MessageRepository {
 
 
-    override fun getMessages(conversationId: Long): Flow<List<MessageEntity>> {
+    override fun getMessages(conversationId: String): Flow<List<MessageEntity>> {
         return messageDao.getMessages(conversationId)
     }
 
     override suspend fun loadOlderMessages(
-        conversationId: Long,
+        conversationId: String,
         beforeTimestamp: Long,
         limit: Int
     ): Flow<List<MessageEntity>> {
         return messageDao.getOlderMessages(conversationId, beforeTimestamp, limit)
     }
 
-    override suspend fun getLastMessage(conversationId: Long): MessageEntity? {
+    override suspend fun getLastMessage(conversationId: String): MessageEntity? {
         return messageDao.getLastMessage(conversationId)
     }
 
@@ -57,7 +57,7 @@ class MessageRepositoryImpl(
         messageDao.updateIsEdited(messageId, value)
     }
 
-    override suspend fun deleteConversationMessages(conversationId: Long) {
+    override suspend fun deleteConversationMessages(conversationId: String) {
         messageDao.deleteByConversation(conversationId)
     }
 

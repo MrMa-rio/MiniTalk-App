@@ -71,13 +71,7 @@ fun TalkNavDisplay() {
 
                 entry<AuthRoutes.SplashRoute> {
                     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    SplashAnimationScreen(
-                        onNavigateTo = {
-                            navigate {
-                                navController.clearAndNavigate(AuthRoutes.LoginRoute)
-                            }
-                        }
-                    )
+                    SplashAnimationScreen(navController)
                 }
 
                 entry<AuthRoutes.LoginRoute> {
@@ -116,7 +110,7 @@ fun TalkNavDisplay() {
 
                 entry<ChatRoutes.ChatRoute> {
                     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    ChatScreen(it.userId)
+                    ChatScreen(it.conversationId)
 
                 }
 

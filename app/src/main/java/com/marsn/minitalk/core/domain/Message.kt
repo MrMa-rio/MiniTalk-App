@@ -6,7 +6,7 @@ import com.marsn.minitalk.core.shared.enums.TypeContent
 data class Message(
     val id: Long,
     val messageId: Long,
-    val conversationId: Long,
+    val conversationId: String,
     val senderId: Long,
     val destinyId: Long,
     val timestamp: Long,

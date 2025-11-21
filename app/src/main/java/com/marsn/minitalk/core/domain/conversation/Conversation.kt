@@ -4,7 +4,7 @@ import com.marsn.minitalk.core.dataprovider.repository.conversation.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 
 data class Conversation(
-    val conversationId: Long,
+    val conversationId: String,
     val createdAt: Long,
     val typeConversation: TypeConversation
 ) {
