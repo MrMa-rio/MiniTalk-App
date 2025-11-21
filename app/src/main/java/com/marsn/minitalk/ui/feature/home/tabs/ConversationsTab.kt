@@ -49,7 +49,7 @@ fun ConversationsTab(conversations: List<ConversationItem>, onEvent: (Conversati
 
     LazyColumn {
 
-        itemsIndexed(conversations.sortedBy { it.lastMessageTimestamp }) { index, item ->
+        itemsIndexed(conversations) { index, item ->
             Button(
                 onClick = {
                     onEvent(ConversationEvent.Chat(item.conversationId))

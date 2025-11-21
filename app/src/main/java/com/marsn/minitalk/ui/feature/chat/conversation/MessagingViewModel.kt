@@ -99,7 +99,7 @@ class MessagingViewModel(
     suspend fun sendMock(senderId: Long, destinyId: Long) {
 
         val message = ChatMessage(
-            messageId = 101,
+            messageId = 52,
             conversationId = uiState.value.conversation?.conversationId ?: 0,
             senderId = senderId,
             content = uiState.value.inputText,

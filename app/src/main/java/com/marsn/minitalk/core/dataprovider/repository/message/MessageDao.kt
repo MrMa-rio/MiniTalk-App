@@ -15,7 +15,7 @@ interface MessageDao {
 
     @Transaction
     suspend fun upsert(message: MessageEntity) {
-        val existing = getByMessageId(message.messageId)
+        val existing = getByMessageId(message.id)
         if (existing == null) {
             insert(message)
         } else {
