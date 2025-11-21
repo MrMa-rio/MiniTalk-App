@@ -66,13 +66,6 @@ fun HomeContent() {
 
                 is UIEvent.ChangeTab -> selectedTabIndex = event.index
 
-                is UIEvent.ChangeSearch -> {
-                    filterConversations(
-                        searchText,
-                        conversations
-                    ) //FAZER O FILTRO E PEGAR O NOME DA CONVERSA FOTO ETCS
-                }
-
                 else -> {}
             }
         }
@@ -122,12 +115,5 @@ fun HomeContent() {
 
         }
     }
-
-}
-
-private fun filterConversations(
-    searchText: String,
-    conversations: List<ConversationItem>
-) {
 
 }

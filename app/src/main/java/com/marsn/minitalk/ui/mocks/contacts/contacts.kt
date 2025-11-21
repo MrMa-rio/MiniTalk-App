@@ -70,12 +70,26 @@ val mocksContactResponseFlow: Flow<List<ContactResponse>> = flow {
                 email = "sofia.ribeiro@example.com",
                 avatarUrl = "https://picsum.photos/200?9"
             ),
+//            ContactResponse(
+//                userId = 10,
+//                name = "Bruno Martins",
+//                phone = "+351911234567",
+//                email = "bruno.martins@example.com",
+//                avatarUrl = "https://picsum.photos/200?10"
+//            ),
             ContactResponse(
-                userId = 10,
-                name = "Bruno Martins",
+                userId = 998,
+                name = "Mario Alberto 2",
                 phone = "+351911234567",
-                email = "bruno.martins@example.com",
-                avatarUrl = "https://picsum.photos/200?10"
+                email = "mario.alberto@example.com",
+                avatarUrl = "https://picsum.photos/200?12"
+            ),
+            ContactResponse(
+                userId = 999,
+                name = "Mario Alberto",
+                phone = "+351911234567",
+                email = "mario.alberto@example.com",
+                avatarUrl = "https://picsum.photos/200?12"
             )
         )
     )

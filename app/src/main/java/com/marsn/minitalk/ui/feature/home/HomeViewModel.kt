@@ -3,6 +3,7 @@ package com.marsn.minitalk.ui.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
+import com.marsn.minitalk.core.usecase.users.UserSessionUsecase
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
 import kotlinx.coroutines.channels.Channel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val conversationUsecase: ConversationUsecase,
+    private val userSessionUsecase: UserSessionUsecase
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
@@ -25,9 +27,12 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch {
+            getCurrentUser()
             getAllConversations()
         }
     }
+
+
 
     fun onEvent(event: ConversationEvent) {
         when (event) {
@@ -73,12 +78,19 @@ class HomeViewModel(
     }
 
     private suspend fun getAllConversations() {
-        conversationUsecase.consultAllConversations(10)
+        conversationUsecase.consultAllConversations(uiState.value.currentUser?.userId ?: 0)
             .onEach { conversationList ->
                 _uiState.value = _uiState.value.copy(
                     conversations = conversationList
                 )
             }
             .launchIn(viewModelScope)
+    }
+
+    private suspend fun getCurrentUser() {
+        val userSession = userSessionUsecase.consultUserSession()
+        _uiState.value = _uiState.value.copy(
+            currentUser = userSession
+        )
     }
 }

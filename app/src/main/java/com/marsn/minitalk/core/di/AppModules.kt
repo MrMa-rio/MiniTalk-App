@@ -26,6 +26,8 @@ import com.marsn.minitalk.core.usecase.message.MessagesUseCase
 import com.marsn.minitalk.core.usecase.message.MessagesUseCaseImpl
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
+import com.marsn.minitalk.core.usecase.users.UserSessionUsecase
+import com.marsn.minitalk.core.usecase.users.UserSessionUsecaseImpl
 import com.marsn.minitalk.infraestructure.UserSessionSerializer
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
 import com.marsn.minitalk.ui.feature.chat.conversation.MessagingViewModel
@@ -129,6 +131,10 @@ val usecaseModule = module {
 
     singleOf(::MessagesUseCaseImpl) {
         bind<MessagesUseCase>()
+    }
+
+    singleOf(::UserSessionUsecaseImpl) {
+        bind<UserSessionUsecase>()
     }
 
 }

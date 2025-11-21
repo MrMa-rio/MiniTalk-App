@@ -14,12 +14,12 @@ class WebSocketManager(
     private var isConnected = false
 
 
-    fun connect(userId: Long) {
+    fun connect(currentUserId: Long) {
         if (isConnected) return
         isConnected = true
         scope.launch {
             try {
-                chatClient.connect(userId)
+                chatClient.connect(currentUserId)
                 println("CONECTADO COM SUCESSO!!")
             } catch (e: Exception) {
                 isConnected = false

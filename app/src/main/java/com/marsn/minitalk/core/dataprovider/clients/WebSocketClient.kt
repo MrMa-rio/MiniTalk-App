@@ -1,13 +1,11 @@
 package com.marsn.minitalk.core.dataprovider.clients
 import com.marsn.minitalk.core.dataprovider.middleware.MessageMiddleware
 import com.marsn.minitalk.core.domain.proto.ChatMessage
-import com.marsn.minitalk.ui.feature.chat.conversation.MessageEventBus
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.url
 import io.ktor.websocket.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 
@@ -19,9 +17,9 @@ class WebSocketChatClient(
     private var session: WebSocketSession? = null
 
 
-    suspend fun connect(userId: Long) {
+    suspend fun connect(currentUserId: Long) {
         session = client.webSocketSession {
-            url("ws://192.168.3.92:8084/ws-chat?userId=$userId")
+            url("ws://192.168.3.92:8084/ws-chat?userId=$currentUserId")
 
         }
         listenIncoming()

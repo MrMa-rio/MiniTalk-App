@@ -34,9 +34,7 @@ fun ChatScreen(conversationId: String) {
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
-
         messagingViewModel.loadConversation(conversationId)
-//        messagingViewModel.loadConversation(userId)
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateBack -> {
@@ -74,7 +72,7 @@ fun ChatScreen(conversationId: String) {
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(
                         messageList = messages,
-                        userId = 10,
+                        currentUserId = state.value.userSession?.userId ?: 0,
                         {
                             messagingViewModel.loadOlderMessages(conversation?.conversationId ?: "", it)
                         },

@@ -80,7 +80,6 @@ class ConversationRepositoryImpl(
         database.withTransaction {
             val inserted = conversationDao.insertConversation(conversation)
             if (inserted == -1L) {
-                // já existia (inserção ignorada) -> buscar e retornar
                 val existing = conversationDao.getConversationByConversationId(conversationId)
                 if (existing != null) return@withTransaction
             }

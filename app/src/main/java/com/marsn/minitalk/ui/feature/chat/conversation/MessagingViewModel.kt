@@ -6,6 +6,7 @@ import com.marsn.minitalk.core.domain.proto.ChatMessage
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.message.MessagesUseCase
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
+import com.marsn.minitalk.core.usecase.users.UserSessionUsecase
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
 import kotlinx.coroutines.channels.Channel
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class MessagingViewModel(
     val messagesUseCase: MessagesUseCase,
-    val conversationUsecase: ConversationUsecase
+    val conversationUsecase: ConversationUsecase,
+    val userSessionUsecase: UserSessionUsecase
 
 ) : ViewModel() {
 
@@ -31,6 +33,7 @@ class MessagingViewModel(
 
     init {
         viewModelScope.launch {
+            loadUserSession()
             val messages = messagesUseCase.consultMessages(
                 uiState.value.conversation?.conversationId
                     ?: ""
@@ -71,6 +74,10 @@ class MessagingViewModel(
         }
     }
 
+    suspend fun loadUserSession() {
+        val userSession = userSessionUsecase.consultUserSession()
+        _uiState.update { it.copy(userSession = userSession) }
+    }
 
     fun onEvent(event: MessageEvent) {
         when (event) {
@@ -102,7 +109,7 @@ class MessagingViewModel(
 
             is MessageEvent.Send -> {
                 viewModelScope.launch {
-                    sendMock(10, 3)
+                    sendMock(uiState.value.userSession?.userId ?: 0, 3)
                     _uiState.value = _uiState.value.copy(
                         inputText = ""
                     )
@@ -114,7 +121,7 @@ class MessagingViewModel(
     suspend fun sendMock(senderId: Long, destinyId: Long) {
 
         val message = ChatMessage(
-            messageId = 52,
+            messageId = System.currentTimeMillis() / 365, //TODO: MELHORAR A FORMA DE CRIACAO DA MENSAGEMID
             conversationId = uiState.value.conversation?.conversationId ?: "",
             senderId = senderId,
             content = uiState.value.inputText,
