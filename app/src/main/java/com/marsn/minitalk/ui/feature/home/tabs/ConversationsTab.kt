@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.core.usecase.formattedDateForChatLastMessage
+import com.marsn.minitalk.core.usecase.formatterTimestamp
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import kotlinx.datetime.LocalDateTime
@@ -103,7 +104,7 @@ fun ConversationsTab(conversations: List<ConversationItem>, onEvent: (Conversati
                         }
                         Column {
                             Text(
-                                text = LocalDateTime.parse(item.lastMessageTimestamp.toString())
+                                text = formatterTimestamp(item.lastMessageTimestamp?:0)
                                     .formattedDateForChatLastMessage(),
                                 fontFamily = SairaSemiExpanded
                             )

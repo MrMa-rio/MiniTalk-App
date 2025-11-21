@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.marsn.minitalk.core.domain.conversation.ConversationItem
-import com.marsn.minitalk.core.domain.conversation.ConversationPreview
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 import kotlinx.coroutines.flow.Flow
 
@@ -34,13 +33,29 @@ interface ConversationDao {
 
 
     @Query("""
-        SELECT c.* FROM conversations AS c
-        INNER JOIN conversation_participants AS cp
-            ON cp.conversationId = c.conversationId
-        WHERE cp.participantId = :participantId
-        ORDER BY c.createdAt DESC
-    """)
-    fun getConversationByDestinyId(participantId: Long): Flow<List<ConversationEntity>>
+    SELECT c.* FROM conversations AS c
+    INNER JOIN conversation_participants AS cp
+        ON cp.conversationId = c.conversationId
+    WHERE cp.participantId = :participantId
+      AND c.typeConversation = :type
+""")
+    fun getConversationsByParticipantId(
+        participantId: Long,
+        type: TypeConversation = TypeConversation.GROUP
+    ): Flow<List<ConversationEntity>>
+
+    @Query("""
+    SELECT c.* FROM conversations AS c
+    INNER JOIN conversation_participants AS cp
+        ON cp.conversationId = c.conversationId
+    WHERE cp.participantId = :participantId
+      AND c.typeConversation = :type
+    LIMIT 1
+""")
+    suspend fun getConversationByParticipantId(
+        participantId: Long,
+        type: TypeConversation = TypeConversation.PRIVATE
+    ): ConversationEntity?
 
 
     @Query(

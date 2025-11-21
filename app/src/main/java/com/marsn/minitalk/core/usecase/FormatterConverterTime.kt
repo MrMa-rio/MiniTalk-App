@@ -10,9 +10,12 @@ import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
 import kotlinx.datetime.toLocalDateTime
+import java.sql.Timestamp
+import java.time.ZoneId
 import kotlin.math.absoluteValue
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(FormatStringsInDatetimeFormats::class, ExperimentalTime::class)
 fun LocalDateTime.formattedDateForChatLastMessage(): String {
@@ -49,4 +52,11 @@ fun LocalDateTime.formattedDateForChatLastMessage(): String {
             this.format(LocalDateTime.Format { byUnicodePattern("dd/MM/yy") })
         }
     }
+}
+
+@OptIn(ExperimentalTime::class)
+fun formatterTimestamp(timestamp: Long) : LocalDateTime {
+    val localDateTime = Instant.fromEpochMilliseconds(timestamp)
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+    return localDateTime
 }

@@ -8,12 +8,13 @@ import kotlinx.coroutines.flow.Flow
 class ConversationUsecaseImpl(
     private val repository: ConversationRepository
 ) : ConversationUsecase {
-    override suspend fun createConversation(senderId: Long, destinyId: Long ) {
-        repository.createPrivateConversation(senderId, destinyId )
+    override suspend fun createConversation(senderId: Long, destinyId: Long) {
+        repository.createPrivateConversation(senderId, destinyId)
     }
 
-    override suspend fun consultConversation(conversationId: String): Conversation? {
-        TODO("Not yet implemented")
+    override suspend fun consultConversation(conversationId: Long): Conversation? {
+        val entity = repository.getConversationByConversationId(conversationId)
+        return entity?.toModel()
     }
 
     override suspend fun consultAllConversations(currentUserId: Long): Flow<List<ConversationItem>> {
@@ -22,8 +23,16 @@ class ConversationUsecaseImpl(
 
     }
 
-    override suspend fun consultUserConversation(userId: Long): Conversation {
-        TODO("Not yet implemented")
+    override suspend fun consultUserConversation(userId: Long): Conversation? {
+        return repository.getConversationByParticipantId(userId)
+    }
+
+    override suspend fun consultOrCreateUserConversation(
+        currentUserId: Long,
+        userId: Long
+    ): Conversation {
+        val conversation = repository.getConversationByParticipantId(userId)
+        return conversation ?: repository.createPrivateConversation(currentUserId, userId).toModel()
     }
 
     override suspend fun updateConversation(conversation: Conversation) {

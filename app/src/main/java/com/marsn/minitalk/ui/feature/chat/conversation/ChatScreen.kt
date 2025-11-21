@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,21 +22,21 @@ import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ChatScreen(userId: Long) {
+fun ChatScreen(conversationId: Long) {
 
     val messagingViewModel = koinViewModel<MessagingViewModel>()
     val uiEvent = remember { messagingViewModel.uiEvent }
 
     val state = messagingViewModel.uiState.collectAsState()
     val messages = state.value.messages
-    val conversationId = state.value.conversationId
+    val conversation = state.value.conversation
 
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
 
-        messagingViewModel.loadContact(userId)
-
+        messagingViewModel.loadConversation(conversationId)
+//        messagingViewModel.loadConversation(userId)
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateBack -> {
@@ -75,9 +74,9 @@ fun ChatScreen(userId: Long) {
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(
                         messageList = messages,
-                        userId = 100,
+                        userId = 10,
                         {
-                            messagingViewModel.loadOlderMessages(conversationId, it)
+                            messagingViewModel.loadOlderMessages(conversation?.conversationId ?: 0, it)
                         },
                         {}
                     )

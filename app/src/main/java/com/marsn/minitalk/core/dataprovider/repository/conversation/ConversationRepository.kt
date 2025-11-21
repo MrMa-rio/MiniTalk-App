@@ -1,5 +1,6 @@
 package com.marsn.minitalk.core.dataprovider.repository.conversation
 
+import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.core.shared.enums.TypeParticipant
 import kotlinx.coroutines.flow.Flow
@@ -24,5 +25,7 @@ interface ConversationRepository {
     suspend fun addParticipant(conversationId: Long, participantId: Long, role: TypeParticipant = TypeParticipant.MEMBER)
 
     suspend fun removeParticipant(conversationId: Long, participantId: Long)
+    suspend fun getConversationByParticipantId(participantId: Long): Conversation?
+    suspend fun getConversationsGroupForParticipantId(participantId: Long): Flow<List<ConversationEntity>>
 }
 

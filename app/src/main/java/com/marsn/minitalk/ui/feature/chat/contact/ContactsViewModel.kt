@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
+import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.ui.UIEvent
 import kotlinx.coroutines.channels.Channel
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class ContactsViewModel(
-    private val contactUsecase: ContactUsecase
+    private val contactUsecase: ContactUsecase,
+    private val conversationUsecase: ConversationUsecase
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
@@ -38,7 +40,10 @@ class ContactsViewModel(
 
             is ContactEvent.SelectContact -> {
                 viewModelScope.launch {
-                    _uiEvent.send(UIEvent.NavigateToChat((event.contact.userId)))
+                    val conversation = conversationUsecase.consultOrCreateUserConversation(10, event.contact.userId)
+                    conversation.let {
+                        _uiEvent.send(UIEvent.NavigateToChat(conversation.conversationId))
+                    }
                 }
             }
 

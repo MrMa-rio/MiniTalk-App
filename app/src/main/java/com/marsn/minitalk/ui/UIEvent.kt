@@ -11,7 +11,7 @@ sealed interface UIEvent {
 
     data class NavigateTo<T : Any>(val route: T) : UIEvent
 
-    data class NavigateToChat(val userId: Long) : UIEvent
+    data class NavigateToChat(val conversationId: Long) : UIEvent
 
     data class NavigateToProfile<T : Any>(val route: T, val user: UserProfile) : UIEvent
 

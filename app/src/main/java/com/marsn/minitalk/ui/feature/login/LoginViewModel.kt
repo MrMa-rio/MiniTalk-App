@@ -4,18 +4,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.marsn.minitalk.core.dataprovider.clients.WebSocketManager
 import com.marsn.minitalk.core.usecase.auth.AuthUsecase
+import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.navigation.AuthRoutes
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
+import com.marsn.minitalk.ui.feature.chat.conversation.MessagingViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 class LoginViewModel(
-    private val socketManager: WebSocketManager
+    private val socketManager: WebSocketManager,
+    private val contactUsecase: ContactUsecase
 ) : ViewModel() {
+
+
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -29,7 +35,7 @@ class LoginViewModel(
         when (event) {
             is LoginEvent.Logged -> {
                 viewModelScope.launch {
-                    socketManager.connect(100)
+                    socketManager.connect(10)
                     _uiEvent.send(UIEvent.NavigateTo(ChatRoutes.HomeRoute))
                 }
             }

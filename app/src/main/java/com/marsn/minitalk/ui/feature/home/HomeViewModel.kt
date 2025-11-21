@@ -73,7 +73,7 @@ class HomeViewModel(
     }
 
     private suspend fun getAllConversations() {
-        conversationUsecase.consultAllConversations(100)
+        conversationUsecase.consultAllConversations(10)
             .onEach { conversationList ->
                 _uiState.value = _uiState.value.copy(
                     conversations = conversationList
