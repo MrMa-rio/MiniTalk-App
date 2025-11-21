@@ -8,6 +8,7 @@ import com.marsn.minitalk.core.dataprovider.client.PathsAPI
 import com.marsn.minitalk.core.dataprovider.clients.WebSocketChatClient
 import com.marsn.minitalk.core.dataprovider.clients.WebSocketManager
 import com.marsn.minitalk.core.dataprovider.middleware.MessageMiddleware
+import com.marsn.minitalk.core.dataprovider.middleware.MessageMiddlewareImpl
 import com.marsn.minitalk.core.dataprovider.repository.ChatDatabase
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepositoryImpl
@@ -137,6 +138,7 @@ val usecaseModule = module {
         bind<UserSessionUsecase>()
     }
 
+
 }
 
 val networkModule = module {
@@ -161,12 +163,12 @@ val networkModule = module {
         }
     }
 
-    single {
-        MessageMiddleware(get())
+    singleOf(::MessageMiddlewareImpl) {
+        bind<MessageMiddleware>()
     }
 
     single() {
-        WebSocketChatClient(get(KtorQualifiers.WEBSOCKETS), get())
+        WebSocketChatClient(get(KtorQualifiers.WEBSOCKETS), get<MessageMiddleware>())
     }
 
     single() { WebSocketManager(get()) }

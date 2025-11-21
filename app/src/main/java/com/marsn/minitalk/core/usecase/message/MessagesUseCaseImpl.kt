@@ -16,21 +16,8 @@ class MessagesUseCaseImpl(
 ) : MessagesUseCase {
     override suspend fun sendMessage(message: ChatMessage) {
 
-        messageRepository.saveIncomingMessage(
-            MessageEntity(
-                messageId = message.messageId,
-                conversationId = message.conversationId,
-                senderId = message.senderId,
-                content = message.content,
-                typeContent = TypeContent.TEXT,
-                timestamp = message.timestamp,
-                isSent = message.isSent,
-                isDelivered = message.isDelivered,
-                isRead = message.isRead,
-                isDeleted = message.isDeleted,
-                isEdited = message.isEdited,
-            )
-        )
+        saveMessage(message)
+
         socketManager.send(message)
     }
 
@@ -78,6 +65,24 @@ class MessagesUseCaseImpl(
                 )
             }
         }
+    }
+
+    override suspend fun saveMessage(message: ChatMessage) {
+        messageRepository.saveIncomingMessage(
+            MessageEntity(
+                messageId = message.messageId,
+                conversationId = message.conversationId,
+                senderId = message.senderId,
+                content = message.content,
+                typeContent = TypeContent.TEXT,
+                timestamp = message.timestamp,
+                isSent = message.isSent,
+                isDelivered = message.isDelivered,
+                isRead = message.isRead,
+                isDeleted = message.isDeleted,
+                isEdited = message.isEdited,
+            )
+        )
     }
 }
 

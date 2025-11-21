@@ -15,4 +15,7 @@ interface MessagesUseCase {
         timestamp: Long,
         limit: Int = 50
     ): Flow<List<MessageText>>
+
+    suspend fun saveMessage(message: ChatMessage)
+
 }

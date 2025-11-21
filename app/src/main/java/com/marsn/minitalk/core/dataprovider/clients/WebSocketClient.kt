@@ -20,7 +20,6 @@ class WebSocketChatClient(
     suspend fun connect(currentUserId: Long) {
         session = client.webSocketSession {
             url("ws://192.168.3.92:8084/ws-chat?userId=$currentUserId")
-
         }
         listenIncoming()
     }
