@@ -31,10 +31,10 @@ interface ConversationParticipantsDao {
     suspend fun updateParticipant(participant: ConversationParticipantsEntity)
 
     @Query("SELECT * FROM conversation_participants WHERE conversationId = :conversationId")
-    suspend fun getParticipants(conversationId: Long): Flow<List<ConversationParticipantsEntity>>
+    fun getParticipants(conversationId: Long): Flow<List<ConversationParticipantsEntity>>
 
     @Query("SELECT * FROM conversation_participants WHERE participantId = :participantId")
-    suspend fun getConversationsWhereUserIs(participantId: Long): Flow<List<ConversationParticipantsEntity>>
+    fun getConversationsWhereUserIs(participantId: Long): Flow<List<ConversationParticipantsEntity>>
 
     @Query(
         """

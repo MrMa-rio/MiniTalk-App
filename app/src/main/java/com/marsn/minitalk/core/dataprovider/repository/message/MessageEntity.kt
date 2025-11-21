@@ -13,13 +13,13 @@ import com.marsn.minitalk.core.shared.enums.TypeContent
     foreignKeys = [
         ForeignKey(
             entity = ConversationEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["conversationId"],
             childColumns = ["conversationId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UserEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["userId"],
             childColumns = ["senderId"],
             onDelete = ForeignKey.CASCADE
         )
@@ -36,7 +36,7 @@ data class MessageEntity(
     val conversationId: Long,
     val senderId: Long,
     val content: String,
-    val type: TypeContent,
+    val typeContent: TypeContent,
     val timestamp: Long,
     val isSent: Boolean,
     val isDelivered: Boolean,

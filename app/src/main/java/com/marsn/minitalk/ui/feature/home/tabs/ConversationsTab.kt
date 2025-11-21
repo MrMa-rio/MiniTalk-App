@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.conversation.Conversation
+import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.core.usecase.formattedDateForChatLastMessage
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
@@ -34,7 +36,7 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent) -> Unit) {
+fun ConversationsTab(conversations: List<ConversationItem>, onEvent: (ConversationEvent) -> Unit) {
     val colors = remember {
         ButtonColors(
             containerColor = Color.Transparent,
@@ -43,12 +45,13 @@ fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent)
             disabledContentColor = Color.Black,
         )
     }
+
     LazyColumn {
 
-        itemsIndexed(messageContact.sortedBy { it.createdAt }) { index, item ->
+        itemsIndexed(conversations.sortedBy { it.lastMessageTimestamp }) { index, item ->
             Button(
                 onClick = {
-                    onEvent(ConversationEvent.Chat(item.userId.first()))
+                    onEvent(ConversationEvent.Chat(item.conversationId))
                 }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {
@@ -68,25 +71,29 @@ fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent)
                             horizontalArrangement = Arrangement.SpaceAround,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Person,
-                                modifier = Modifier
-                                    .width(48.dp)
-                                    .height(48.dp),
-                                contentDescription = "Person",
-                            )
+                            IconButton(
+                                onClick = {}
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Person,
+                                    modifier = Modifier
+                                        .width(48.dp)
+                                        .height(48.dp),
+                                    contentDescription = "Person",
+                                )
+                            }
 
                             Column(
                                 modifier = Modifier.padding(4.dp),
                                 verticalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "MOCK",
+                                    text = item.participantName,
                                     fontWeight = FontWeight.Medium,
                                     fontFamily = SairaSemiExpanded
                                 )
                                 Text(
-                                    text = "MOCK",
+                                    text = item.lastMessage ?: "",
                                     maxLines = 1,
                                     color = Color.Gray,
                                     fontWeight = FontWeight.Light,
@@ -96,7 +103,7 @@ fun ListChatTab(messageContact: List<Conversation>, onEvent: (ConversationEvent)
                         }
                         Column {
                             Text(
-                                text = LocalDateTime.parse(item.createdAt.toString())
+                                text = LocalDateTime.parse(item.lastMessageTimestamp.toString())
                                     .formattedDateForChatLastMessage(),
                                 fontFamily = SairaSemiExpanded
                             )

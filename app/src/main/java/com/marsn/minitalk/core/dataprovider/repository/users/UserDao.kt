@@ -1,10 +1,8 @@
 package com.marsn.minitalk.core.dataprovider.repository.users
 
 import androidx.room.Dao
-import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
@@ -21,7 +19,7 @@ interface UserDao {
         if (existing == null) {
             insert(user)
         } else {
-            update(user.copy(id = existing.id))
+            update(user.copy(userId = existing.userId))
         }
     }
 
@@ -37,8 +35,8 @@ interface UserDao {
     suspend fun update(user: UserEntity)
 
 
-    @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
-    suspend fun getByLocalId(id: Long): UserEntity?
+    @Query("SELECT * FROM users WHERE userId = :userId LIMIT 1")
+    suspend fun getByLocalId(userId: Long): UserEntity?
 
     @Query("SELECT * FROM users WHERE userId = :userId LIMIT 1")
     suspend fun getByUserId(userId: Long?): UserEntity?

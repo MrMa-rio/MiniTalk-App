@@ -19,7 +19,6 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactsScreen(
-    viewModel: ContactsViewModel = koinViewModel<ContactsViewModel>(),
 ) {
     val gradient = remember {
         Brush.linearGradient(
@@ -39,7 +38,7 @@ fun ContactsScreen(
                 .background(gradient)
                 .consumeWindowInsets(it)
         ) {
-            ContactContent(viewModel)
+            ContactContent()
         }
     }
 }

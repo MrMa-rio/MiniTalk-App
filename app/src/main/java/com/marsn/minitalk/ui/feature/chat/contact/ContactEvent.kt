@@ -10,4 +10,6 @@ sealed interface ContactEvent {
     data class SearchText(val searchText: String): ContactEvent
     data class SelectContact(val contact: Contact): ContactEvent
 
+    object OnRefresh : ContactEvent
+
 }

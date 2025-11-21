@@ -3,6 +3,7 @@ package com.marsn.minitalk.core.dataprovider.middleware
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageEntity
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepository
 import com.marsn.minitalk.core.domain.proto.ChatMessage
+import com.marsn.minitalk.core.shared.enums.TypeContent
 
 class MessageMiddleware(
     private val repository: MessageRepository
@@ -12,9 +13,9 @@ class MessageMiddleware(
             messageId = msg.messageId,
             conversationId = msg.conversationId,
             senderId = msg.senderId,
-            destinyId = msg.destinyId,
             content = msg.content,
             timestamp = msg.timestamp,
+            typeContent = TypeContent.TEXT,
             isSent = msg.isSent,
             isDelivered = msg.isDelivered,
             isRead = msg.isRead,
@@ -22,6 +23,6 @@ class MessageMiddleware(
             isEdited = msg.isEdited
         )
 
-        repository.saveMessage(entity)
+        repository.saveIncomingMessage(entity)
     }
 }

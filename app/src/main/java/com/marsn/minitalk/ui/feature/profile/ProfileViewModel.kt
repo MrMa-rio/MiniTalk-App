@@ -20,7 +20,7 @@ class ProfileViewModel : ViewModel() {
 
             is ConversationEvent.Chat -> {
                 viewModelScope.launch {
-                    _uiEvent.send(UIEvent.NavigateToChat( event.userId))
+                    _uiEvent.send(UIEvent.NavigateToChat( event.conversationId))
                 }
             }
             is ConversationEvent.Profile -> {

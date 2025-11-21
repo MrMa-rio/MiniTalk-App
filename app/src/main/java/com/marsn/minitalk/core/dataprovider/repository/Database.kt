@@ -5,10 +5,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationDao
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationEntity
+import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationParticipantsDao
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationParticipantsEntity
 import com.marsn.minitalk.core.dataprovider.repository.converters.Converters
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageDao
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageEntity
+import com.marsn.minitalk.core.dataprovider.repository.users.UserDao
 import com.marsn.minitalk.core.dataprovider.repository.users.UserEntity
 
 @Database(
@@ -19,12 +21,13 @@ import com.marsn.minitalk.core.dataprovider.repository.users.UserEntity
         MessageEntity::class,
 
     ],
-    version = 10
+    version = 11
 )
 @TypeConverters(Converters::class)
 abstract class ChatDatabase : RoomDatabase() {
 
     abstract fun conversationDao(): ConversationDao
     abstract fun messageDao(): MessageDao
-
+    abstract fun userDao(): UserDao
+    abstract fun conversationParticipantsDao(): ConversationParticipantsDao
 }

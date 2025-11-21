@@ -5,6 +5,7 @@ import com.marsn.minitalk.core.dataprovider.repository.message.MessageEntity
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageRepository
 import com.marsn.minitalk.core.domain.MessageText
 import com.marsn.minitalk.core.domain.proto.ChatMessage
+import com.marsn.minitalk.core.shared.enums.TypeContent
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,13 +16,13 @@ class MessagesUseCaseImpl(
 ) : MessagesUseCase {
     override suspend fun sendMessage(message: ChatMessage) {
 
-        messageRepository.saveMessage(
+        messageRepository.saveIncomingMessage(
             MessageEntity(
                 messageId = message.messageId,
                 conversationId = message.conversationId,
                 senderId = message.senderId,
-                destinyId = message.destinyId,
                 content = message.content,
+                typeContent = TypeContent.TEXT,
                 timestamp = message.timestamp,
                 isSent = message.isSent,
                 isDelivered = message.isDelivered,
@@ -34,7 +35,7 @@ class MessagesUseCaseImpl(
     }
 
     override suspend fun consultMessages(conversationId: Long): Flow<List<MessageText>> {
-        return messageRepository.getLatestMessages(conversationId).map {
+        return messageRepository.getMessages(conversationId).map {
             it.map { messageEntity ->
                 MessageText(
                     id = messageEntity.id,
@@ -57,7 +58,11 @@ class MessagesUseCaseImpl(
         timestamp: Long,
         limit: Int
     ): Flow<List<MessageText>> {
-        return messageRepository.getOlderMessages(conversationId, limit, timestamp).map {
+        return messageRepository.loadOlderMessages(
+            conversationId,
+            limit = limit,
+            beforeTimestamp = timestamp
+        ).map {
             it.map { messageEntity ->
                 MessageText(
                     id = messageEntity.id,

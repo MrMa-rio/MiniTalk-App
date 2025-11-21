@@ -3,7 +3,7 @@ package com.marsn.minitalk.core.dataprovider.repository.converters
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
-import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 import com.marsn.minitalk.core.shared.enums.TypeParticipant
 import java.time.LocalDateTime

@@ -1,6 +1,7 @@
 package com.marsn.minitalk.core.domain
 
 import com.marsn.minitalk.core.dataprovider.repository.message.MessageEntity
+import com.marsn.minitalk.core.shared.enums.TypeContent
 
 data class Message(
     val id: Long,
@@ -10,6 +11,7 @@ data class Message(
     val destinyId: Long,
     val timestamp: Long,
     val content: String,
+    val typeContent: TypeContent,
     val isDelivered: Boolean = false,
     val isRead: Boolean = false,
     val isSent: Boolean = false,
@@ -22,8 +24,8 @@ data class Message(
             messageId = messageId,
             conversationId = conversationId,
             senderId = senderId,
-            destinyId = destinyId,
             content = content,
+            typeContent = typeContent,
             isRead = isRead,
             isDelivered = isDelivered,
             isSent = isSent,

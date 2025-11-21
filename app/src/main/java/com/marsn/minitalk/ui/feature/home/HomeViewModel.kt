@@ -2,18 +2,19 @@ package com.marsn.minitalk.ui.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.marsn.minitalk.core.usecase.users.ContactUsecase
+import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ChatViewModel(
-    val contactUsecase: ContactUsecase
+class HomeViewModel(
+    private val conversationUsecase: ConversationUsecase,
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
@@ -22,28 +23,23 @@ class ChatViewModel(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun loadContact(userId: Long) {
+    init {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) } // Opcional: mostrar um loading
-
-            val contactFlow = contactUsecase.consultContact(userId)
-            _uiState.update { currentState ->
-                currentState.copy(
-                    contact = contactFlow,
-                    isLoading = false
-                )
-            }
+            getAllConversations()
         }
     }
 
     fun onEvent(event: ConversationEvent) {
         when (event) {
+            is ConversationEvent.SearchText -> {
+                _uiState.value = _uiState.value.copy(searchText = event.text)
+            }
 
             is ConversationEvent.Chat -> {
                 viewModelScope.launch {
                     _uiEvent.send(
                         UIEvent.NavigateToChat(
-                            event.userId
+                            event.conversationId
                         )
                     )
                 }
@@ -72,14 +68,17 @@ class ChatViewModel(
                     _uiEvent.send(UIEvent.ChangeTab(event.tab))
                 }
             }
-
-            is ConversationEvent.SearchText -> {
-                viewModelScope.launch {
-                    _uiEvent.send(UIEvent.ChangeSearch(event.text))
-                }
-            }
-
             else -> {}
         }
+    }
+
+    private suspend fun getAllConversations() {
+        conversationUsecase.consultAllConversations(100)
+            .onEach { conversationList ->
+                _uiState.value = _uiState.value.copy(
+                    conversations = conversationList
+                )
+            }
+            .launchIn(viewModelScope)
     }
 }

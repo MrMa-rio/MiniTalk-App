@@ -1,9 +1,7 @@
-package com.marsn.minitalk.core.domain
+package com.marsn.minitalk.core.domain.conversation
 
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationEntity
 import com.marsn.minitalk.core.shared.enums.TypeConversation
-import java.time.LocalDateTime
-
 
 data class Conversation(
     val conversationId: Long,

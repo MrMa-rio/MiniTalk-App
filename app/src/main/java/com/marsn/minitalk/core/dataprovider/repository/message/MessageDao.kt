@@ -19,7 +19,6 @@ interface MessageDao {
         if (existing == null) {
             insert(message)
         } else {
-            // Preserve o ID autogerado e substitui os outros campos
             update(message.copy(id = existing.id))
         }
     }
@@ -59,13 +58,12 @@ interface MessageDao {
         LIMIT :limit
     """
     )
-    suspend fun getOlderMessages(
+    fun getOlderMessages(
         conversationId: Long,
         beforeTimestamp: Long,
         limit: Int
     ): Flow<List<MessageEntity>>
 
-    // Última mensagem da conversa (para lista de conversas)
     @Query(
         """
         SELECT * FROM messages

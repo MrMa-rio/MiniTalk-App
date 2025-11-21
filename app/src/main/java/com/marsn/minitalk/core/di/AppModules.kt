@@ -23,8 +23,7 @@ import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecaseImpl
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
 import com.marsn.minitalk.ui.feature.chat.conversation.MessagingViewModel
-import com.marsn.minitalk.ui.feature.home.ChatViewModel
-import com.marsn.minitalk.ui.feature.home.ConversationViewModel
+import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.login.LoginViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -54,6 +53,8 @@ val databaseModule = module {
 
     single { get<ChatDatabase>().conversationDao() }
     single { get<ChatDatabase>().messageDao() }
+    single { get<ChatDatabase>().userDao() }
+    single { get<ChatDatabase>().conversationParticipantsDao() }
 }
 
 val repositoryModule = module {
@@ -71,8 +72,7 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    viewModelOf(::ChatViewModel)
-    viewModelOf(::ConversationViewModel)
+    viewModelOf(::HomeViewModel)
     viewModelOf(::ContactsViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::MessagingViewModel)

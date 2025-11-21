@@ -1,7 +1,7 @@
 package com.marsn.minitalk.core.usecase.auth
 
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
-import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.domain.Token
 import com.marsn.minitalk.core.domain.UserProfile
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase

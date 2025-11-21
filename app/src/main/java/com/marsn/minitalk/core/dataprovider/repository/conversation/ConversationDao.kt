@@ -6,6 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.marsn.minitalk.core.domain.conversation.ConversationItem
+import com.marsn.minitalk.core.domain.conversation.ConversationPreview
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 import kotlinx.coroutines.flow.Flow
 
@@ -28,7 +30,7 @@ interface ConversationDao {
     fun getAllConversations(): Flow<List<ConversationEntity>>
 
     @Query("SELECT * FROM conversations WHERE typeConversation = :type")
-    suspend fun getConversationsByType(type: TypeConversation): Flow<List<ConversationEntity>>
+    fun getConversationsByType(type: TypeConversation): Flow<List<ConversationEntity>>
 
 
     @Query("""
@@ -38,6 +40,42 @@ interface ConversationDao {
         WHERE cp.participantId = :participantId
         ORDER BY c.createdAt DESC
     """)
-    suspend fun getConversationByDestinyId(participantId: Long): Flow<List<ConversationEntity>>
+    fun getConversationByDestinyId(participantId: Long): Flow<List<ConversationEntity>>
 
+
+    @Query(
+        """
+    SELECT 
+        c.conversationId AS conversationId,
+        u.name AS participantName,
+        u.avatarUrl AS participantAvatar,
+        m.content AS lastMessage,
+        m.typeContent AS lastMessageType,
+        m.timestamp AS lastMessageTimestamp,
+        m.isRead AS isRead
+    FROM conversations c
+
+    INNER JOIN conversation_participants cp
+        ON cp.conversationId = c.conversationId 
+        AND cp.participantId != :currentUserId
+    
+    INNER JOIN users u
+        ON u.userId = cp.participantId
+
+    INNER JOIN messages m
+        ON m.id = (
+            SELECT id 
+            FROM messages 
+            WHERE conversationId = c.conversationId 
+            ORDER BY timestamp DESC 
+            LIMIT 1
+        )
+
+    ORDER BY m.timestamp DESC
+"""
+    )
+
+    fun getConversationPreviews(
+        currentUserId: Long
+    ): Flow<List<ConversationItem>>
 }

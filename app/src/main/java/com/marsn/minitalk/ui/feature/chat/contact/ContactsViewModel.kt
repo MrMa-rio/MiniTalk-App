@@ -2,9 +2,8 @@ package com.marsn.minitalk.ui.feature.chat.contact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
-import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.ui.UIEvent
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class ContactsViewModel(
-    contactUsecase: ContactUsecase
+    private val contactUsecase: ContactUsecase
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
@@ -25,7 +24,9 @@ class ContactsViewModel(
 
 
     init {
-        uiState.value = uiState.value.copy(contacts = contactUsecase.consultAllContacts())
+        viewModelScope.launch {
+            uiState.value = uiState.value.copy(contacts = contactUsecase.consultAllContacts())
+        }
     }
 
     fun onEvent(event: ContactEvent) {
@@ -37,12 +38,6 @@ class ContactsViewModel(
 
             is ContactEvent.SelectContact -> {
                 viewModelScope.launch {
-                    val conversation = Conversation(
-                        conversationId = null,
-                        userId = listOf(event.contact.userId),
-                        createdAt = LocalDateTime.now(),
-                        typeConversation = TypeConversation.PRIVATE
-                    )
                     _uiEvent.send(UIEvent.NavigateToChat((event.contact.userId)))
                 }
             }
@@ -50,6 +45,12 @@ class ContactsViewModel(
             is ContactEvent.NavigateBack -> {
                 viewModelScope.launch {
                     _uiEvent.send(UIEvent.NavigateBack)
+                }
+            }
+
+            is ContactEvent.OnRefresh -> {
+                viewModelScope.launch {
+                    uiState.value = uiState.value.copy(contacts = contactUsecase.consultAllContactsAndSave())
                 }
             }
         }

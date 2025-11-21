@@ -22,57 +22,61 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
-import com.marsn.minitalk.ui.feature.home.ChatViewModel
-import com.marsn.minitalk.ui.feature.home.ConversationViewModel
+import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.home.TextInputSearch
 import com.marsn.minitalk.ui.feature.home.tabs.LayoutTab
-import com.marsn.minitalk.ui.feature.home.tabs.ListChatTab
+import com.marsn.minitalk.ui.feature.home.tabs.ConversationsTab
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeContent(viewModel: ConversationViewModel) {
+fun HomeContent() {
 
+    val viewModel = koinViewModel<HomeViewModel>()
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
-    val searchText by viewModel.searchText.collectAsState()
+    val uiEvent = viewModel.uiEvent
 
-    val conversations by viewModel.conversations.collectAsState()
+    val state by viewModel.uiState.collectAsState()
 
-    val homeViewModel = koinViewModel<ChatViewModel>()
-    val uiEvent = remember { homeViewModel.uiEvent }
+    val searchText = state.searchText
+
+    val conversations = state.conversations
 
     val navController = LocalNavController3.current
+
     LaunchedEffect(Unit) {
 
         uiEvent.collectLatest { event ->
             when (event) {
-                is UIEvent.NavigateToChat-> {
+                is UIEvent.NavigateToChat -> {
                     navController.navigate(ChatRoutes.ChatRoute(event.userId))
                 }
 
                 is UIEvent.NavigateToProfile<*> -> {
                     navController.navigate(ChatRoutes.ProfileRoute(event.user))
                 }
-                is UIEvent.ChangeTab ->  selectedTabIndex = event.index
+
+                is UIEvent.ChangeTab -> selectedTabIndex = event.index
 
                 is UIEvent.ChangeSearch -> {
-                    conversations.filter {
-                        "MOCK".lowercase().contains(searchText.lowercase())
-                    }
+                    filterConversations(
+                        searchText,
+                        conversations
+                    ) //FAZER O FILTRO E PEGAR O NOME DA CONVERSA FOTO ETCS
                 }
 
                 else -> {}
             }
         }
     }
-
 
     Column {
         Column(
@@ -82,8 +86,8 @@ fun HomeContent(viewModel: ConversationViewModel) {
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TabsHeader(onEvent = homeViewModel::onEvent)
-            LayoutTab(selectedTabIndex, onEvent = homeViewModel::onEvent)
+            TabsHeader(onEvent = viewModel::onEvent)
+            LayoutTab(selectedTabIndex, onEvent = viewModel::onEvent)
             TextInputSearch(searchText, onEvent = viewModel::onEvent)
         }
 
@@ -104,16 +108,26 @@ fun HomeContent(viewModel: ConversationViewModel) {
             ) {
 
                 when (selectedTabIndex) {
-                    0 -> ListChatTab(
-                        messageContact = conversations,
-                        onEvent = homeViewModel::onEvent)
-                    1 -> ListChatTab(
-                        messageContact = listOf(),
-                        onEvent = homeViewModel::onEvent)
+                    0 -> ConversationsTab(
+                        conversations = conversations,
+                        onEvent = viewModel::onEvent
+                    )
+
+                    1 -> ConversationsTab(
+                        conversations = listOf(),
+                        onEvent = viewModel::onEvent
+                    )
                 }
             }
 
         }
     }
+
+}
+
+private fun filterConversations(
+    searchText: String,
+    conversations: List<ConversationItem>
+) {
 
 }

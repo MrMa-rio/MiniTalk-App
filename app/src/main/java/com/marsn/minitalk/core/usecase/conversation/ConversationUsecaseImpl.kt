@@ -1,25 +1,24 @@
 package com.marsn.minitalk.core.usecase.conversation
 
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
-import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.conversation.Conversation
+import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import kotlinx.coroutines.flow.Flow
 
 class ConversationUsecaseImpl(
     private val repository: ConversationRepository
 ) : ConversationUsecase {
-    override suspend fun createConversation(conversation: Conversation) {
-
-        repository.createConversation(conversation.toEntity())
-
+    override suspend fun createConversation(senderId: Long, destinyId: Long ) {
+        repository.createPrivateConversation(senderId, destinyId )
     }
 
     override suspend fun consultConversation(conversationId: String): Conversation? {
         TODO("Not yet implemented")
     }
 
-    override  fun consultAllConversations(): Flow<List<Conversation>> {
+    override suspend fun consultAllConversations(currentUserId: Long): Flow<List<ConversationItem>> {
 
-        return repository.getAllConversations()
+        return repository.getConversationsPreview(currentUserId)
 
     }
 
@@ -29,7 +28,7 @@ class ConversationUsecaseImpl(
 
     override suspend fun updateConversation(conversation: Conversation) {
 
-        repository.updateConversation(conversation.toEntity())
+        TODO("Not yet implemented")
 
     }
 }

@@ -1,6 +1,6 @@
 package com.marsn.minitalk.core.usecase.users
 
-import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.domain.contact.Contact
 import com.marsn.minitalk.core.domain.contact.ContactResponse
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +10,7 @@ interface ContactUsecase {
 
     suspend fun consultContact(userId: Long): Contact?
 
-    fun consultAllContacts(): Flow<List<Contact>>
-
+    suspend fun consultAllContactsAndSave(): Flow<List<Contact>>
+    suspend fun consultAllContacts(): Flow<List<Contact>>
 
 }

@@ -85,7 +85,7 @@ fun ChatHeader(contact: Contact?, onEvent: (MessageEvent) -> Unit) {
                     onClick = {},
                     colors = ButtonColorsTransparents,
                 ) {
-                    ImageProfile(contact?.profilePicture ?: "", RoundedCornerShape(99.dp))
+                    ImageProfile(contact?.avatarUrl ?: "", RoundedCornerShape(99.dp))
                     Spacer(Modifier.width(12.dp))
                     Column {
                         Text(contact?.name ?: "USUARIO", color = Color.White, fontSize = 18.sp)

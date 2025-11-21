@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.marsn.minitalk.core.dataprovider.repository.users.UserEntity
-import com.marsn.minitalk.core.domain.Conversation
+import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 import com.marsn.minitalk.core.shared.enums.TypeParticipant
 import java.time.LocalDateTime
@@ -16,20 +16,20 @@ import java.time.LocalDateTime
     foreignKeys = [
         ForeignKey(
             entity = ConversationEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["conversationId"],
             childColumns = ["conversationId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = UserEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["userId"],
+            parentColumns = ["userId"],
+            childColumns = ["participantId"],
             onDelete = ForeignKey.CASCADE
         )
     ],
     indices = [
         Index("conversationId"),
-        Index("userId")
+        Index("participantId")
     ]
 )
 data class ConversationParticipantsEntity(

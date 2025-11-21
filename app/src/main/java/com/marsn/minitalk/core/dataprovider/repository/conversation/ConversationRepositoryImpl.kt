@@ -3,6 +3,7 @@ package com.marsn.minitalk.core.dataprovider.repository.conversation
 import android.util.Log
 import androidx.room.withTransaction
 import com.marsn.minitalk.core.dataprovider.repository.ChatDatabase
+import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.core.shared.enums.TypeConversation
 import com.marsn.minitalk.core.shared.enums.TypeParticipant
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +20,10 @@ class ConversationRepositoryImpl(
     private val database: ChatDatabase
 
 ) : ConversationRepository {
+    override suspend fun getConversationsPreview(currentUserId: Long): Flow<List<ConversationItem>> {
+        return conversationDao.getConversationPreviews(currentUserId)
+    }
+
 
     companion object {
         private const val TAG = "ConversationRepo"

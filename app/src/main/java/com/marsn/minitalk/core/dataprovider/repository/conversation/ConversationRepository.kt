@@ -1,9 +1,12 @@
 package com.marsn.minitalk.core.dataprovider.repository.conversation
 
+import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.core.shared.enums.TypeParticipant
 import kotlinx.coroutines.flow.Flow
 
 interface ConversationRepository {
+
+    suspend fun getConversationsPreview(currentUserId: Long): Flow<List<ConversationItem>>
 
     suspend fun getConversationByConversationId(conversationId: Long): ConversationEntity?
 
