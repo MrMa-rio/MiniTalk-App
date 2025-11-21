@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.marsn.minitalk.core.domain.proto.ChatMessage
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.message.MessagesUseCase
-import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.UserSessionUsecase
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
@@ -57,15 +56,17 @@ class MessagingViewModel(
         }
     }
 
-    fun loadConversation(conversationId: String) {
+    fun loadConversationAndParticipants(conversationId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
             val conversation = conversationUsecase.consultConversation(conversationId)
+            val participants = conversationUsecase.consultParticipantsByConversationId(conversationId)
 
             _uiState.update {
                 it.copy(
                     conversation = conversation,
+                    participants = participants,
                     isLoading = false,
                 )
             }
@@ -109,13 +110,27 @@ class MessagingViewModel(
 
             is MessageEvent.Send -> {
                 viewModelScope.launch {
-                    sendMock(uiState.value.userSession?.userId ?: 0, 3)
+                    sendingMessage()
                     _uiState.value = _uiState.value.copy(
                         inputText = ""
                     )
                 }
             }
         }
+    }
+
+    private suspend fun sendingMessage() {
+
+        val currentUser = uiState.value.userSession?.userId ?: 0
+
+        val participants = uiState.value.participants
+
+        participants.map {
+            if (it.userId != currentUser) {
+                sendMock(currentUser, it.userId)
+            }
+        }
+
     }
 
     suspend fun sendMock(senderId: Long, destinyId: Long) {

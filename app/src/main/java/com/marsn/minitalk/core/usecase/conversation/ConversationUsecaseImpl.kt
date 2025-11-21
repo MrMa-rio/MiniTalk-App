@@ -1,12 +1,21 @@
 package com.marsn.minitalk.core.usecase.conversation
 
 import com.marsn.minitalk.core.dataprovider.repository.conversation.ConversationRepository
+import com.marsn.minitalk.core.domain.UserProfile
+import com.marsn.minitalk.core.domain.contact.Contact
 import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.domain.conversation.ConversationItem
+import com.marsn.minitalk.core.usecase.users.ContactUsecase
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 class ConversationUsecaseImpl(
-    private val repository: ConversationRepository
+    private val repository: ConversationRepository,
+    private val contactUsecase: ContactUsecase
 ) : ConversationUsecase {
     override suspend fun createConversation(senderId: Long, destinyId: Long) {
         repository.createPrivateConversation(senderId, destinyId)
@@ -16,6 +25,19 @@ class ConversationUsecaseImpl(
         val entity = repository.getConversationByConversationId(conversationId)
         return entity?.toModel()
     }
+
+    override suspend fun consultParticipantsByConversationId(conversationId: String): List<Contact> {
+        // Coleta o Flow APENAS UMA VEZ
+        val participantsIds = repository.getParticipantsByConversationId(conversationId)
+            .first() // <- coleta o primeiro valor emitido
+
+
+        // Para cada ID busca o Contact
+        return participantsIds.mapNotNull { id ->
+            contactUsecase.consultContact(id.participantId)
+        }
+    }
+
 
     override suspend fun consultAllConversations(currentUserId: Long): Flow<List<ConversationItem>> {
 
@@ -32,7 +54,8 @@ class ConversationUsecaseImpl(
         userId: Long
     ): Conversation {
         val conversation = repository.getConversationByParticipantId(userId)
-        return conversation ?: repository.createPrivateConversation(currentUserId, userId).toModel()
+        return conversation ?: repository.createPrivateConversation(currentUserId, userId)
+            .toModel()
     }
 
     override suspend fun updateConversation(conversation: Conversation) {

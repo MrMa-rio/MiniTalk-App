@@ -12,6 +12,7 @@ data class MessageUiState(
     val userSession: UserSession? = null,
     val inputText: String = "",
     val conversation: Conversation? = null,
+    val participants: List<Contact> = emptyList(),
     val messages: List<MessageText> = emptyList(),
     val contact: Contact? = null,
     val isLoading: Boolean = true
