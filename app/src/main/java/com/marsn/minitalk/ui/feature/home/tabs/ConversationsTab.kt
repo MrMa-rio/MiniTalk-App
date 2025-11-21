@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
@@ -29,6 +32,7 @@ import com.marsn.minitalk.core.domain.conversation.Conversation
 import com.marsn.minitalk.core.domain.conversation.ConversationItem
 import com.marsn.minitalk.core.usecase.formattedDateForChatLastMessage
 import com.marsn.minitalk.core.usecase.formatterTimestamp
+import com.marsn.minitalk.ui.components.imageProfile.ImageProfile
 import com.marsn.minitalk.ui.feature.home.ConversationEvent
 import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 import kotlinx.datetime.LocalDateTime
@@ -59,7 +63,7 @@ fun ConversationsTab(conversations: List<ConversationItem>, onEvent: (Conversati
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .height(80.dp),
+                        .height(90.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Row(
@@ -72,18 +76,11 @@ fun ConversationsTab(conversations: List<ConversationItem>, onEvent: (Conversati
                             horizontalArrangement = Arrangement.SpaceAround,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            IconButton(
-                                onClick = {}
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Person,
-                                    modifier = Modifier
-                                        .width(48.dp)
-                                        .height(48.dp),
-                                    contentDescription = "Person",
-                                )
-                            }
-
+                            ImageProfile(
+                                item.participantAvatar ?: "",
+                                CircleShape
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
                             Column(
                                 modifier = Modifier.padding(4.dp),
                                 verticalArrangement = Arrangement.SpaceBetween
@@ -104,7 +101,7 @@ fun ConversationsTab(conversations: List<ConversationItem>, onEvent: (Conversati
                         }
                         Column {
                             Text(
-                                text = formatterTimestamp(item.lastMessageTimestamp?:0)
+                                text = formatterTimestamp(item.lastMessageTimestamp ?: 0)
                                     .formattedDateForChatLastMessage(),
                                 fontFamily = SairaSemiExpanded
                             )

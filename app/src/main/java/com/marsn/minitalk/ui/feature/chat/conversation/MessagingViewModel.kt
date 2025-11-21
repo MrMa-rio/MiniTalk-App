@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MessagingViewModel(
-    val contactUsecase: ContactUsecase,
     val messagesUseCase: MessagesUseCase,
     val conversationUsecase: ConversationUsecase
 
@@ -31,12 +30,24 @@ class MessagingViewModel(
 
 
     init {
-        observeMessages()
+        viewModelScope.launch {
+            val messages = messagesUseCase.consultMessages(
+                uiState.value.conversation?.conversationId
+                    ?: 0
+            )
+            _uiState.value = _uiState.value.copy(
+                messages = messages.stateIn(
+                    viewModelScope,
+                    SharingStarted.WhileSubscribed(5000),
+                    _uiState.value.messages
+                ).value
+            )
+        }
     }
 
-    private fun observeMessages() {
+    private fun observeMessages(conversationId: Long) {
         viewModelScope.launch {
-            messagesUseCase.consultMessages(uiState.value.conversation?.conversationId ?: 0)
+            messagesUseCase.consultMessages(conversationId)
                 .collect { msgs ->
                     _uiState.update { it.copy(messages = msgs) }
                 }
@@ -46,13 +57,17 @@ class MessagingViewModel(
     fun loadConversation(conversationId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
+
             val conversation = conversationUsecase.consultConversation(conversationId)
-            _uiState.update { currentState ->
-                currentState.copy(
+
+            _uiState.update {
+                it.copy(
                     conversation = conversation,
                     isLoading = false,
                 )
             }
+
+            observeMessages(conversationId)
         }
     }
 

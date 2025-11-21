@@ -42,7 +42,6 @@ fun MessagesList(
         snapshotFlow { listState.firstVisibleItemIndex }
             .collect { index ->
 
-                // Se o usuário chegou no topo
                 if (index == 0 && !isLoading) {
 
                     val oldestMessage = messageList.lastOrNull()
