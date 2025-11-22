@@ -68,7 +68,7 @@ fun ChatScreen(conversationId: String) {
                     .systemBarsPadding()
             ) {
 
-                ChatHeader(state.value.contact, messagingViewModel::onEvent)
+                ChatHeader(state.value.contentHeader, messagingViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(
                         messageList = messages,

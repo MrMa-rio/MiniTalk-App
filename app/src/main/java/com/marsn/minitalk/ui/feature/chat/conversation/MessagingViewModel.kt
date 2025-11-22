@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class MessagingViewModel(
     val messagesUseCase: MessagesUseCase,
     val conversationUsecase: ConversationUsecase,
-    val userSessionUsecase: UserSessionUsecase
+    val userSessionUsecase: UserSessionUsecase,
 
 ) : ViewModel() {
 
@@ -33,6 +33,7 @@ class MessagingViewModel(
     init {
         viewModelScope.launch {
             loadUserSession()
+            loadContentChat()
             val messages = messagesUseCase.consultMessages(
                 uiState.value.conversation?.conversationId
                     ?: ""
@@ -45,6 +46,20 @@ class MessagingViewModel(
                 ).value
             )
         }
+    }
+
+    private fun loadContentChat() {
+
+        val conversation = _uiState.value.conversation
+
+        _uiState.value = _uiState.value.copy(
+        contentHeader = ContentHeader(
+            "TEESTE",
+            "",
+            conversation?.conversationId ?: "",
+            "Eu, Voce"
+        )
+        )
     }
 
     private fun observeMessages(conversationId: String) {
@@ -62,15 +77,14 @@ class MessagingViewModel(
 
             val conversation = conversationUsecase.consultConversation(conversationId)
             val participants = conversationUsecase.consultParticipantsByConversationId(conversationId)
-
             _uiState.update {
                 it.copy(
                     conversation = conversation,
+                    typeConversation = conversation?.typeConversation,
                     participants = participants,
                     isLoading = false,
                 )
             }
-
             observeMessages(conversationId)
         }
     }
@@ -120,9 +134,7 @@ class MessagingViewModel(
     }
 
     private suspend fun sendingMessage() {
-
         val currentUser = uiState.value.userSession?.userId ?: 0
-
         val participants = uiState.value.participants
 
         participants.map {
@@ -130,7 +142,6 @@ class MessagingViewModel(
                 sendMock(currentUser, it.userId)
             }
         }
-
     }
 
     suspend fun sendMock(senderId: Long, destinyId: Long) {

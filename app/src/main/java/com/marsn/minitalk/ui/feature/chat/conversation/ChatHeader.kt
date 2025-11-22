@@ -34,7 +34,7 @@ import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 
 
 @Composable
-fun ChatHeader(contact: Contact?, onEvent: (MessageEvent) -> Unit) {
+fun ChatHeader(contentHeader: ContentHeader?, onEvent: (MessageEvent) -> Unit) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -85,11 +85,11 @@ fun ChatHeader(contact: Contact?, onEvent: (MessageEvent) -> Unit) {
                     onClick = {},
                     colors = ButtonColorsTransparents,
                 ) {
-                    ImageProfile(contact?.avatarUrl ?: "", RoundedCornerShape(99.dp))
+                    ImageProfile(contentHeader?.imageAvatar ?: "", RoundedCornerShape(99.dp))
                     Spacer(Modifier.width(12.dp))
                     Column {
-                        Text(contact?.name ?: "USUARIO", color = Color.White, fontSize = 18.sp)
-                        Text("online agora", color = Color.White.copy(0.7f), fontSize = 14.sp)
+                        Text(contentHeader?.title ?: "USUARIO", color = Color.White, fontSize = 18.sp)
+                        Text(contentHeader?.textStatus ?: "", color = Color.White.copy(0.7f), fontSize = 14.sp)
                     }
                 }
             }

@@ -150,7 +150,7 @@ private fun LoginContent(state: StateFlow<LoginUiState>, onEvent: (LoginEvent) -
                 Button(
                     onClick = { onEvent(LoginEvent.Logged(
                         UserSession(
-                            userId = 999,
+                            userId = 998,
                             "Mario Alberto",
                             email = "marioteste@gmail.com",
                             photoUrl = "https://picsum.photos/200?4", //TODO: QUANDO UM USUARIO INICIA A CONVERSWA O OUTRO NAO ESTA RECEBENDO A MENSAGEM APENAS QUANDO ELE CRIA A CONVERSA NO LADO DELE
