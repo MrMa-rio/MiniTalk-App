@@ -1,4 +1,4 @@
-package com.marsn.minitalk.ui.feature.chat.conversation
+package com.marsn.minitalk.ui.feature.chat.conversation.private
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,23 +18,29 @@ import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
 import com.marsn.minitalk.ui.components.message.ChatInput
 import com.marsn.minitalk.ui.components.screenTheme.BackgroundThemeChat
+import com.marsn.minitalk.ui.feature.chat.conversation.ChatHeader
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
-fun ChatScreen(conversationId: String) {
+fun PrivateChatScreen(conversationId: String) {
 
-    val messagingViewModel = koinViewModel<MessagingViewModel>()
-    val uiEvent = remember { messagingViewModel.uiEvent }
+    val privateMessagingViewModel = koinViewModel<PrivateMessagingViewModel>(
+        key = "private_vm_$conversationId",
+    )
 
-    val state = messagingViewModel.uiState.collectAsState()
+
+    val uiEvent = remember { privateMessagingViewModel.uiEvent }
+
+    val state = privateMessagingViewModel.uiState.collectAsState()
     val messages = state.value.messages
     val conversation = state.value.conversation
 
 
     val navController = LocalNavController3.current
     LaunchedEffect(Unit) {
-        messagingViewModel.loadConversationAndParticipants(conversationId)
+        privateMessagingViewModel.loadConversationAndContact(conversationId)
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateBack -> {
@@ -68,18 +74,21 @@ fun ChatScreen(conversationId: String) {
                     .systemBarsPadding()
             ) {
 
-                ChatHeader(state.value.contentHeader, messagingViewModel::onEvent)
+                ChatHeader(state.value.contentHeader, privateMessagingViewModel::onEvent)
                 Box(modifier = Modifier.weight(1f)) {
                     MessagesList(
                         messageList = messages,
                         currentUserId = state.value.userSession?.userId ?: 0,
                         {
-                            messagingViewModel.loadOlderMessages(conversation?.conversationId ?: "", it)
+                            privateMessagingViewModel.loadOlderMessages(
+                                conversation?.conversationId ?: "",
+                                it
+                            )
                         },
                         {}
                     )
                 }
-                ChatInput(state.value.inputText, messagingViewModel::onEvent)
+                ChatInput(state.value.inputText, privateMessagingViewModel::onEvent)
             }
         }
     }

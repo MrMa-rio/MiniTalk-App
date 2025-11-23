@@ -56,7 +56,7 @@ fun ConversationsTab(conversations: List<ConversationItem>, onEvent: (Conversati
         itemsIndexed(conversations) { index, item ->
             Button(
                 onClick = {
-                    onEvent(ConversationEvent.Chat(item.conversationId))
+                    onEvent(ConversationEvent.Chat(item.conversationId, item.typeConversation))
                 }, colors = colors,
                 shape = ShapeDefaults.ExtraSmall
             ) {

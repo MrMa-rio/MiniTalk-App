@@ -1,5 +1,9 @@
 package com.marsn.minitalk.core.usecase.users
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.marsn.minitalk.core.dataprovider.repository.users.UserEntity
 import com.marsn.minitalk.core.dataprovider.repository.users.UserRepository
 import com.marsn.minitalk.core.domain.contact.Contact
@@ -14,7 +18,7 @@ class ContactUsecaseImpl(
     private val client: HttpClient,
     private val userRepository: UserRepository
 ) : ContactUsecase {
-    override suspend fun consultContact(userId: Long): Contact?  {
+    override suspend fun consultContact(userId: Long): Contact? {
 
         val list = mocksContactResponseFlow.first()
 
@@ -34,27 +38,42 @@ class ContactUsecaseImpl(
         return contacts
     }
 
-    override suspend fun consultAllContactsAndSave(): Flow<List<Contact>> {
+    override suspend fun consultAllContactsAndSave():  Flow<PagingData<Contact>> {
         val contacts = ContactMapper.toContactList(mocksContactResponseFlow)
         contacts.collect { it ->
             it.forEach {
                 userRepository.saveUser(ContactMapper.toUserEntity(it))
             }
         }
-        return contacts
+        return getContactsFlow()
     }
-}
 
-fun ContactMapper.Companion.toContactList(contactResponse: Flow<List<UserEntity>>): Flow<List<Contact>> {
-    return contactResponse.map { response ->
-        response.map { contact ->
-            Contact(
-                userId = contact.userId,
-                name = contact.name,
-                phoneNumber = contact.phone ?: "",
-                email = contact.email ?: "",
-                avatarUrl = contact.avatarUrl ?: ""
-            )
+    override suspend fun getContactsFlow(): Flow<PagingData<Contact>> {
+        return userRepository.getAllUsersPaging().map { pagingData ->
+            pagingData.map { contact ->
+                Contact(
+                    userId = contact.userId,
+                    name = contact.name,
+                    phoneNumber = contact.phone ?: "",
+                    email = contact.email ?: "",
+                    avatarUrl = contact.avatarUrl ?: ""
+                )
+            }
+
+        }
+    }
+
+    fun ContactMapper.Companion.toContactList(contactResponse: Flow<List<UserEntity>>): Flow<List<Contact>> {
+        return contactResponse.map { response ->
+            response.map { contact ->
+                Contact(
+                    userId = contact.userId,
+                    name = contact.name,
+                    phoneNumber = contact.phone ?: "",
+                    email = contact.email ?: "",
+                    avatarUrl = contact.avatarUrl ?: ""
+                )
+            }
         }
     }
 }

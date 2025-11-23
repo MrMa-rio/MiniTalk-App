@@ -27,12 +27,9 @@ class ConversationUsecaseImpl(
     }
 
     override suspend fun consultParticipantsByConversationId(conversationId: String): List<Contact> {
-        // Coleta o Flow APENAS UMA VEZ
         val participantsIds = repository.getParticipantsByConversationId(conversationId)
-            .first() // <- coleta o primeiro valor emitido
+            .first()
 
-
-        // Para cada ID busca o Contact
         return participantsIds.mapNotNull { id ->
             contactUsecase.consultContact(id.participantId)
         }

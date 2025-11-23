@@ -57,7 +57,7 @@ fun HomeContent() {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat -> {
-                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId, event.typeConversation))
                 }
 
                 is UIEvent.NavigateToProfile<*> -> {

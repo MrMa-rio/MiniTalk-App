@@ -1,4 +1,4 @@
-package com.marsn.minitalk.ui.feature.chat.conversation
+package com.marsn.minitalk.ui.feature.chat.conversation.private
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize

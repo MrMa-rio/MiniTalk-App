@@ -2,6 +2,7 @@ package com.marsn.minitalk.navigation
 
 import androidx.navigation3.runtime.NavKey
 import com.marsn.minitalk.core.domain.UserProfile
+import com.marsn.minitalk.core.shared.enums.TypeConversation
 import kotlinx.serialization.Serializable
 
 sealed class AuthRoutes() {
@@ -29,7 +30,7 @@ sealed class ChatRoutes() {
     class ProfileRoute(val userProfile: UserProfile) : NavKey
 
     @Serializable
-    class ChatRoute(val conversationId: String) : NavKey
+    class ChatRoute(val conversationId: String, val typeConversation: TypeConversation) : NavKey
 
 }
 

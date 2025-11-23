@@ -2,6 +2,7 @@ package com.marsn.minitalk.core.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.Room
 import com.marsn.minitalk.core.dataprovider.client.KtorQualifiers
 import com.marsn.minitalk.core.dataprovider.client.PathsAPI
@@ -31,7 +32,7 @@ import com.marsn.minitalk.core.usecase.users.UserSessionUsecase
 import com.marsn.minitalk.core.usecase.users.UserSessionUsecaseImpl
 import com.marsn.minitalk.infraestructure.UserSessionSerializer
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsViewModel
-import com.marsn.minitalk.ui.feature.chat.conversation.MessagingViewModel
+import com.marsn.minitalk.ui.feature.chat.conversation.private.PrivateMessagingViewModel
 import com.marsn.minitalk.ui.feature.home.HomeViewModel
 import com.marsn.minitalk.ui.feature.login.LoginViewModel
 import com.marsn.minitalk.ui.feature.splashCustomized.SplashViewModel
@@ -49,6 +50,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -111,8 +113,8 @@ val viewModelModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::ContactsViewModel)
     viewModelOf(::LoginViewModel)
-    viewModelOf(::MessagingViewModel)
     viewModelOf(::SplashViewModel)
+    viewModelOf(::PrivateMessagingViewModel)
 
 }
 

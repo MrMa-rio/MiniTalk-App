@@ -44,7 +44,8 @@ class HomeViewModel(
                 viewModelScope.launch {
                     _uiEvent.send(
                         UIEvent.NavigateToChat(
-                            event.conversationId
+                            event.conversationId,
+                            event.typeConversation
                         )
                     )
                 }

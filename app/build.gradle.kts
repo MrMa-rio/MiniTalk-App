@@ -47,6 +47,12 @@ android {
 
 dependencies {
 
+    //PAGING 3
+
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.room.paging)
+
     //DATASTORE
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)

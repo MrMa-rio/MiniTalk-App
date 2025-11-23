@@ -1,6 +1,10 @@
 package com.marsn.minitalk.core.dataprovider.repository.users
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
+
 class UserRepositoryImpl(
     private val userDao: UserDao
 ) : UserRepository {
@@ -43,5 +47,27 @@ class UserRepositoryImpl(
 
     override suspend fun deleteUser(userId: Long) {
         userDao.deleteByUserId(userId)
+    }
+
+    override suspend fun getAllUsersPaging(): Flow<PagingData<UserEntity>> {
+        val total = userDao.countUsers()
+
+        val pageSize = when {
+            total < 100 -> 20
+            total < 500 -> 30
+            total < 2_000 -> 40
+            else -> 60
+        }
+
+        val prefetch = pageSize / 2
+
+        return Pager(
+            config = PagingConfig(
+                pageSize = pageSize,
+                prefetchDistance = prefetch,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { userDao.getContactsPaging() }
+        ).flow
     }
 }

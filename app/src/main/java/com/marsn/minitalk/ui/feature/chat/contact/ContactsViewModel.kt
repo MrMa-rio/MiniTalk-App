@@ -2,12 +2,15 @@ package com.marsn.minitalk.ui.feature.chat.contact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import com.marsn.minitalk.core.shared.enums.TypeConversation
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.users.ContactUsecase
 import com.marsn.minitalk.core.usecase.users.UserSessionUsecase
 import com.marsn.minitalk.ui.UIEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.cache
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,10 +28,14 @@ class ContactsViewModel(
     val uiState = _uiState
 
 
-    init {
+
+    fun loadContacts() {
         viewModelScope.launch {
             loadUserSession()
-            uiState.value = uiState.value.copy(contacts = contactUsecase.consultAllContacts())
+            val contacts =  contactUsecase
+            .getContactsFlow()
+            .cachedIn(viewModelScope)
+            _uiState.update { it.copy(contacts = contacts) }
         }
     }
 
@@ -51,7 +58,12 @@ class ContactsViewModel(
                         event.contact.userId
                     )
                     conversation.let {
-                        _uiEvent.send(UIEvent.NavigateToChat(conversation.conversationId))
+                        _uiEvent.send(
+                            UIEvent.NavigateToChat(
+                                conversation.conversationId,
+                                typeConversation = TypeConversation.PRIVATE
+                            )
+                        )
                     }
                 }
             }

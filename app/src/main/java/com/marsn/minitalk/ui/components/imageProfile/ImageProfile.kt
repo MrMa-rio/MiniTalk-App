@@ -10,6 +10,7 @@ import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -25,6 +26,7 @@ fun ImageProfile(urlAvatar: String, shapes: RoundedCornerShape) {
             .clip(shape = shapes),
         contentDescription = "Person",
         fallback = painterResource(R.drawable.person),
-        error = painterResource(R.drawable.person)
+        error = painterResource(R.drawable.person),
+        filterQuality = FilterQuality.Low
     )
 }

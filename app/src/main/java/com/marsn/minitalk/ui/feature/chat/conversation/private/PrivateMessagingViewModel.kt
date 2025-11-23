@@ -1,13 +1,15 @@
-package com.marsn.minitalk.ui.feature.chat.conversation
+package com.marsn.minitalk.ui.feature.chat.conversation.private
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.marsn.minitalk.core.domain.contact.Contact
 import com.marsn.minitalk.core.domain.proto.ChatMessage
 import com.marsn.minitalk.core.usecase.conversation.ConversationUsecase
 import com.marsn.minitalk.core.usecase.message.MessagesUseCase
 import com.marsn.minitalk.core.usecase.users.UserSessionUsecase
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.ui.UIEvent
+import com.marsn.minitalk.ui.feature.chat.conversation.ContentHeader
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,48 +19,31 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MessagingViewModel(
+class PrivateMessagingViewModel(
     val messagesUseCase: MessagesUseCase,
     val conversationUsecase: ConversationUsecase,
     val userSessionUsecase: UserSessionUsecase,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     private val _uiEvent = Channel<UIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
     private val _uiState = MutableStateFlow(MessageUiState())
     val uiState = _uiState.asStateFlow()
 
-
-    init {
-        viewModelScope.launch {
-            loadUserSession()
-            loadContentChat()
-            val messages = messagesUseCase.consultMessages(
-                uiState.value.conversation?.conversationId
-                    ?: ""
-            )
-            _uiState.value = _uiState.value.copy(
-                messages = messages.stateIn(
-                    viewModelScope,
-                    SharingStarted.WhileSubscribed(5000),
-                    _uiState.value.messages
-                ).value
-            )
-        }
-    }
-
     private fun loadContentChat() {
 
-        val conversation = _uiState.value.conversation
+        val conversation = uiState.value.conversation
+        val contact = uiState.value.contact
+        val status = "Online agora"
 
         _uiState.value = _uiState.value.copy(
-        contentHeader = ContentHeader(
-            "TEESTE",
-            "",
-            conversation?.conversationId ?: "",
-            "Eu, Voce"
-        )
+            contentHeader = ContentHeader(
+                contact?.name ?: "USUARIO",
+                contact?.avatarUrl ?: "",
+                conversation?.conversationId ?: "",
+                status
+            )
         )
     }
 
@@ -71,27 +56,39 @@ class MessagingViewModel(
         }
     }
 
-    fun loadConversationAndParticipants(conversationId: String) {
+
+
+    private suspend fun loadUserSession() {
+        val userSession = userSessionUsecase.consultUserSession()
+        _uiState.update { it.copy(userSession = userSession) }
+    }
+
+    fun loadConversationAndContact(conversationId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
+            if (uiState.value.userSession == null) {
+                loadUserSession()
+            }
+            val currentUser = uiState.value.userSession?.userId ?: 0
             val conversation = conversationUsecase.consultConversation(conversationId)
-            val participants = conversationUsecase.consultParticipantsByConversationId(conversationId)
+            val participants =
+                conversationUsecase.consultParticipantsByConversationId(conversationId)
+            val contact: Contact = participants.first { it.userId != currentUser }
+
             _uiState.update {
                 it.copy(
                     conversation = conversation,
                     typeConversation = conversation?.typeConversation,
-                    participants = participants,
+                    contact = contact,
                     isLoading = false,
                 )
             }
-            observeMessages(conversationId)
+            if (!uiState.value.isLoading) {
+                loadContentChat()
+                observeMessages(conversationId)
+            }
         }
-    }
-
-    suspend fun loadUserSession() {
-        val userSession = userSessionUsecase.consultUserSession()
-        _uiState.update { it.copy(userSession = userSession) }
     }
 
     fun onEvent(event: MessageEvent) {
@@ -135,16 +132,11 @@ class MessagingViewModel(
 
     private suspend fun sendingMessage() {
         val currentUser = uiState.value.userSession?.userId ?: 0
-        val participants = uiState.value.participants
-
-        participants.map {
-            if (it.userId != currentUser) {
-                sendMock(currentUser, it.userId)
-            }
-        }
+        val contact = uiState.value.contact
+        sendMock(currentUser, contact?.userId ?: 0)
     }
 
-    suspend fun sendMock(senderId: Long, destinyId: Long) {
+    private suspend fun sendMock(senderId: Long, destinyId: Long) {
 
         val message = ChatMessage(
             messageId = System.currentTimeMillis() / 365, //TODO: MELHORAR A FORMA DE CRIACAO DA MENSAGEMID

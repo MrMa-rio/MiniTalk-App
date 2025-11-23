@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.ui.components.inputsText.InputField
-import com.marsn.minitalk.ui.feature.chat.conversation.MessageEvent
+import com.marsn.minitalk.ui.feature.chat.conversation.private.MessageEvent
 
 @Composable
 fun ChatInput(inputText: String, onEvent: (MessageEvent) -> Unit) {

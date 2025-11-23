@@ -1,5 +1,6 @@
 package com.marsn.minitalk.core.dataprovider.repository.users
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -58,4 +59,11 @@ interface UserDao {
 
     @Query("DELETE FROM users WHERE userId = :userId")
     suspend fun deleteByUserId(userId: Long)
+
+    @Query("SELECT COUNT(*) FROM users")
+    suspend fun countUsers(): Int
+
+    @Query("SELECT * FROM users ORDER BY name ASC")
+    fun getContactsPaging(): PagingSource<Int, UserEntity>
+
 }

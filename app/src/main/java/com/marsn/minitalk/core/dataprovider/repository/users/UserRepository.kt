@@ -1,6 +1,9 @@
 package com.marsn.minitalk.core.dataprovider.repository.users
 
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
+import java.security.Key
 
 interface UserRepository {
 
@@ -20,4 +23,5 @@ interface UserRepository {
     suspend fun updateName(userId: Long, name: String, updatedAt: Long)
     suspend fun updateStatus(userId: Long, status: String?, updatedAt: Long)
     suspend fun deleteUser(userId: Long)
+    suspend fun getAllUsersPaging(): Flow<PagingData<UserEntity>>
 }

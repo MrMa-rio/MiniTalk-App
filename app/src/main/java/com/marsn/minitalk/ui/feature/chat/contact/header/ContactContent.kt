@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.marsn.minitalk.core.shared.enums.TypeConversation
 import com.marsn.minitalk.navigation.ChatRoutes
 import com.marsn.minitalk.navigation.LocalNavController3
 import com.marsn.minitalk.ui.UIEvent
@@ -37,15 +39,22 @@ fun ContactContent() {
     val state = viewModel.uiState.collectAsState()
 
     val searchText = state.value.searchText
-    val contacts = state.value.contacts
+    val contacts = state.value.contacts.collectAsLazyPagingItems()
     val uiEvent = remember { viewModel.uiEvent }
     val navController = LocalNavController3.current
 
     LaunchedEffect(Unit) {
+        viewModel.loadContacts()
         uiEvent.collectLatest { event ->
             when (event) {
                 is UIEvent.NavigateToChat -> {
-                    navController.navigate(ChatRoutes.ChatRoute(event.conversationId))
+                    navController.pop()
+                    navController.navigate(
+                        ChatRoutes.ChatRoute(
+                            conversationId = event.conversationId,
+                            typeConversation = TypeConversation.PRIVATE
+                        )
+                    )
                 }
 
                 is UIEvent.NavigateBack -> {

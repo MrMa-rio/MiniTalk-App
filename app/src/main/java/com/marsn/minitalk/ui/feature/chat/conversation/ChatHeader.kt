@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.marsn.minitalk.R
 import com.marsn.minitalk.core.domain.contact.Contact
 import com.marsn.minitalk.ui.components.imageProfile.ImageProfile
+import com.marsn.minitalk.ui.feature.chat.conversation.private.MessageEvent
 import com.marsn.minitalk.ui.theme.ButtonColorsTransparents
 
 

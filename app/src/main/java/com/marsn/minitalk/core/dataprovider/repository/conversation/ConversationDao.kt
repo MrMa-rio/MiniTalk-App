@@ -62,6 +62,7 @@ interface ConversationDao {
         """
     SELECT 
         c.conversationId AS conversationId,
+        c.typeConversation AS typeConversation,
         u.name AS participantName,
         u.avatarUrl AS participantAvatar,
         m.content AS lastMessage,

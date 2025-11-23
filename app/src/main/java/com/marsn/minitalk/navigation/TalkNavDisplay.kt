@@ -18,8 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.marsn.minitalk.ui.feature.chat.conversation.ChatScreen
+import com.marsn.minitalk.core.shared.enums.TypeConversation
+import com.marsn.minitalk.ui.feature.chat.conversation.private.PrivateChatScreen
 import com.marsn.minitalk.ui.feature.chat.contact.ContactsScreen
+import com.marsn.minitalk.ui.feature.chat.conversation.group.GroupChatScreen
 import com.marsn.minitalk.ui.feature.home.HomeScreen
 import com.marsn.minitalk.ui.feature.login.LoginScreen
 import com.marsn.minitalk.ui.feature.login.RegisterScreen
@@ -110,7 +112,11 @@ fun TalkNavDisplay() {
 
                 entry<ChatRoutes.ChatRoute> {
                     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    ChatScreen(it.conversationId)
+                    if (it.typeConversation == TypeConversation.PRIVATE) {
+                        PrivateChatScreen(it.conversationId)
+                    } else {
+                        GroupChatScreen(it.conversationId)
+                    }
 
                 }
 
