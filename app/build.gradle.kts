@@ -1,7 +1,11 @@
+import org.gradle.internal.serialize.codecs.stdlib.arrayListCodec
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
@@ -42,6 +46,65 @@ android {
 }
 
 dependencies {
+
+    //PAGING 3
+
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.room.paging)
+
+    //DATASTORE
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
+
+    //ROOM
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    //COIL
+    implementation(libs.coil.compose)
+
+    //PROTOBUF
+    implementation(libs.kotlinx.serialization.protobuf)
+
+
+    implementation(libs.kotlinx.datetime)
+
+    //KOIN
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.ktor.client.cio)
+
+    //MATERIAL
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    //NAVIGATION
+    implementation(libs.androidx.navigation.compose)
+
+    //KTOR
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.content.negotiation)
+
+    implementation(libs.ktor.client.android)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.koin.core)
+
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Dagger Hilt
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.compose.adaptive.navigation3)
+    implementation(libs.androidx.navigation3.runtime)
+
+
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
