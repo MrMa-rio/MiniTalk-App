@@ -39,7 +39,33 @@ import com.marsn.minitalk.ui.theme.SairaSemiExpanded
 @Composable
 fun ListContact(contacts: LazyPagingItems<Contact>, onEvent: (ContactEvent) -> Unit) {
 
-//    val listContact = contacts?.collectAsState(initial = emptyList())
+    LazyColumn {
+        items(contacts.itemCount) { index ->
+            contacts[index]?.let { contact ->
+                ContactItem(contact, onEvent)
+            }
+        }
+
+        contacts.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { LoadingShimmer() }
+                }
+
+                loadState.append is LoadState.Loading -> {
+                    item { LoadingMoreItem() }
+                }
+
+                loadState.append is LoadState.Error -> {
+                    item { RetryButton(onClick = { retry() }) }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ContactItem(contact: Contact, onEvent: (ContactEvent) -> Unit) {
 
     val colors = remember {
         ButtonColors(
@@ -49,115 +75,46 @@ fun ListContact(contacts: LazyPagingItems<Contact>, onEvent: (ContactEvent) -> U
             disabledContentColor = Color.Black,
         )
     }
-//    LazyColumn {
-//        itemsIndexed(listContact?.value?.sortedBy { it.name } ?: listOf()) { index, item ->
-//
-//            Button(
-//                onClick = { onEvent(ContactEvent.SelectContact(item)) }
-//                , colors = colors,
-//                shape = ShapeDefaults.ExtraSmall
-//            ) {
-//                Box(
-//                    Modifier
-//                        .fillMaxWidth()
-//                        .height(80.dp),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(8.dp),
-//                        horizontalArrangement = Arrangement.SpaceBetween
-//                    ) {
-//                        Row(
-//                            horizontalArrangement = Arrangement.SpaceAround,
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            ImageProfile(item.avatarUrl, RoundedCornerShape(48.dp))
-//                            Spacer(modifier = Modifier.width(6.dp))
-//                            Column(
-//                                modifier = Modifier.padding(4.dp),
-//                                verticalArrangement = Arrangement.SpaceBetween
-//                            ) {
-//                                Text(
-//                                    text = item.name,
-//                                    fontWeight = FontWeight.Medium,
-//                                    fontFamily = SairaSemiExpanded
-//                                )
-//                                Text(
-//                                    text = item.email,
-//                                    maxLines = 1,
-//                                    color = Color.Gray,
-//                                    fontWeight = FontWeight.Light,
-//                                    fontFamily = SairaSemiExpanded
-//                                )
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    LazyColumn {
-        items(contacts.itemCount) { index ->
-            contacts[index]?.let { contact ->
-                Button(
-                onClick = { onEvent(ContactEvent.SelectContact(contact)) }
-                , colors = colors,
-                shape = ShapeDefaults.ExtraSmall
-            ) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(80.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceAround,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            ImageProfile(contact.avatarUrl, RoundedCornerShape(48.dp))
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Column(
-                                modifier = Modifier.padding(4.dp),
-                                verticalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = contact.name,
-                                    fontWeight = FontWeight.Medium,
-                                    fontFamily = SairaSemiExpanded
-                                )
-                                Text(
-                                    text = contact.email,
-                                    maxLines = 1,
-                                    color = Color.Gray,
-                                    fontWeight = FontWeight.Light,
-                                    fontFamily = SairaSemiExpanded
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-            }
-        }
 
-        contacts.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    item { LoadingShimmer() }
-                }
-                loadState.append is LoadState.Loading -> {
-                    item { LoadingMoreItem() }
-                }
-                loadState.append is LoadState.Error -> {
-                    item { RetryButton(onClick = { retry() }) }
+    Button(
+        onClick = { onEvent(ContactEvent.SelectContact(contact)) }, colors = colors,
+        shape = ShapeDefaults.ExtraSmall
+    ) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(80.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ImageProfile(contact.avatarUrl, RoundedCornerShape(48.dp))
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Column(
+                        modifier = Modifier.padding(4.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = contact.name,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = SairaSemiExpanded
+                        )
+                        Text(
+                            text = contact.email,
+                            maxLines = 1,
+                            color = Color.Gray,
+                            fontWeight = FontWeight.Light,
+                            fontFamily = SairaSemiExpanded
+                        )
+                    }
                 }
             }
         }
@@ -232,7 +189,7 @@ fun RetryButton(onClick: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        androidx.compose.material3.Button(onClick = onClick) {
+        Button(onClick = onClick) {
             Text("Tentar novamente")
         }
     }
